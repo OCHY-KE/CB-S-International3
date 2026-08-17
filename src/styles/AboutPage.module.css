@@ -1,0 +1,103 @@
+/* Container and Section Spacing */
+.about-section {
+  padding: 80px 10%;
+  max-width: 1400px;
+  margin: 0 auto;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+  line-height: 1.6;
+}
+
+/* Heading Styles */
+.section-heading {
+  margin-bottom: 50px;
+}
+
+.eyebrow {
+  color: #00AEEF; /* Light Blue from Logo */
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 2px;
+  font-size: 0.9rem;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.section-heading h2 {
+  color: #003366; /* Deep Blue from PDF shapes */
+  font-size: 2.5rem;
+  max-width: 800px;
+  margin: 0;
+  line-height: 1.2;
+}
+
+/* Grid Layout */
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: start;
+}
+
+/* Copy (Left Side) */
+.about-copy p {
+  font-size: 1.1rem;
+  margin-bottom: 20px;
+  color: #555;
+}
+
+/* Info Cards (Right Side) */
+.about-points {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.info-card {
+  background: #f8f9fa;
+  padding: 25px;
+  border-left: 5px solid #003366; /* Deep Blue accent */
+  border-radius: 4px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.info-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+}
+
+.info-card strong {
+  display: block;
+  color: #003366;
+  font-size: 1.2rem;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+
+.info-card p {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #666;
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+  .about-grid {
+    grid-template-columns: 1fr; /* Stack on tablets */
+    gap: 40px;
+  }
+  
+  .section-heading h2 {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .about-section {
+    padding: 50px 5%;
+  }
+  
+  .section-heading h2 {
+    font-size: 1.75rem;
+  }
+}
