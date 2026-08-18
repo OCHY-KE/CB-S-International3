@@ -1,3 +1,5 @@
+import styles from './styles/AdminPage.module.css'
+
 function AdminPage({ onBack }) {
   const stats = [
     { label: 'Total bookings', value: '184' },
@@ -19,35 +21,42 @@ function AdminPage({ onBack }) {
     'Wildlife & Beach Combo',
   ]
 
+  const getStatusClass = (status) => {
+    if (status.includes('Confirmed')) return styles.statusConfirmed
+    if (status.includes('Pending')) return styles.statusPending
+    if (status.includes('Awaiting')) return styles.statusAwaiting
+    return ''
+  }
+
   return (
-    <div className="admin-shell">
-      <header className="admin-header">
+    <div className={styles.adminShell}>
+      <header className={styles.adminHeader}>
         <div>
-          <p className="eyebrow">Admin dashboard</p>
+          <p className={styles.eyebrow}>Admin dashboard</p>
           <h1>Conference Bookings & Safaris International</h1>
         </div>
 
-        <button type="button" className="cta-button primary" onClick={onBack}>
+        <button type="button" className={styles.ctaButton} onClick={onBack}>
           Back to website
         </button>
       </header>
 
-      <section className="admin-grid stats-grid">
+      <section className={`${styles.adminGrid} ${styles.statsGrid}`}>
         {stats.map((item) => (
-          <article key={item.label} className="dashboard-card">
+          <article key={item.label} className={styles.dashboardCard}>
             <span>{item.label}</span>
             <strong>{item.value}</strong>
           </article>
         ))}
       </section>
 
-      <section className="admin-grid dashboard-layout">
-        <article className="dashboard-card wide-card">
-          <div className="card-header-row">
+      <section className={`${styles.adminGrid} ${styles.dashboardLayout}`}>
+        <article className={`${styles.dashboardCard} ${styles.wideCard}`}>
+          <div className={styles.cardHeaderRow}>
             <h2>Quick actions</h2>
           </div>
 
-          <div className="action-grid">
+          <div className={styles.actionGrid}>
             <button type="button">Add package</button>
             <button type="button">Create category</button>
             <button type="button">Manage bookings</button>
@@ -55,11 +64,11 @@ function AdminPage({ onBack }) {
           </div>
         </article>
 
-        <article className="dashboard-card">
-          <div className="card-header-row">
+        <article className={styles.dashboardCard}>
+          <div className={styles.cardHeaderRow}>
             <h2>Package list</h2>
           </div>
-          <ul className="dashboard-list">
+          <ul className={styles.dashboardList}>
             {packages.map((item) => (
               <li key={item}>{item}</li>
             ))}
@@ -67,13 +76,13 @@ function AdminPage({ onBack }) {
         </article>
       </section>
 
-      <section className="admin-grid dashboard-layout">
-        <article className="dashboard-card wide-card">
-          <div className="card-header-row">
+      <section className={`${styles.adminGrid} ${styles.dashboardLayout}`}>
+        <article className={`${styles.dashboardCard} ${styles.wideCard}`}>
+          <div className={styles.cardHeaderRow}>
             <h2>Recent bookings</h2>
           </div>
 
-          <table className="booking-table">
+          <table className={styles.bookingTable}>
             <thead>
               <tr>
                 <th>Client</th>
@@ -86,18 +95,18 @@ function AdminPage({ onBack }) {
                 <tr key={booking.name}>
                   <td>{booking.name}</td>
                   <td>{booking.trip}</td>
-                  <td>{booking.status}</td>
+                  <td><span className={getStatusClass(booking.status)}>{booking.status}</span></td>
                 </tr>
               ))}
             </tbody>
           </table>
         </article>
 
-        <article className="dashboard-card">
-          <div className="card-header-row">
+        <article className={styles.dashboardCard}>
+          <div className={styles.cardHeaderRow}>
             <h2>Site settings</h2>
           </div>
-          <ul className="dashboard-list compact-list">
+          <ul className={`${styles.dashboardList} ${styles.compactList}`}>
             <li>Manage blogs</li>
             <li>Client reviews</li>
             <li>Social media links</li>

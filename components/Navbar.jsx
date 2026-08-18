@@ -1,81 +1,76 @@
 import React, { useState, useEffect } from 'react';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import styles from '../src/styles/Navbar.module.css';
 
 const navItems = [
-  { label: 'Home', page: 'home' },
-  { label: 'About', page: 'about' },
+  { label: 'Home', path: '/' },
+  { label: 'About', path: '/about' },
 ];
 
-function Navbar({ currentPage, onPageChange }) {
+function Navbar() {
+  const navigate = useNavigate();
+  const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
-  // Add scroll effect for modern feel
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const handleNavClick = (e, page) => {
-    e.preventDefault();
-    onPageChange(page);
-    setIsMenuOpen(false);
-  };
+  const handleNavClick = () => setIsMenuOpen(false);
 
   return (
     <header className={`${styles.siteHeader} ${scrolled ? styles.scrolled : ''}`}>
       <div className={styles.headerContainer}>
-        {/* Brand Section */}
-        <div className={styles.brandWrap} onClick={() => onPageChange('home')}>
-          <img 
-            src="https://res.cloudinary.com/cioghqt5/image/upload/v1786973128/cbsi1.ico" 
-            alt="CB SI Logo" 
-            className={styles.brandLogo} 
+        <div className={styles.brandWrap} onClick={() => { navigate('/'); setIsMenuOpen(false); }}>
+          <img
+            src="https://res.cloudinary.com/cioghqt5/image/upload/v1787043861/copy_of_copy_of_cbsi1.ico"
+            alt="CB SI Logo"
+            className={styles.brandLogo}
           />
           <div className={styles.brandCopy}>
             <p className={styles.brandName}>
-              Conference Bookings <span>&</span>
+              Conference Bookings &
             </p>
             <p className={styles.brandName}>Safaris International</p>
             <span className={styles.brandTag}>defining safari frontiers</span>
           </div>
         </div>
 
-        {/* Mobile Toggle */}
-        <button 
-          className={`${styles.mobileToggle} ${isMenuOpen ? styles.active : ''}`} 
+        <button
+          className={`${styles.mobileToggle} ${isMenuOpen ? styles.active : ''}`}
           onClick={() => setIsMenuOpen(!isMenuOpen)}
           aria-label="Toggle navigation"
         >
           <span className={styles.hamburger}></span>
         </button>
 
-        {/* Navigation */}
         <nav className={`${styles.nav} ${isMenuOpen ? styles.navOpen : ''}`}>
           <div className={styles.navLinks}>
             {navItems.map((item) => (
-              <a
-                key={item.page}
-                href={`#${item.page}`}
-                onClick={(e) => handleNavClick(e, item.page)}
-                className={`${styles.navLink} ${currentPage === item.page ? styles.activeLink : ''}`}
+              <NavLink
+                key={item.path}
+                to={item.path}
+                end={item.path === '/'}
+                onClick={handleNavClick}
+                className={({ isActive }) =>
+                  `${styles.navLink} ${isActive || (item.path === '/' && location.pathname === '/') ? styles.activeLink : ''}`
+                }
               >
                 {item.label}
-              </a>
+              </NavLink>
             ))}
           </div>
 
           <div className={styles.navActions}>
-            <button className={styles.textButton} onClick={() => onPageChange('user-login')}>
-              User Login
+            <button className={styles.textButton} onClick={() => { navigate('/login'); setIsMenuOpen(false); }}>
+              Login
             </button>
-            <button className={styles.textButton} onClick={() => onPageChange('admin-login')}>
-              Admin Login
-            </button>
-            <a className={styles.ctaButton} href="#contact">
+            <button className={styles.ctaButton} onClick={() => { navigate('/about'); setIsMenuOpen(false); }}>
               Book a consultation
-            </a>
+            </button>
           </div>
         </nav>
       </div>

@@ -1,39 +1,35 @@
 :root {
-  /* Refined Modern Palette */
   --primary-gold: #c5a059;
-  --navy-blue: #000080; /* Brand navy */
-  --dark-text: #121212;
-  --light-text: #666;
-  --tint-bg: rgba(0, 0, 128, 0.85); /* Navy tint */
-  --tint-border: rgba(0, 0, 128, 0.3);
-
-  /* Transitions & Shadows */
+  --navy-blue: #0b1d4d;
+  --dark-text: #f8fafc;
+  --light-text: #dfe7f5;
+  --tint-bg: rgba(10, 18, 39, 0.82);
+  --tint-border: rgba(197, 160, 89, 0.3);
   --transition-smooth: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-  --shadow-sm: 0 4px 20px rgba(0, 0, 0, 0.03);
-  --shadow-md: 0 8px 30px rgba(0, 0, 0, 0.08);
+  --shadow-sm: 0 4px 20px rgba(0, 0, 0, 0.15);
+  --shadow-md: 0 8px 30px rgba(0, 0, 0, 0.2);
 }
 
-/* Global Reset for Header Area */
 .siteHeader {
-  position: fixed;
+  position: sticky;
   top: 0;
   left: 0;
   width: 100%;
   z-index: 1000;
-  background: transparent;
+  background: #ffffff;
   transition: var(--transition-smooth);
-  padding: 1.5rem 0;
+  padding: 1.35rem 0;
+  border-bottom: 1px solid rgba(11, 29, 77, 0.08);
 }
 
-/* Scrolled State: Sleek Tint */
 .scrolled {
-  background: var(--tint-bg);
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(12px);
   padding: 0.8rem 0;
-  border-bottom: 1px solid var(--tint-border);
+  border-bottom: 1px solid rgba(11, 29, 77, 0.12);
   box-shadow: var(--shadow-sm);
 }
 
-/* Header Container */
 .headerContainer {
   max-width: 1300px;
   margin: 0 auto;
@@ -43,12 +39,12 @@
   padding: 0 2.5rem;
 }
 
-/* Brand Section */
 .brandWrap {
   display: flex;
   align-items: center;
   gap: 14px;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .brandLogo {
@@ -61,6 +57,11 @@
   transform: scale(1.05);
 }
 
+.brandCopy {
+  display: flex;
+  flex-direction: column;
+}
+
 .brandName {
   margin: 0;
   font-family: 'Inter', sans-serif;
@@ -68,7 +69,7 @@
   font-size: 0.95rem;
   text-transform: uppercase;
   letter-spacing: 1.5px;
-  color: var(--dark-text);
+  color: var(--navy-blue);
   line-height: 1.1;
 }
 
@@ -91,7 +92,20 @@
   opacity: 0.9;
 }
 
-/* Navigation */
+.mobileToggle.active .hamburger {
+  background: transparent;
+}
+
+.mobileToggle.active .hamburger::before {
+  top: 0;
+  transform: rotate(45deg);
+}
+
+.mobileToggle.active .hamburger::after {
+  top: 0;
+  transform: rotate(-45deg);
+}
+
 .nav {
   display: flex;
   align-items: center;
@@ -105,19 +119,20 @@
 
 .navLink {
   text-decoration: none;
-  color: var(--dark-text);
+  color: var(--navy-blue);
   font-family: 'Inter', sans-serif;
   font-weight: 500;
   font-size: 0.9rem;
   letter-spacing: 0.5px;
   position: relative;
   transition: color 0.3s ease;
+  padding-bottom: 4px;
 }
 
 .navLink::after {
   content: '';
   position: absolute;
-  bottom: -6px;
+  bottom: -4px;
   left: 50%;
   width: 0;
   height: 2px;
@@ -126,31 +141,36 @@
   transform: translateX(-50%);
 }
 
-.navLink:hover {
+.navLink:hover,
+.navLink:focus-visible,
+.activeLink {
   color: var(--primary-gold);
 }
 
-.navLink:hover::after, 
+.navLink:hover::after,
 .activeLink::after {
   width: 100%;
 }
 
-/* Buttons */
 .navActions {
   display: flex;
   align-items: center;
   gap: 1.5rem;
 }
 
+.textButton,
+.ctaButton {
+  font-family: 'Inter', sans-serif;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
 .textButton {
   background: none;
   border: none;
-  font-family: 'Inter', sans-serif;
   font-size: 0.8rem;
   font-weight: 600;
-  color: var(--light-text);
-  cursor: pointer;
-  transition: var(--transition-smooth);
+  color: var(--navy-blue);
   text-transform: uppercase;
   letter-spacing: 1.2px;
 }
@@ -161,26 +181,22 @@
 }
 
 .ctaButton {
-  background: var(--dark-text);
-  color: #fff;
+  background: linear-gradient(135deg, var(--primary-gold), #e6c98a);
+  color: #071321;
   padding: 10px 28px;
   border-radius: 100px;
-  text-decoration: none;
+  border: 1px solid rgba(255, 255, 255, 0.1);
   font-size: 0.85rem;
-  font-weight: 600;
-  transition: var(--transition-smooth);
-  border: 1px solid var(--dark-text);
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 8px 24px rgba(197, 160, 89, 0.25);
 }
 
 .ctaButton:hover {
-  background: transparent;
-  color: var(--dark-text);
-  box-shadow: var(--shadow-md);
   transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(197, 160, 89, 0.3);
 }
 
-/* Mobile Toggle */
 .mobileToggle {
   display: none;
   background: none;
@@ -194,7 +210,7 @@
   display: block;
   width: 22px;
   height: 1.5px;
-  background: var(--dark-text);
+  background: var(--navy-blue);
   position: relative;
   transition: 0.3s;
 }
@@ -205,7 +221,7 @@
   position: absolute;
   width: 100%;
   height: 1.5px;
-  background: var(--dark-text);
+  background: var(--navy-blue);
   left: 0;
   transition: 0.3s;
 }
@@ -213,21 +229,28 @@
 .hamburger::before { top: -7px; }
 .hamburger::after { top: 7px; }
 
-/* Responsive Overlay */
 @media (max-width: 992px) {
-  .mobileToggle { display: block; }
+  .mobileToggle {
+    display: block;
+    background: rgba(11, 29, 77, 0.04);
+    border-radius: 10px;
+  }
 
   .nav {
     position: fixed;
     top: 0;
     right: -100%;
     height: 100vh;
-    width: 100%;
-    background: #fff;
+    width: min(88vw, 420px);
+    background: rgba(11, 29, 77, 0.98);
     flex-direction: column;
     justify-content: center;
+    align-items: center;
     transition: transform 0.5s cubic-bezier(0.77,0.2,0.05,1.0);
-    gap: 4rem;
+    gap: 3rem;
+    border-left: 1px solid rgba(255, 255, 255, 0.16);
+    box-shadow: -12px 0 30px rgba(0, 0, 0, 0.25);
+    padding: 2rem 1.5rem;
   }
 
   .navOpen {
@@ -235,14 +258,53 @@
     transform: translateX(0);
   }
 
-  .navLinks, .navActions {
+  .navLinks,
+  .navActions {
     flex-direction: column;
     align-items: center;
-    gap: 2rem;
+    gap: 1.5rem;
+    width: 100%;
   }
 
   .navLink {
     font-size: 1.5rem;
     font-family: 'Playfair Display', serif;
+    color: #ffffff;
+    letter-spacing: 0.5px;
+  }
+
+  .navLink:hover,
+  .navLink:focus-visible,
+  .activeLink {
+    color: var(--primary-gold);
+  }
+
+  .textButton {
+    color: #ffffff;
+    font-size: 0.88rem;
+    width: 100%;
+    max-width: 240px;
+    text-align: center;
+    padding: 0.8rem 1rem;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    background: rgba(255, 255, 255, 0.04);
+  }
+
+  .ctaButton {
+    width: 100%;
+    max-width: 240px;
+    text-align: center;
+    background: linear-gradient(135deg, var(--primary-gold), #e6c98a);
+    color: #071321;
+  }
+
+  .mobileToggle.active .hamburger {
+    background: transparent;
+  }
+
+  .mobileToggle.active .hamburger::before,
+  .mobileToggle.active .hamburger::after {
+    background: var(--navy-blue);
   }
 }

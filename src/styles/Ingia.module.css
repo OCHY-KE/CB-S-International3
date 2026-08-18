@@ -11,7 +11,7 @@
   --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
 }
 
-.login-wrapper {
+.loginWrapper {
   min-height: 100vh;
   display: flex;
   align-items: center;
@@ -21,7 +21,7 @@
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
 }
 
-.login-card {
+.loginCard {
   background: var(--white);
   width: 100%;
   max-width: 420px;
@@ -30,72 +30,105 @@
   box-shadow: var(--shadow);
 }
 
-.login-header {
+.loginHeader {
   text-align: center;
   margin-bottom: 32px;
 }
 
-.logo-icon {
+.brandLogo {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 18px;
+}
+
+.logoIcon {
   font-size: 2.5rem;
   margin-bottom: 16px;
 }
 
-.login-header h1 {
+.modeSwitch {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  background: #f1f5f9;
+  padding: 6px;
+  border-radius: 999px;
+  margin-bottom: 22px;
+}
+
+.modeButton {
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  font-weight: 600;
+  padding: 10px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.modeButtonActive {
+  background: var(--primary);
+  color: #fff;
+  box-shadow: 0 8px 18px rgba(37, 99, 235, 0.2);
+}
+
+.loginHeader h1 {
   color: var(--text-main);
   font-size: 1.75rem;
   font-weight: 700;
   margin-bottom: 8px;
 }
 
-.login-header p {
+.loginHeader p {
   color: var(--text-muted);
   font-size: 0.95rem;
 }
 
-.login-form {
+.loginForm {
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
-.form-group {
+.formGroup {
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
 
-.label-row {
+.labelRow {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.form-group label {
+.formGroup label {
   font-size: 0.875rem;
   font-weight: 500;
   color: var(--text-main);
 }
 
-.forgot-link {
+.forgotLink {
   font-size: 0.8rem;
   color: var(--primary);
   text-decoration: none;
 }
 
-.input-relative {
+.inputRelative {
   position: relative;
   display: flex;
   align-items: center;
 }
 
-.input-icon {
+.inputIcon {
   position: absolute;
   left: 12px;
   color: var(--text-muted);
   pointer-events: none;
 }
 
-.password-toggle {
+.passwordToggle {
   position: absolute;
   right: 12px;
   background: none;
@@ -107,7 +140,7 @@
   align-items: center;
 }
 
-.input-relative input {
+.inputRelative input {
   width: 100%;
   padding: 12px 40px;
   border: 1px solid #e2e8f0;
@@ -117,12 +150,12 @@
   outline: none;
 }
 
-.input-relative input:focus {
+.inputRelative input:focus {
   border-color: var(--primary);
   box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
 }
 
-.error-banner {
+.errorBanner {
   background: var(--error-bg);
   color: var(--error-text);
   padding: 12px;
@@ -131,7 +164,7 @@
   border: 1px solid rgba(220, 38, 38, 0.2);
 }
 
-.submit-btn {
+.submitBtn {
   background: var(--primary);
   color: white;
   padding: 12px;
@@ -147,11 +180,11 @@
   transition: background 0.2s ease;
 }
 
-.submit-btn:hover:not(:disabled) {
+.submitBtn:hover:not(:disabled) {
   background: var(--primary-hover);
 }
 
-.submit-btn:disabled {
+.submitBtn:disabled {
   opacity: 0.7;
   cursor: not-allowed;
 }
@@ -165,20 +198,24 @@
   to { transform: rotate(360deg); }
 }
 
-.login-footer {
+.loginFooter {
   margin-top: 32px;
   text-align: center;
 }
 
-.login-footer p {
+.loginFooter p {
   font-size: 0.9rem;
   color: var(--text-muted);
 }
 
-.login-footer a {
+.inlineLink {
+  border: none;
+  background: transparent;
   color: var(--primary);
   text-decoration: none;
   font-weight: 600;
+  cursor: pointer;
+  padding: 0;
 }
 
 .divider {
@@ -200,7 +237,7 @@
   letter-spacing: 1px;
 }
 
-.admin-link {
+.adminLink {
   font-size: 0.85rem;
   opacity: 0.8;
 }

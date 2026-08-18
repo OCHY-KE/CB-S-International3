@@ -1,14 +1,25 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
 import styles from '../styles/Ingia.module.css';
 import { Mail, Lock, Eye, EyeOff, Loader2, ArrowRight } from 'lucide-react';
 
-function UserLogin({ onLoginSuccess }) {
+const DEMO_USERS = {
+  user: { email: 'user@cbsi.com', password: 'user123' },
+  admin: { email: 'admin@cbsi.com', password: 'admin123' },
+};
+
+function Login({ defaultMode = 'user', onLoginSuccess }) {
+  const navigate = useNavigate();
+  const [mode, setMode] = useState(defaultMode === 'admin' ? 'admin' : 'user');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+
+  const title = mode === 'admin' ? 'Admin Access' : 'Welcome Back';
+  const subtitle = 'Conference Bookings & Safaris International';
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -16,14 +27,42 @@ function UserLogin({ onLoginSuccess }) {
     setLoading(true);
 
     try {
+      const enteredEmail = email.trim().toLowerCase();
+      const enteredPassword = password.trim();
+      const demoUser = DEMO_USERS[mode];
+
+      if (
+        demoUser &&
+        enteredEmail === demoUser.email.toLowerCase() &&
+        enteredPassword === demoUser.password
+      ) {
+        const user = { email: enteredEmail, role: mode };
+
+        if (typeof onLoginSuccess === 'function') {
+          onLoginSuccess(user);
+        }
+
+        localStorage.setItem('cbsi_user', JSON.stringify(user));
+        navigate(mode === 'admin' ? '/admin-dashboard' : '/');
+        return;
+      }
+
+      if (!supabase) {
+        throw new Error('Login is unavailable because Supabase environment variables are not configured.');
+      }
+
       const { data, error: authError } = await supabase.auth.signInWithPassword({
-        email,
-        password,
+        email: enteredEmail,
+        password: enteredPassword,
       });
 
       if (authError) throw authError;
 
-      onLoginSuccess(data.user);
+      if (typeof onLoginSuccess === 'function') {
+        onLoginSuccess(data.user);
+      }
+
+      navigate(mode === 'admin' ? '/admin-dashboard' : '/');
     } catch (err) {
       setError(err.message || 'Something went wrong. Please try again.');
     } finally {
@@ -38,8 +77,24 @@ function UserLogin({ onLoginSuccess }) {
           <div className={styles.brandLogo}>
             <div className={styles.logoIcon}>🌍</div>
           </div>
-          <h1>Welcome Back</h1>
-          <p>Conference Bookings & Safaris International</p>
+          <div className={styles.modeSwitch}>
+            <button
+              type="button"
+              className={`${styles.modeButton} ${mode === 'user' ? styles.modeButtonActive : ''}`}
+              onClick={() => setMode('user')}
+            >
+              User Login
+            </button>
+            <button
+              type="button"
+              className={`${styles.modeButton} ${mode === 'admin' ? styles.modeButtonActive : ''}`}
+              onClick={() => setMode('admin')}
+            >
+              Admin Login
+            </button>
+          </div>
+          <h1>{title}</h1>
+          <p>{subtitle}</p>
         </div>
 
         <form onSubmit={handleSubmit} className={styles.loginForm}>
@@ -50,7 +105,7 @@ function UserLogin({ onLoginSuccess }) {
               <input
                 id="user-email"
                 type="email"
-                placeholder="name@company.com"
+                placeholder={mode === 'admin' ? 'admin@company.com' : 'name@company.com'}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -100,7 +155,7 @@ function UserLogin({ onLoginSuccess }) {
               <Loader2 className={styles.spinner} size={20} />
             ) : (
               <>
-                Sign In <ArrowRight size={18} />
+                {mode === 'admin' ? 'Access Dashboard' : 'Sign In'} <ArrowRight size={18} />
               </>
             )}
           </button>
@@ -108,16 +163,12 @@ function UserLogin({ onLoginSuccess }) {
 
         <div className={styles.loginFooter}>
           <p>
-            New to the platform? <a href="#signup">Create account</a>
+            {mode === 'admin' ? 'Need user access?' : 'New to the platform?'} <button type="button" className={styles.inlineLink} onClick={() => setMode(mode === 'admin' ? 'user' : 'admin')}>{mode === 'admin' ? 'Switch to user login' : 'Create account'}</button>
           </p>
-          <div className={styles.divider}><span>OR</span></div>
-          <a href="#admin-login" className={styles.adminLink}>
-            Staff & Admin Portal
-          </a>
         </div>
       </div>
     </div>
   );
 }
 
-export default UserLogin;
+export default Login;

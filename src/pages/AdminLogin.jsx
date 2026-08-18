@@ -1,6 +1,8 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 function AdminLogin({ onLoginSuccess }) {
+  const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
@@ -13,9 +15,11 @@ function AdminLogin({ onLoginSuccess }) {
 
     // Simulate admin login validation
     if (email && password.length >= 6) {
-      // Call parent callback to indicate successful login
       setTimeout(() => {
-        onLoginSuccess({ email, role: 'admin' })
+        if (typeof onLoginSuccess === 'function') {
+          onLoginSuccess({ email, role: 'admin' })
+        }
+        navigate('/admin-dashboard')
         setLoading(false)
       }, 1000)
     } else {

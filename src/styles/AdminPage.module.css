@@ -1,0 +1,294 @@
+:root {
+  --primary-gold: #c5a059;
+  --navy-blue: #0b1d4d;
+  --dark-bg: #020817;
+  --light-bg: #f8fafc;
+  --card-bg: #ffffff;
+  --text-primary: #1e293b;
+  --text-secondary: #64748b;
+  --border-color: #e2e8f0;
+  --success: #10b981;
+  --pending: #f59e0b;
+  --awaiting: #ef4444;
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.adminShell {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  padding: 2rem 1rem;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+.adminHeader {
+  max-width: 1300px;
+  margin: 0 auto 3rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+  padding: 2rem;
+  background: var(--card-bg);
+  border-radius: 16px;
+  box-shadow: var(--shadow-md);
+}
+
+.adminHeader h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--navy-blue);
+  margin: 0.5rem 0 0 0;
+  letter-spacing: -0.5px;
+}
+
+.eyebrow {
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: var(--primary-gold);
+  margin: 0;
+}
+
+.ctaButton {
+  background: var(--navy-blue);
+  color: #fff;
+  padding: 12px 32px;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(11, 29, 77, 0.2);
+}
+
+.ctaButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(11, 29, 77, 0.3);
+}
+
+.adminGrid {
+  max-width: 1300px;
+  margin: 0 auto 2.5rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.statsGrid {
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.dashboardCard {
+  background: var(--card-bg);
+  padding: 1.75rem;
+  border-radius: 12px;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.3s ease;
+  border: 1px solid var(--border-color);
+}
+
+.dashboardCard:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.dashboardCard span {
+  display: block;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.75rem;
+}
+
+.dashboardCard strong {
+  display: block;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--navy-blue);
+}
+
+.wideCard {
+  grid-column: 1 / -1;
+}
+
+.dashboardLayout {
+  grid-template-columns: 2fr 1fr;
+}
+
+@media (max-width: 1024px) {
+  .dashboardLayout {
+    grid-template-columns: 1fr;
+  }
+
+  .wideCard {
+    grid-column: 1;
+  }
+}
+
+.cardHeaderRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid var(--border-color);
+  padding-bottom: 1rem;
+}
+
+.cardHeaderRow h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--navy-blue);
+  margin: 0;
+}
+
+.actionGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 1rem;
+}
+
+.actionGrid button {
+  background: linear-gradient(135deg, var(--primary-gold), #d4b076);
+  color: #ffffff;
+  padding: 12px 16px;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+}
+
+.actionGrid button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(197, 160, 89, 0.25);
+}
+
+.dashboardList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.dashboardList li {
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-primary);
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.dashboardList li:last-child {
+  border-bottom: none;
+}
+
+.dashboardList li:hover {
+  color: var(--primary-gold);
+}
+
+.compactList li {
+  padding: 0.75rem 0;
+}
+
+.bookingTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.bookingTable thead {
+  background: var(--light-bg);
+}
+
+.bookingTable th {
+  padding: 1rem;
+  text-align: left;
+  font-weight: 700;
+  color: var(--navy-blue);
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid var(--border-color);
+}
+
+.bookingTable td {
+  padding: 1.25rem 1rem;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-primary);
+}
+
+.bookingTable tbody tr {
+  transition: background 0.2s ease;
+}
+
+.bookingTable tbody tr:hover {
+  background: rgba(197, 160, 89, 0.04);
+}
+
+.statusBadge {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.statusConfirmed {
+  background: rgba(16, 185, 129, 0.1);
+  color: var(--success);
+}
+
+.statusPending {
+  background: rgba(245, 158, 11, 0.1);
+  color: var(--pending);
+}
+
+.statusAwaiting {
+  background: rgba(239, 68, 68, 0.1);
+  color: var(--awaiting);
+}
+
+@media (max-width: 768px) {
+  .adminShell {
+    padding: 1rem 0.5rem;
+  }
+
+  .adminHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    margin: 0 auto 2rem;
+    padding: 1.5rem;
+  }
+
+  .adminHeader h1 {
+    font-size: 1.5rem;
+  }
+
+  .ctaButton {
+    width: 100%;
+  }
+
+  .adminGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .statsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .dashboardLayout {
+    grid-template-columns: 1fr;
+  }
+
+  .bookingTable {
+    font-size: 0.875rem;
+  }
+
+  .bookingTable th,
+  .bookingTable td {
+    padding: 0.75rem;
+  }
+}

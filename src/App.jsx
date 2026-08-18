@@ -10,8 +10,7 @@ import Footer from '../components/Footer'
 const AdminPage = lazy(() => import('./AdminPage'))
 const HomePage = lazy(() => import('./pages/HomePage'))
 const AboutPage = lazy(() => import('./pages/AboutPage'))
-const AdminLogin = lazy(() => import('./pages/AdminLogin'))
-const UserLogin = lazy(() => import('./pages/UserLogin'))
+const Login = lazy(() => import('./pages/UserLogin'))
 
 function App() {
   return (
@@ -24,8 +23,9 @@ function App() {
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/about" element={<AboutPage />} />
-              <Route path="/admin-login" element={<AdminLogin />} />
-              <Route path="/user-login" element={<UserLogin />} />
+              <Route path="/login" element={<Login defaultMode="user" />} />
+              <Route path="/user-login" element={<Login defaultMode="user" />} />
+              <Route path="/admin-login" element={<Login defaultMode="admin" />} />
               <Route path="/admin-dashboard" element={<AdminPage />} />
               <Route path="*" element={<HomePage />} />
             </Routes>
