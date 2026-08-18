@@ -1,4 +1,4 @@
-import styles from './styles/AdminPage.module.css'
+import styles from '../styles/AdminPage.module.css'
 
 function AdminPage({ onBack }) {
   const stats = [

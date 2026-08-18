@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
-import styles from '../src/styles/Navbar.module.css';
+import styles from '../styles/Navbar.module.css';
 
 const navItems = [
   { label: 'Home', path: '/' },
   { label: 'About', path: '/about' },
+  { label: 'Gallery', path: '/gallery' },
 ];
 
 function Navbar() {
@@ -26,7 +27,7 @@ function Navbar() {
       <div className={styles.headerContainer}>
         <div className={styles.brandWrap} onClick={() => { navigate('/'); setIsMenuOpen(false); }}>
           <img
-            src="https://res.cloudinary.com/cioghqt5/image/upload/v1787043861/copy_of_copy_of_cbsi1.ico"
+            src="https://res.cloudinary.com/cioghqt5/image/upload/v1787046490/cbsis_original.jpg"
             alt="CB SI Logo"
             className={styles.brandLogo}
           />

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styles from '../src/styles/UserProfile.module.css';
+import styles from '../styles/UserProfile.module.css';
 
 const UserProfile = ({ user = {
   name: "Jane Doe",

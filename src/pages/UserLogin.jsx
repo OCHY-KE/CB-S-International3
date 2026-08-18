@@ -4,11 +4,6 @@ import { supabase } from '../supabaseClient';
 import styles from '../styles/Ingia.module.css';
 import { Mail, Lock, Eye, EyeOff, Loader2, ArrowRight } from 'lucide-react';
 
-const DEMO_USERS = {
-  user: { email: 'user@cbsi.com', password: 'user123' },
-  admin: { email: 'admin@cbsi.com', password: 'admin123' },
-};
-
 function Login({ defaultMode = 'user', onLoginSuccess }) {
   const navigate = useNavigate();
   const [mode, setMode] = useState(defaultMode === 'admin' ? 'admin' : 'user');
@@ -29,26 +24,9 @@ function Login({ defaultMode = 'user', onLoginSuccess }) {
     try {
       const enteredEmail = email.trim().toLowerCase();
       const enteredPassword = password.trim();
-      const demoUser = DEMO_USERS[mode];
-
-      if (
-        demoUser &&
-        enteredEmail === demoUser.email.toLowerCase() &&
-        enteredPassword === demoUser.password
-      ) {
-        const user = { email: enteredEmail, role: mode };
-
-        if (typeof onLoginSuccess === 'function') {
-          onLoginSuccess(user);
-        }
-
-        localStorage.setItem('cbsi_user', JSON.stringify(user));
-        navigate(mode === 'admin' ? '/admin-dashboard' : '/');
-        return;
-      }
 
       if (!supabase) {
-        throw new Error('Login is unavailable because Supabase environment variables are not configured.');
+        throw new Error('Supabase environment variables are not configured.');
       }
 
       const { data, error: authError } = await supabase.auth.signInWithPassword({
@@ -163,7 +141,14 @@ function Login({ defaultMode = 'user', onLoginSuccess }) {
 
         <div className={styles.loginFooter}>
           <p>
-            {mode === 'admin' ? 'Need user access?' : 'New to the platform?'} <button type="button" className={styles.inlineLink} onClick={() => setMode(mode === 'admin' ? 'user' : 'admin')}>{mode === 'admin' ? 'Switch to user login' : 'Create account'}</button>
+            {mode === 'admin' ? 'Need user access?' : 'New to the platform?'}{' '}
+            <button
+              type="button"
+              className={styles.inlineLink}
+              onClick={() => setMode(mode === 'admin' ? 'user' : 'admin')}
+            >
+              {mode === 'admin' ? 'Switch to user login' : 'Create account'}
+            </button>
           </p>
         </div>
       </div>
