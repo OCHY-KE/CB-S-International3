@@ -1,92 +1,123 @@
-import { useState } from 'react'
+import { useState } from 'react';
+import { supabase } from '../supabaseClient';
+import styles from '../styles/Ingia.module.css';
+import { Mail, Lock, Eye, EyeOff, Loader2, ArrowRight } from 'lucide-react';
 
 function UserLogin({ onLoginSuccess }) {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [error, setError] = useState('')
-  const [loading, setLoading] = useState(false)
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
-    setError('')
-    setLoading(true)
+    e.preventDefault();
+    setError('');
+    setLoading(true);
 
-    // Simulate user login validation
-    if (email && password.length >= 6) {
-      // Call parent callback to indicate successful login
-      setTimeout(() => {
-        onLoginSuccess({ email, role: 'user' })
-        setLoading(false)
-      }, 1000)
-    } else {
-      setError('Please enter valid email and password (min 6 characters)')
-      setLoading(false)
+    try {
+      const { data, error: authError } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (authError) throw authError;
+
+      onLoginSuccess(data.user);
+    } catch (err) {
+      setError(err.message || 'Something went wrong. Please try again.');
+    } finally {
+      setLoading(false);
     }
-  }
+  };
 
   return (
-    <div className="login-shell">
-      <main className="login-container">
-        <div className="login-card">
-          <div className="login-header">
-            <h1>User Login</h1>
-            <p>Conference Bookings & Safaris International</p>
+    <div className={styles.loginWrapper}>
+      <div className={styles.loginCard}>
+        <div className={styles.loginHeader}>
+          <div className={styles.brandLogo}>
+            <div className={styles.logoIcon}>🌍</div>
           </div>
+          <h1>Welcome Back</h1>
+          <p>Conference Bookings & Safaris International</p>
+        </div>
 
-          <form onSubmit={handleSubmit} className="login-form">
-            <div className="form-group">
-              <label htmlFor="user-email">Email Address</label>
+        <form onSubmit={handleSubmit} className={styles.loginForm}>
+          <div className={styles.formGroup}>
+            <label htmlFor="user-email">Email Address</label>
+            <div className={styles.inputRelative}>
+              <Mail className={styles.inputIcon} size={18} />
               <input
                 id="user-email"
                 type="email"
-                placeholder="your.email@example.com"
+                placeholder="name@company.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
+                autoComplete="email"
               />
             </div>
+          </div>
 
-            <div className="form-group">
+          <div className={styles.formGroup}>
+            <div className={styles.labelRow}>
               <label htmlFor="user-password">Password</label>
+              <a href="#forgot" className={styles.forgotLink}>Forgot?</a>
+            </div>
+            <div className={styles.inputRelative}>
+              <Lock className={styles.inputIcon} size={18} />
               <input
                 id="user-password"
-                type="password"
-                placeholder="Enter your password"
+                type={showPassword ? 'text' : 'password'}
+                placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
+                autoComplete="current-password"
               />
+              <button
+                type="button"
+                className={styles.passwordToggle}
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
             </div>
-
-            {error && <div className="form-error">{error}</div>}
-
-            <button
-              type="submit"
-              className="cta-button primary"
-              disabled={loading}
-            >
-              {loading ? 'Logging in...' : 'Login to Your Account'}
-            </button>
-          </form>
-
-          <div className="login-footer">
-            <p>
-              Don't have an account?{' '}
-              <a href="#signup" className="login-link">
-                Sign up here
-              </a>
-            </p>
-            <p>
-              Are you an admin?{' '}
-              <a href="#admin-login" className="login-link">
-                Admin login
-              </a>
-            </p>
           </div>
+
+          {error && (
+            <div className={styles.errorBanner} role="alert">
+              <p>{error}</p>
+            </div>
+          )}
+
+          <button
+            type="submit"
+            className={styles.submitBtn}
+            disabled={loading}
+          >
+            {loading ? (
+              <Loader2 className={styles.spinner} size={20} />
+            ) : (
+              <>
+                Sign In <ArrowRight size={18} />
+              </>
+            )}
+          </button>
+        </form>
+
+        <div className={styles.loginFooter}>
+          <p>
+            New to the platform? <a href="#signup">Create account</a>
+          </p>
+          <div className={styles.divider}><span>OR</span></div>
+          <a href="#admin-login" className={styles.adminLink}>
+            Staff & Admin Portal
+          </a>
         </div>
-      </main>
+      </div>
     </div>
-  )
+  );
 }
 
-export default UserLogin
+export default UserLogin;

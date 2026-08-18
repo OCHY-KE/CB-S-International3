@@ -1,44 +1,40 @@
-import { useState } from 'react'
+import { Suspense, lazy } from 'react'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import './App.css'
+
+// Components
 import Navbar from '../components/Navbar'
-import Footer from '../components/Footer' // New Component
-import AdminPage from './AdminPage'
-import HomePage from './pages/HomePage'
-import AboutPage from './pages/AboutPage'
-import AdminLogin from './pages/AdminLogin'
-import UserLogin from './pages/UserLogin'
+import Footer from '../components/Footer'
+
+// Lazy loaded pages
+const AdminPage = lazy(() => import('./AdminPage'))
+const HomePage = lazy(() => import('./pages/HomePage'))
+const AboutPage = lazy(() => import('./pages/AboutPage'))
+const AdminLogin = lazy(() => import('./pages/AdminLogin'))
+const UserLogin = lazy(() => import('./pages/UserLogin'))
 
 function App() {
-  const [currentPage, setCurrentPage] = useState('home')
-  const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false)
-
-  // 1. Handle Admin View
-  if (isAdminLoggedIn) {
-    return <AdminPage onBack={() => setIsAdminLoggedIn(false)} />
-  }
-
-  // 2. Page Content Switcher
-  const renderPage = () => {
-    switch (currentPage) {
-      case 'home': return <HomePage />;
-      case 'about': return <AboutPage />;
-      case 'admin-login': return <AdminLogin onLoginSuccess={() => setIsAdminLoggedIn(true)} />;
-      case 'user-login': return <UserLogin onLoginSuccess={() => setCurrentPage('home')} />;
-      default: return <HomePage />;
-    }
-  }
-
   return (
-    <div className="page-shell">
-      <Navbar currentPage={currentPage} onPageChange={setCurrentPage} />
-      
-      <main className="main-content">
-        {renderPage()}
-      </main>
+    <Router>
+      <div className="app-container">
+        <Navbar />
 
-      {/* Footer is now global or conditionally hidden on login pages */}
-      {currentPage !== 'admin-login' && currentPage !== 'user-login' && <Footer />}
-    </div>
+        <main>
+          <Suspense fallback={<div className="loader">Loading page...</div>}>
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/admin-login" element={<AdminLogin />} />
+              <Route path="/user-login" element={<UserLogin />} />
+              <Route path="/admin-dashboard" element={<AdminPage />} />
+              <Route path="*" element={<HomePage />} />
+            </Routes>
+          </Suspense>
+        </main>
+
+        <Footer />
+      </div>
+    </Router>
   )
 }
 

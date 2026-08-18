@@ -1,0 +1,181 @@
+.footer {
+  background-color: #0a3d62; /* Navy Blue from PDF */
+  color: #ffffff;
+  padding-top: 0;
+  font-family: 'Inter', sans-serif;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Top CTA Bar */
+.ctaBar {
+  background-color: #1e3799; /* Lighter Blue accent */
+  padding: 40px 0;
+  margin-bottom: 60px;
+  border-bottom: 4px solid #82ccdd;
+}
+
+.ctaBar .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.ctaContent h3 {
+  font-size: 1.8rem;
+  margin: 0 0 5px 0;
+}
+
+.ctaContent p {
+  margin: 0;
+  opacity: 0.8;
+  font-style: italic;
+}
+
+.whatsappBtn {
+  background-color: #25d366; /* WhatsApp Green */
+  color: white;
+  padding: 12px 25px;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: 700;
+  transition: transform 0.2s ease;
+}
+
+.whatsappBtn:hover {
+  transform: scale(1.05);
+}
+
+/* Grid Layout */
+.footerGrid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1.5fr;
+  gap: 60px;
+  padding-bottom: 60px;
+}
+
+.logo {
+  height: 60px;
+  margin-bottom: 20px;
+  filter: brightness(0) invert(1); /* Makes the logo white */
+}
+
+.description {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  opacity: 0.7;
+}
+
+.linksCol h4, .contactCol h4 {
+  font-size: 1.1rem;
+  margin-bottom: 25px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #82ccdd; /* Cyan accent from PDF */
+}
+
+.linksCol ul {
+  list-style: none;
+  padding: 0;
+}
+
+.linksCol li {
+  margin-bottom: 12px;
+}
+
+.linksCol a {
+  color: white;
+  text-decoration: none;
+  opacity: 0.8;
+  transition: opacity 0.2s;
+}
+
+.linksCol a:hover {
+  opacity: 1;
+  color: #82ccdd;
+}
+
+/* Contact Items */
+.contactItem {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.icon {
+  font-size: 1.2rem;
+}
+
+.contactItem p {
+  margin: 0;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  opacity: 0.6;
+  letter-spacing: 1px;
+}
+
+.contactItem a, .contactItem address {
+  font-style: normal;
+  color: white;
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+/* Bottom Bar */
+.bottomBar {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 30px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.85rem;
+  opacity: 0.6;
+}
+
+.legalLinks {
+  display: flex;
+  gap: 20px;
+}
+
+.legalLinks a {
+  color: white;
+  text-decoration: none;
+}
+
+/* Responsive Design */
+@media (max-width: 900px) {
+  .footerGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .brandCol {
+    grid-column: span 2;
+  }
+}
+
+@media (max-width: 600px) {
+  .ctaBar .container {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .footerGrid {
+    grid-template-columns: 1fr;
+  }
+  
+  .brandCol {
+    grid-column: span 1;
+  }
+  
+  .bottomBar {
+    flex-direction: column;
+    gap: 15px;
+    text-align: center;
+  }
+}

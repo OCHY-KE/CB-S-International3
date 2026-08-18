@@ -1,103 +1,153 @@
-/* Container and Section Spacing */
-.about-section {
-  padding: 80px 10%;
-  max-width: 1400px;
-  margin: 0 auto;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+.aboutPage {
+  font-family: 'Inter', sans-serif;
   color: #333;
   line-height: 1.6;
 }
 
-/* Heading Styles */
-.section-heading {
-  margin-bottom: 50px;
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Hero Section */
+.hero {
+  background: linear-gradient(135deg, #0a3d62 0%, #1e3799 100%);
+  color: white;
+  padding: 100px 0;
+  text-align: center;
+  clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
 }
 
 .eyebrow {
-  color: #00AEEF; /* Light Blue from Logo */
   text-transform: uppercase;
-  font-weight: 700;
-  letter-spacing: 2px;
+  letter-spacing: 3px;
   font-size: 0.9rem;
-  display: block;
-  margin-bottom: 10px;
+  color: #82ccdd;
+  font-weight: 700;
 }
 
-.section-heading h2 {
-  color: #003366; /* Deep Blue from PDF shapes */
-  font-size: 2.5rem;
-  max-width: 800px;
-  margin: 0;
-  line-height: 1.2;
+.hero h1 {
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  margin: 10px 0;
 }
 
-/* Grid Layout */
-.about-grid {
+.tagline {
+  font-style: italic;
+  opacity: 0.8;
+  font-size: 1.1rem;
+}
+
+/* Intro Section */
+.introSection {
+  padding: 80px 0;
+}
+
+.aboutGrid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 60px;
-  align-items: start;
+  gap: 50px;
+  align-items: center;
 }
 
-/* Copy (Left Side) */
-.about-copy p {
-  font-size: 1.1rem;
+.textSide h2 {
+  color: #0a3d62;
+  font-size: 2rem;
   margin-bottom: 20px;
-  color: #555;
+  position: relative;
 }
 
-/* Info Cards (Right Side) */
-.about-points {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.info-card {
-  background: #f8f9fa;
-  padding: 25px;
-  border-left: 5px solid #003366; /* Deep Blue accent */
-  border-radius: 4px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.info-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(0,0,0,0.05);
-}
-
-.info-card strong {
+.textSide h2::after {
+  content: '';
   display: block;
-  color: #003366;
-  font-size: 1.2rem;
-  margin-bottom: 8px;
+  width: 50px;
+  height: 4px;
+  background: #82ccdd;
+  margin-top: 10px;
+}
+
+.imageSide img {
+  width: 100%;
+  border-radius: 20px;
+  box-shadow: 20px 20px 0px #f0f0f0;
+}
+
+/* Vision/Mission Cards */
+.visionMission {
+  padding: 60px 0;
+  background-color: #f8f9fa;
+}
+
+.cardGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+}
+
+.card {
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+}
+
+.blueCard {
+  background: #0a3d62;
+  color: white;
+}
+
+.lightCard {
+  background: white;
+  border-bottom: 5px solid #0a3d62;
+}
+
+.card h3 {
+  font-size: 1.5rem;
+  margin-bottom: 15px;
   text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
-.info-card p {
-  margin: 0;
-  font-size: 0.95rem;
-  color: #666;
+/* Product Section */
+.products {
+  padding: 80px 0;
+  text-align: center;
 }
 
-/* Responsive Design */
-@media (max-width: 992px) {
-  .about-grid {
-    grid-template-columns: 1fr; /* Stack on tablets */
-    gap: 40px;
+.productContent {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.productContent h2 {
+  color: #0a3d62;
+  margin-bottom: 20px;
+}
+
+.serviceHighlights {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 30px;
+  flex-wrap: wrap;
+}
+
+.serviceHighlights span {
+  background: #e1edff;
+  color: #0a3d62;
+  padding: 8px 16px;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .aboutGrid {
+    grid-template-columns: 1fr;
   }
   
-  .section-heading h2 {
-    font-size: 2rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .about-section {
-    padding: 50px 5%;
-  }
-  
-  .section-heading h2 {
-    font-size: 1.75rem;
+  .hero {
+    padding: 60px 20px;
+    clip-path: none;
   }
 }

@@ -1,164 +1,79 @@
-const stats = [
-  { value: '4', label: 'Core operating modules' },
-  { value: '24/7', label: 'Booking and support access' },
-  { value: '100%', label: 'Responsive user experience' },
-]
+import React from "react";
+import styles from "../styles/HomePage.module.css";
 
-const modules = [
-  {
-    title: 'Admin Panel',
-    items: [
-      'Create new tour and safari packages',
-      'Edit or delete existing packages',
-      'Create, edit, or delete categories',
-      'Add contents and images to packages',
-      'Manage client bookings and newsletter',
-      'Create and manage blogs, reviews, and team profiles',
-    ],
-  },
-  {
-    title: 'User Panel',
-    items: [
-      'Browse and search tour and safari packages',
-      'Inquire and book packages',
-      'Create personal tour packages',
-      'Post reviews and comments on packages',
-      'Browse blogs and chat via WhatsApp',
-      'Like, share, and subscribe to updates',
-    ],
-  },
-  {
-    title: 'Main Website',
-    items: [
-      'User-friendly, interactive portal',
-      'Fully responsive website experience',
-      'Filter packages by price range',
-      'Book packages and make enquiries',
-      'Comment on blogs and review tours',
-      'Newsletter subscription and WhatsApp live chat',
-    ],
-  },
-  {
-    title: 'API Integration',
-    items: [
-      'Social media API integration',
-      'WhatsApp live chat API integration',
-      'Tripadvisor API integration',
-      'SafariBookings API integration',
-      'Language converter API integration',
-    ],
-  },
-]
-
-function HomePage() {
+const HomePage = ({ currentPage, onPageChange }) => {
   return (
-    <>
-      <main>
-        <section className="hero-section">
-          <div className="hero-copy">
-            <span className="eyebrow">Tour bookings • Safaris • Conferences</span>
-            <h1>End-to-end travel and event booking solutions.</h1>
+    <div className={styles.pageWrapper}>
+     
+
+      {/* Hero Section */}
+      <section className={styles.hero}>
+        <div className={styles.heroOverlay}>
+          <div className={styles.heroContent}>
+            <h1>Unforgettable Safaris. <br /><span>Seamless Conferences.</span></h1>
             <p>
-              Conference Bookings & Safaris International brings together booking,
-              customer management, content publishing, and digital engagement in one
-              powerful platform for tour operators and safari businesses.
+              Experience the wild heart of Africa with world-class logistics and 
+              bespoke travel experiences tailored for explorers and professionals.
             </p>
-
-            <div className="hero-actions">
-              <a className="cta-button primary" href="#modules">
-                Explore modules
-              </a>
-              <a className="cta-button light" href="#contact">
-                Contact us
-              </a>
-            </div>
-
-            <div className="stat-row" aria-label="Platform highlights">
-              {stats.map((item) => (
-                <div key={item.label} className="stat-item">
-                  <strong>{item.value}</strong>
-                  <span>{item.label}</span>
-                </div>
-              ))}
+            <div className={styles.heroActions}>
+              <button className={styles.btnPrimary} onClick={() => onPageChange('about')}>
+                Explore Safaris
+              </button>
+              <button className={styles.btnSecondary}>
+                Plan a Conference
+              </button>
             </div>
           </div>
-
-          <div className="hero-panel" aria-label="Business overview">
-            <div className="panel-card main-card">
-              <p className="panel-label">Platform overview</p>
-              <h2>Smart</h2>
-              <p>
-                Admin management, customer bookings, community engagement, and live
-                travel integrations in one digital ecosystem.
-              </p>
-            </div>
-            <div className="mini-grid">
-              <div className="panel-card small-card">
-                <span>Bookings</span>
-                <strong>24/7</strong>
-              </div>
-              <div className="panel-card small-card highlight">
-                <span>Support</span>
-                <strong>Live</strong>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section id="modules" className="info-section">
-          <div className="section-heading">
-            <span className="eyebrow">Main modules</span>
-            <h2>Built for administrators, travelers, and growth.</h2>
-          </div>
-
-          <div className="card-grid modules-grid">
-            {modules.map((module) => (
-              <article key={module.title} className="service-card module-card">
-                <div className="card-icon">◆</div>
-                <h3>{module.title}</h3>
-                <ul className="feature-list">
-                  {module.items.map((item) => (
-                    <li key={item}>{item}</li>
-                  ))}
-                </ul>
-              </article>
-            ))}
-          </div>
-        </section>
-
-        <section id="process" className="process-section">
-          <div className="section-heading left">
-            <span className="eyebrow">Core experience</span>
-            <h2>Everything travelers and admins need in one place.</h2>
-          </div>
-
-          <div className="process-list" aria-label="Core values">
-            {[
-              'Search and compare tour packages',
-              'Book and enquire with ease',
-              'Manage content and categories centrally',
-              'Deliver live support through WhatsApp and social channels',
-            ].map((step, index) => (
-              <div key={step} className="process-step">
-                <span className="step-number">0{index + 1}</span>
-                <p>{step}</p>
-              </div>
-            ))}
-          </div>
-        </section>
-      </main>
-
-      <footer id="contact" className="footer">
-        <div>
-          <span className="eyebrow">Let's build your next travel experience</span>
-          <h2>Ready to grow with smarter bookings?</h2>
         </div>
-        <a className="cta-button primary" href="mailto:hello@conferencebookingsandsafaris.com">
-          hello@conferencebookingsandsafaris.com
-        </a>
-      </footer>
-    </>
-  )
-}
+      </section>
 
-export default HomePage
+      {/* Quick Services Section */}
+      <section className={styles.services}>
+        <div className={styles.container}>
+          <div className={styles.sectionHeader}>
+            <span>Our Expertise</span>
+            <h2>Why Choose CB&SI?</h2>
+          </div>
+
+          <div className={styles.serviceGrid}>
+            <div className={styles.serviceCard}>
+              <div className={styles.icon}>🦒</div>
+              <h3>Bespoke Safaris</h3>
+              <p>Custom-tailored wildlife journeys through the most iconic parks in East Africa.</p>
+            </div>
+            <div className={styles.serviceCard}>
+              <div className={styles.icon}>🤝</div>
+              <h3>Corporate Events</h3>
+              <p>End-to-end conference management, from venue booking to professional logistics.</p>
+            </div>
+            <div className={styles.serviceCard}>
+              <div className={styles.icon}>✈️</div>
+              <h3>Travel Logistics</h3>
+              <p>Seamless airport transfers, local flight bookings, and 24/7 travel support.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Stats Section */}
+      <section className={styles.stats}>
+        <div className={styles.statItem}>
+          <strong>15+</strong>
+          <span>Years Experience</span>
+        </div>
+        <div className={styles.statItem}>
+          <strong>500+</strong>
+          <span>Conferences Hosted</span>
+        </div>
+        <div className={styles.statItem}>
+          <strong>10k+</strong>
+          <span>Happy Explorers</span>
+        </div>
+      </section>
+
+      
+    </div>
+  );
+};
+
+export default HomePage;
