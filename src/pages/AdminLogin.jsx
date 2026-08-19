@@ -1,85 +1,114 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { supabase } from '../supabaseClient';
+import styles from '../styles/AdminLogin.module.css';
+import { Mail, Lock, Loader2, AlertCircle, Eye, EyeOff, ShieldCheck } from 'lucide-react';
 
 function AdminLogin({ onLoginSuccess }) {
-  const navigate = useNavigate()
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [error, setError] = useState('')
-  const [loading, setLoading] = useState(false)
+  const navigate = useNavigate();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
-    setError('')
-    setLoading(true)
+    e.preventDefault();
+    setError('');
+    setLoading(true);
 
-    // Simulate admin login validation
-    if (email && password.length >= 6) {
-      setTimeout(() => {
-        if (typeof onLoginSuccess === 'function') {
-          onLoginSuccess({ email, role: 'admin' })
-        }
-        navigate('/admin-dashboard')
-        setLoading(false)
-      }, 1000)
-    } else {
-      setError('Please enter valid email and password (min 6 characters)')
-      setLoading(false)
+    try {
+      const { data, error: authError } = await supabase.auth.signInWithPassword({
+        email: email.trim().toLowerCase(),
+        password: password.trim(),
+      });
+
+      if (authError) throw authError;
+
+      const role = data.user?.user_metadata?.role;
+      if (role !== 'admin') throw new Error('Access denied. Admin privileges required.');
+
+      if (typeof onLoginSuccess === 'function') {
+        onLoginSuccess({ email, role: 'admin' });
+      }
+
+      navigate('/admin-dashboard');
+    } catch (err) {
+      setError(err.message || 'Invalid admin credentials');
+    } finally {
+      setLoading(false);
     }
-  }
+  };
 
   return (
-    <div className="login-shell">
-      <main className="login-container">
-        <div className="login-card">
-          <div className="login-header">
-            <h1>Admin Login</h1>
+    <div className={styles.loginShell}>
+      <main className={styles.loginContainer}>
+        <div className={styles.loginCard}>
+          <div className={styles.loginHeader}>
+            <div className={styles.logoBadge}>
+              <ShieldCheck size={32} />
+            </div>
+            <h1>Admin Portal</h1>
             <p>Conference Bookings & Safaris International</p>
           </div>
 
-          <form onSubmit={handleSubmit} className="login-form">
-            <div className="form-group">
-              <label htmlFor="admin-email">Email Address</label>
-              <input
-                id="admin-email"
-                type="email"
-                placeholder="admin@conferencebookingsandsafaris.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
+          <form onSubmit={handleSubmit} className={styles.loginForm}>
+            <div className={styles.formGroup}>
+              <label htmlFor="email">Email Address</label>
+              <div className={styles.inputWrapper}>
+                <Mail size={18} className={styles.inputIcon} />
+                <input 
+                  id="email"
+                  type="email" 
+                  placeholder="admin@cb-safaris.com" 
+                  value={email} 
+                  onChange={(e) => setEmail(e.target.value)} 
+                  required 
+                />
+              </div>
             </div>
 
-            <div className="form-group">
-              <label htmlFor="admin-password">Password</label>
-              <input
-                id="admin-password"
-                type="password"
-                placeholder="Enter your password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
+            <div className={styles.formGroup}>
+              <label htmlFor="password">Password</label>
+              <div className={styles.inputWrapper}>
+                <Lock size={18} className={styles.inputIcon} />
+                <input 
+                  id="password"
+                  type={showPassword ? "text" : "password"} 
+                  placeholder="••••••••" 
+                  value={password} 
+                  onChange={(e) => setPassword(e.target.value)} 
+                  required 
+                />
+                <button 
+                  type="button"
+                  className={styles.passwordToggle}
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              </div>
             </div>
 
-            {error && <div className="form-error">{error}</div>}
+            {error && (
+              <div className={styles.formError}>
+                <AlertCircle size={18} /> 
+                <span>{error}</span>
+              </div>
+            )}
 
-            <button
-              type="submit"
-              className="cta-button primary"
-              disabled={loading}
-            >
-              {loading ? 'Logging in...' : 'Login to Dashboard'}
+            <button type="submit" className={styles.submitButton} disabled={loading}>
+              {loading ? <Loader2 className={styles.spinner} size={20} /> : 'Access Dashboard'}
             </button>
           </form>
 
-          <div className="login-footer">
-            <p>Admin access only. If you're a user, please visit the main site.</p>
+          <div className={styles.loginFooter}>
+            <p>Standard user? <a href="/login">Switch to Client Login</a></p>
           </div>
         </div>
       </main>
     </div>
-  )
+  );
 }
 
-export default AdminLogin
+export default AdminLogin;
