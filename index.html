@@ -28,7 +28,7 @@
 
     <!-- Icons & Manifest -->
     <link rel="icon" href="/favicon.ico" />
-    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="manifest" href="/manifest.webmanifest" crossorigin="use-credentials" />
     <meta name="theme-color" content="#071321" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -42,6 +42,7 @@
   </head>
   <body>
     <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
+    <!-- ✅ CORRECT: Leading slash ensures resolution from domain root -->
+   <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

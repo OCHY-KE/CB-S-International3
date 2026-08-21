@@ -1,0 +1,157 @@
+.uploaderWrapper {
+  width: 100%;
+  max-width: 450px;
+  margin: 0 auto;
+}
+
+.dropZone {
+  position: relative;
+  border: 2px dashed #cbd5e1;
+  background-color: #f8fafc;
+  border-radius: 16px;
+  padding: 40px 24px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dropZone:hover:not(.disabled) {
+  border-color: #3b82f6;
+  background-color: #eff6ff;
+}
+
+.dragging {
+  border-color: #3b82f6;
+  background-color: #dbeafe;
+  transform: scale(1.02);
+}
+
+.disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.successZone {
+  border-color: #10b981;
+  background-color: #f0fdf4;
+}
+
+.errorZone {
+  border-color: #ef4444;
+  background-color: #fef2f2;
+}
+
+.content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.iconCircle {
+  width: 50px;
+  height: 50px;
+  background: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  color: #64748b;
+}
+
+.mainText {
+  font-size: 1rem;
+  color: #1e293b;
+  margin-bottom: 4px;
+}
+
+.subText {
+  font-size: 0.85rem;
+  color: #94a3b8;
+}
+
+.statusWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.statusText {
+  font-weight: 600;
+  color: #1e293b;
+  margin: 12px 0;
+}
+
+.errorText {
+  font-weight: 500;
+  color: #ef4444;
+  margin: 12px 0;
+  font-size: 0.9rem;
+}
+
+/* Progress Bar */
+.progressBarBg {
+  width: 80%;
+  max-width: 250px;
+  height: 8px;
+  background-color: #e2e8f0;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.progressBarFill {
+  height: 100%;
+  background-color: #3b82f6;
+  transition: width 0.3s ease-out;
+}
+
+/* Icons & Animations */
+.spinner {
+  animation: spin 1s linear infinite;
+  color: #3b82f6;
+}
+
+.successIcon {
+  color: #10b981;
+}
+
+.errorIcon {
+  color: #ef4444;
+}
+
+.resetBtn {
+  background: white;
+  border: 1px solid #e2e8f0;
+  padding: 8px 18px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #475569;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-top: 8px;
+}
+
+.resetBtn:hover {
+  background-color: #f1f5f9;
+  border-color: #cbd5e1;
+  color: #1e293b;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
