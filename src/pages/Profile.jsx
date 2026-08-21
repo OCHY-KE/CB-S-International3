@@ -34,13 +34,14 @@ function Profile() {
 
       setUser(authUser);
 
-      const { data, error, status } = await supabase
+      // Use .maybeSingle() instead of .single() to avoid 406 errors when row is missing
+      const { data, error } = await supabase
         .from('profiles')
         .select(`full_name, phone, location, bio`)
         .eq('id', authUser.id)
-        .single();
+        .maybeSingle();
 
-      if (error && status !== 406) throw error;
+      if (error) throw error;
       
       if (data) {
         setProfileData({
@@ -180,7 +181,7 @@ function Profile() {
                 type="text"
                 disabled
                 className={styles.disabledInput}
-                value={new Date(user?.created_at).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
+                value={user?.created_at ? new Date(user.created_at).toLocaleDateString('en-US', { month: 'long', year: 'numeric' }) : ''}
               />
             </div>
           </div>
