@@ -2,7 +2,7 @@ import { createClient } from '@supabase/supabase-js';
 
 const supabase = createClient(
   process.env.SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_ROLE_KEY
+  process.env.SUPABASE_SERVICE_ROLE_KEY // safe only on serverless backend
 );
 
 export default async function handler(req, res) {
@@ -10,17 +10,21 @@ export default async function handler(req, res) {
     return res.status(405).json({ message: 'Method not allowed' });
   }
 
-  const { email, password } = req.body;
-
-  // Optional: map custom ID to real email
-  const loginEmail = email.trim().toLowerCase() === 'cbsi@admin'
-    ? 'mannickochieng@gmail.com'
-    : email.trim().toLowerCase();
-
   try {
+    const { email, password } = req.body || {};
+
+    if (!email || !password) {
+      return res.status(400).json({ error: 'Email and password required' });
+    }
+
+    // Map CBSI@ADMIN → real email
+    const loginEmail = email.trim().toLowerCase() === 'cbsi@admin'
+      ? 'mannickochieng@gmail.com'
+      : email.trim().toLowerCase();
+
     const { data, error } = await supabase.auth.signInWithPassword({
       email: loginEmail,
-      password,
+      password: password.trim(),
     });
 
     if (error) throw error;
