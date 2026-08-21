@@ -1,21 +1,116 @@
-.scrollToTop {
-  position: fixed;
-  bottom: 40px;
-  right: 40px;
-  background: var(--primary-gold);
-  color: #fff;
-  border: none;
-  border-radius: 50%;
-  width: 48px;
-  height: 48px;
-  font-size: 1.2rem;
-  cursor: pointer;
-  box-shadow: var(--shadow-md);
-  transition: var(--transition-smooth);
-  z-index: 1200;
+:root {
+  --primary-gold: #c5a059;
+  --primary-gold-dark: #a9833c;
+  --navy-blue: #0b1d4d;
+  --navy-blue-dark: #071321;
+  --shadow-sm: 0 4px 20px rgba(0, 0, 0, 0.15);
+  --shadow-md: 0 8px 30px rgba(0, 0, 0, 0.2);
+  --shadow-glow: 0 0 20px rgba(197, 160, 89, 0.4);
+  --transition-smooth: all 0.35s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
-.scrollToTop:hover {
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-container main {
+  flex: 1;
+}
+
+.loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 50vh;
+  font-family: 'Inter', sans-serif;
+  color: var(--primary-gold);
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+/* Floating Smooth Scroll-to-Top Button */
+.scrollToTopBtn {
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
   background: var(--navy-blue);
-  transform: translateY(-3px);
+  color: #ffffff;
+  border: 1px solid rgba(197, 160, 89, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 1200;
+  box-shadow: 0 8px 24px rgba(11, 29, 77, 0.35);
+  transition: var(--transition-smooth);
+  padding: 0;
+  outline: none;
+  backdrop-filter: blur(8px);
+}
+
+.scrollToTopBtn:hover {
+  background: var(--primary-gold);
+  color: #071321;
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-glow), 0 12px 30px rgba(0, 0, 0, 0.3);
+  border-color: #ffffff;
+}
+
+.scrollToTopBtn:active {
+  transform: translateY(-1px) scale(0.96);
+}
+
+.scrollProgressSvg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: rotate(-90deg);
+  pointer-events: none;
+}
+
+.scrollProgressBg {
+  fill: transparent;
+  stroke: rgba(255, 255, 255, 0.12);
+}
+
+.scrollProgressFill {
+  fill: transparent;
+  stroke: var(--primary-gold);
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.15s ease-out;
+}
+
+.scrollToTopBtn:hover .scrollProgressFill {
+  stroke: #ffffff;
+}
+
+.scrollArrowIcon {
+  position: relative;
+  z-index: 2;
+  transition: transform 0.25s ease;
+}
+
+.scrollToTopBtn:hover .scrollArrowIcon {
+  transform: translateY(-2px);
+}
+
+/* Mobile Adjustments for Scroll-To-Top */
+@media (max-width: 768px) {
+  .scrollToTopBtn {
+    bottom: 20px;
+    right: 20px;
+    width: 46px;
+    height: 46px;
+  }
+
+  .scrollProgressSvg {
+    width: 46px;
+    height: 46px;
+    viewBox: 0 0 52 52;
+  }
 }

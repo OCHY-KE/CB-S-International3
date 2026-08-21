@@ -1,0 +1,6 @@
+{
+  "name": "CB S International - Conference Bookings & Safaris",
+  "description": "Conference Bookings & Safaris International (CB S International) web portal featuring safari packages, gallery, user accounts, conference planning, and admin management.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

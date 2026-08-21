@@ -136,7 +136,31 @@
   justify-content: space-between;
   align-items: center;
   font-size: 0.85rem;
-  opacity: 0.6;
+  opacity: 0.9;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.designerCredit {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.designerLink {
+  color: #82ccdd;
+  text-decoration: none;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  transition: all 0.2s ease;
+  border-bottom: 1px dashed rgba(130, 204, 221, 0.5);
+}
+
+.designerLink:hover {
+  color: #ffffff;
+  border-bottom-style: solid;
+  border-bottom-color: #ffffff;
 }
 
 .legalLinks {

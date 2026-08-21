@@ -1,0 +1,122 @@
+.breadcrumbWrapper {
+  background: #ffffff;
+  border-bottom: 1px solid #e2e8f0;
+  padding: 12px 20px;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  transition: all 0.3s ease;
+  position: relative;
+  z-index: 10;
+}
+
+.container {
+  max-width: 1320px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.breadcrumbNav {
+  display: flex;
+  align-items: center;
+  overflow-x: auto;
+  white-space: nowrap;
+  scrollbar-width: none;
+  padding: 2px 0;
+}
+
+.breadcrumbNav::-webkit-scrollbar {
+  display: none;
+}
+
+.breadcrumbList {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: 6px;
+  font-size: 0.86rem;
+}
+
+.breadcrumbItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.breadcrumbLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #0b1d4d;
+  text-decoration: none;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: all 0.2s cubic-bezier(0.165, 0.84, 0.44, 1);
+  font-weight: 600;
+}
+
+.breadcrumbLink:hover {
+  background: rgba(197, 160, 89, 0.15);
+  color: #a9833c;
+  transform: translateY(-1px);
+}
+
+.homeIcon {
+  color: #c5a059;
+  flex-shrink: 0;
+}
+
+.separator {
+  color: #94a3b8;
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.activeItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #c5a059;
+  font-weight: 700;
+  padding: 4px 8px;
+  background: rgba(197, 160, 89, 0.1);
+  border-radius: 6px;
+  border: 1px solid rgba(197, 160, 89, 0.25);
+}
+
+/* Quick Page Badge Indicator */
+.pageCategoryBadge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: #0b1d4d;
+  background: #f1f5f9;
+  padding: 3px 10px;
+  border-radius: 20px;
+  border: 1px solid #e2e8f0;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+@media (max-width: 768px) {
+  .breadcrumbWrapper {
+    padding: 10px 14px;
+  }
+
+  .breadcrumbList {
+    font-size: 0.8rem;
+  }
+
+  .pageCategoryBadge {
+    display: none;
+  }
+}

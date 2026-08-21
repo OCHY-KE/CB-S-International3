@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import styles from '../styles/Footer.module.css';
 
 const Footer = () => {
@@ -38,10 +39,12 @@ const Footer = () => {
           <div className={styles.linksCol}>
             <h4>Quick Links</h4>
             <ul>
-              <li><a href="#home">Home</a></li>
-              <li><a href="#about">About Us</a></li>
-              <li><a href="#safaris">Safaris</a></li>
-              <li><a href="#conferences">Conferences</a></li>
+              <li><Link to="/">Home</Link></li>
+              <li><Link to="/about">About Us</Link></li>
+              <li><Link to="/gallery">Gallery</Link></li>
+              <li><Link to="/contact">Contact Us</Link></li>
+              <li><Link to="/login">Client Portal</Link></li>
+              <li><Link to="/admin-dashboard?tab=gallery">Admin Gallery Hub</Link></li>
             </ul>
           </div>
 
@@ -75,6 +78,17 @@ const Footer = () => {
         {/* Bottom Bar */}
         <div className={styles.bottomBar}>
           <p>&copy; {currentYear} Conference Bookings & Safaris International. All rights reserved.</p>
+          <div className={styles.designerCredit}>
+            <span>Designed by </span>
+            <a 
+              href="https://www.pefak56church.top/ict-team" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className={styles.designerLink}
+            >
+              PEFAK56 ICT TEAM
+            </a>
+          </div>
           <div className={styles.legalLinks}>
             <a href="#privacy">Privacy Policy</a>
             <a href="#terms">Terms of Service</a>

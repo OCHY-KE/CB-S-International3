@@ -1,0 +1,639 @@
+.contactPage {
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  color: #2b221a;
+  line-height: 1.7;
+  background-color: #faf5ee;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* =========================================
+   1. HERO SECTION
+   ========================================= */
+.hero {
+  position: relative;
+  background: 
+    radial-gradient(circle at 80% 20%, rgba(212, 155, 75, 0.35) 0%, transparent 50%),
+    radial-gradient(circle at 20% 80%, rgba(184, 93, 25, 0.35) 0%, transparent 60%),
+    linear-gradient(135deg, #2b180a 0%, #4a2810 40%, #75421d 80%, #9e5b22 100%);
+  color: #fffaf2;
+  padding: 100px 20px 120px;
+  text-align: center;
+  overflow: hidden;
+  border-bottom: 3px solid #d49b4b;
+}
+
+.heroOverlay {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(212, 155, 75, 0.15) 1.5px, transparent 1.5px);
+  background-size: 24px 24px;
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.heroContent {
+  position: relative;
+  z-index: 2;
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+.eyebrowBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(212, 155, 75, 0.22);
+  border: 1px solid rgba(223, 155, 50, 0.6);
+  padding: 6px 20px;
+  border-radius: 50px;
+  color: #f7d59c;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+}
+
+.hero h1 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(2.4rem, 5vw, 3.8rem);
+  font-weight: 800;
+  margin: 8px 0 16px;
+  color: #fffaf2;
+  letter-spacing: -0.5px;
+  line-height: 1.15;
+  text-shadow: 0 4px 20px rgba(43, 24, 10, 0.6);
+}
+
+.tagline {
+  font-size: 1.15rem;
+  color: #f2dec4;
+  letter-spacing: 0.4px;
+  max-width: 680px;
+  margin: 0 auto 32px;
+}
+
+/* Quick channel pills inside hero */
+.quickPills {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.pillBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: 50px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.25s ease;
+}
+
+.whatsappPill {
+  background: #25d366;
+  color: #072a13;
+  box-shadow: 0 4px 15px rgba(37, 211, 102, 0.35);
+}
+
+.whatsappPill:hover {
+  background: #1ebc57;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(37, 211, 102, 0.5);
+}
+
+.phonePill {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fffaf2;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(6px);
+}
+
+.phonePill:hover {
+  background: #fffaf2;
+  color: #4a2810;
+  transform: translateY(-2px);
+}
+
+.emailPill {
+  background: rgba(212, 155, 75, 0.25);
+  color: #f7d59c;
+  border: 1px solid rgba(212, 155, 75, 0.5);
+  backdrop-filter: blur(6px);
+}
+
+.emailPill:hover {
+  background: #d49b4b;
+  color: #2b180a;
+  transform: translateY(-2px);
+}
+
+/* =========================================
+   2. MAIN CONTACT SECTION (Grid: Form & Info)
+   ========================================= */
+.mainSection {
+  padding: 80px 0 100px;
+  background: 
+    radial-gradient(circle at 15% 15%, rgba(212, 155, 75, 0.07) 0%, transparent 40%),
+    radial-gradient(circle at 85% 85%, rgba(117, 66, 29, 0.05) 0%, transparent 50%),
+    #faf5ee;
+}
+
+.contactGrid {
+  display: grid;
+  grid-template-columns: 1.25fr 0.85fr;
+  gap: 48px;
+  align-items: start;
+}
+
+/* =========================================
+   FORM CONTAINER
+   ========================================= */
+.formCard {
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 40px;
+  border: 1px solid #ebd9c2;
+  box-shadow: 0 16px 40px rgba(75, 40, 16, 0.08);
+}
+
+.formHeader {
+  margin-bottom: 28px;
+  border-bottom: 1px solid #f0e2d0;
+  padding-bottom: 20px;
+}
+
+.formHeader h2 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 2rem;
+  font-weight: 800;
+  color: #381e0b;
+  margin: 0 0 8px 0;
+}
+
+.formHeader p {
+  color: #6e5845;
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+.formGroup {
+  margin-bottom: 20px;
+}
+
+.formRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #4a3828;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.input,
+.select,
+.textarea {
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 1px solid #d9c7b0;
+  background-color: #fdfbf7;
+  color: #2b180a;
+  font-size: 0.95rem;
+  font-family: inherit;
+  transition: all 0.2s ease;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.input:focus,
+.select:focus,
+.textarea:focus {
+  border-color: #a86526;
+  background-color: #ffffff;
+  box-shadow: 0 0 0 3px rgba(168, 101, 38, 0.15);
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 110px;
+}
+
+/* Tag Selectors for Destinations */
+.destinationChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.chipBtn {
+  background: #f4ece1;
+  color: #59391e;
+  border: 1px solid #e0cfba;
+  padding: 6px 14px;
+  border-radius: 50px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.chipBtn:hover {
+  background: #ebd8c0;
+  border-color: #c9af92;
+}
+
+.chipSelected {
+  background: #4a2810;
+  color: #fff9f0;
+  border-color: #4a2810;
+}
+
+/* Preferred reply mode */
+.replyOptionGroup {
+  display: flex;
+  gap: 10px;
+}
+
+.replyBtn {
+  flex: 1;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #d9c7b0;
+  background: #fdfbf7;
+  color: #59391e;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.replyBtnActive {
+  background: #4a2810;
+  color: #fff9f0;
+  border-color: #4a2810;
+}
+
+/* Submit Action Button */
+.submitBtn {
+  width: 100%;
+  padding: 16px 24px;
+  background: linear-gradient(135deg, #4a2810 0%, #75421d 100%);
+  color: #fffaf2;
+  border: none;
+  border-radius: 14px;
+  font-size: 1.05rem;
+  font-weight: 800;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  box-shadow: 0 8px 24px rgba(74, 40, 16, 0.25);
+  transition: all 0.25s ease;
+  margin-top: 10px;
+}
+
+.submitBtn:hover {
+  background: linear-gradient(135deg, #381e0b 0%, #5e3518 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(74, 40, 16, 0.35);
+}
+
+/* Form Success State */
+.successCard {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.successIconBox {
+  width: 72px;
+  height: 72px;
+  background: #eaf8ee;
+  color: #1a8742;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  border: 2px solid #bce6c9;
+}
+
+.successCard h3 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.8rem;
+  color: #2b180a;
+  margin-bottom: 12px;
+}
+
+.successCard p {
+  color: #59391e;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  max-width: 460px;
+  margin: 0 auto 24px;
+}
+
+.successActions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.whatsappChatBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #25d366;
+  color: #072a13;
+  padding: 12px 22px;
+  border-radius: 12px;
+  font-weight: 800;
+  font-size: 0.9rem;
+  text-decoration: none;
+  box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+}
+
+.resetBtn {
+  background: #f4ece1;
+  color: #4a2810;
+  border: 1px solid #d9c7b0;
+  padding: 12px 20px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+/* =========================================
+   RIGHT SIDEBAR: INFO & CREDENTIALS
+   ========================================= */
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+/* Office Card */
+.infoCard {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 32px;
+  border: 1px solid #ebd9c2;
+  box-shadow: 0 12px 30px rgba(75, 40, 16, 0.06);
+}
+
+.infoCardTitle {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: #381e0b;
+  margin: 0 0 20px 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.contactList {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.contactRow {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.iconWrapper {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: #faf2e4;
+  border: 1px solid #d49b4b;
+  color: #75421d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.contactDetails h4 {
+  font-size: 0.8rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: #8a572a;
+  margin: 0 0 4px 0;
+}
+
+.contactDetails a,
+.contactDetails p,
+.contactDetails address {
+  font-size: 0.95rem;
+  color: #2b180a;
+  text-decoration: none;
+  font-style: normal;
+  line-height: 1.5;
+  font-weight: 600;
+  margin: 0;
+}
+
+.contactDetails a:hover {
+  color: #a86526;
+  text-decoration: underline;
+}
+
+/* Regional Hubs Box */
+.hubsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.hubItem {
+  background: #fdfbf7;
+  border: 1px solid #ebd9c2;
+  border-radius: 12px;
+  padding: 12px;
+  text-align: center;
+}
+
+.hubCity {
+  font-weight: 800;
+  color: #381e0b;
+  font-size: 0.95rem;
+  display: block;
+}
+
+.hubRole {
+  font-size: 0.75rem;
+  color: #8a572a;
+  font-weight: 600;
+}
+
+/* Accreditations badge card */
+.guaranteeCard {
+  background: linear-gradient(135deg, #381e0b 0%, #4a2810 100%);
+  color: #fff9f0;
+  border-radius: 20px;
+  padding: 30px;
+  border: 2px solid #d49b4b;
+  box-shadow: 0 12px 30px rgba(43, 24, 10, 0.25);
+}
+
+.guaranteeCard h3 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.35rem;
+  color: #f7d59c;
+  margin: 0 0 14px 0;
+}
+
+.guaranteeList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.guaranteeList li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.9rem;
+  color: #f2dec4;
+}
+
+.checkIcon {
+  color: #f7d59c;
+  flex-shrink: 0;
+}
+
+/* =========================================
+   3. FAQ SECTION
+   ========================================= */
+.faqSection {
+  padding: 90px 0 110px;
+  background: #f4ece1;
+  border-top: 1px solid #e0caa8;
+}
+
+.faqHeader {
+  text-align: center;
+  max-width: 720px;
+  margin: 0 auto 50px;
+}
+
+.faqHeader h2 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(2rem, 3.5vw, 2.7rem);
+  font-weight: 800;
+  color: #381e0b;
+  margin: 10px 0;
+}
+
+.faqHeader p {
+  color: #6e5845;
+  font-size: 1.05rem;
+}
+
+.faqList {
+  max-width: 860px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.faqItem {
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid #ebd9c2;
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+
+.faqQuestion {
+  width: 100%;
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #381e0b;
+}
+
+.faqQuestion:hover {
+  background-color: #fdfbf7;
+}
+
+.faqAnswer {
+  padding: 0 24px 22px 24px;
+  color: #59391e;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  border-top: 1px solid #f7efe6;
+  padding-top: 14px;
+}
+
+/* =========================================
+   RESPONSIVE DESIGN
+   ========================================= */
+@media (max-width: 960px) {
+  .contactGrid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .hero {
+    padding: 70px 16px 90px;
+  }
+
+  .formCard {
+    padding: 24px 20px;
+  }
+
+  .formRow {
+    grid-template-columns: 1fr;
+  }
+
+  .mainSection {
+    padding: 50px 0 70px;
+  }
+
+  .faqSection {
+    padding: 60px 0 80px;
+  }
+}
