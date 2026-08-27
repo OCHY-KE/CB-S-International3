@@ -9,6 +9,7 @@ const navItems = [
   { label: 'About', path: '/about' },
   { label: 'Gallery', path: '/gallery' },
   { label: 'Contact', path: '/contact' },
+  { label: 'Itineraries', path: '/itineraries'}
 ];
 
 function Navbar() {
