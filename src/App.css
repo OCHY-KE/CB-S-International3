@@ -1,116 +1,156 @@
+/* --- CSS Variables & Design Tokens --- */
 :root {
-  --primary-gold: #c5a059;
-  --primary-gold-dark: #a9833c;
-  --navy-blue: #0b1d4d;
-  --navy-blue-dark: #071321;
-  --shadow-sm: 0 4px 20px rgba(0, 0, 0, 0.15);
-  --shadow-md: 0 8px 30px rgba(0, 0, 0, 0.2);
-  --shadow-glow: 0 0 20px rgba(197, 160, 89, 0.4);
-  --transition-smooth: all 0.35s cubic-bezier(0.165, 0.84, 0.44, 1);
+  --primary-color: #2563eb;
+  --primary-hover: #1d4ed8;
+  --secondary-color: #64748b;
+  --bg-color: #ffffff;
+  --bg-admin: #f8fafc;
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+  --error: #ef4444;
+  --border-color: #e2e8f0;
+  --nav-height: 70px;
+  --sidebar-width: 260px;
+  --transition: all 0.3s ease;
+  --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
 }
 
-.app-container {
+/* --- Reset & Base Styles --- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color: var(--text-main);
+  line-height: 1.5;
+  background-color: var(--bg-color);
+}
+
+#root {
   min-height: 100vh;
+}
+
+/* --- Layout Containers --- */
+.layout-root {
   display: flex;
   flex-direction: column;
+  min-height: 100vh;
 }
 
-.app-container main {
-  flex: 1;
+.main-content {
+  flex: 1 0 auto;
+  width: 100%;
 }
 
-.loader {
+.public-main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+/* Admin Specific Layout */
+.admin-bg {
+  background-color: var(--bg-admin);
+}
+
+.admin-container {
+  padding: 2rem;
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+/* Auth Pages Centering */
+.center-content {
   display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+}
+
+/* --- Component Specifics --- */
+
+/* Loader */
+.loader-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  min-height: 50vh;
-  font-family: 'Inter', sans-serif;
-  color: var(--primary-gold);
-  font-weight: 600;
-  letter-spacing: 1px;
+  gap: 1rem;
+  color: var(--primary-color);
 }
 
-/* Floating Smooth Scroll-to-Top Button */
-.scrollToTopBtn {
-  position: fixed;
-  bottom: 32px;
-  right: 32px;
-  width: 52px;
-  height: 52px;
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid var(--border-color);
+  border-top: 4px solid var(--primary-color);
   border-radius: 50%;
-  background: var(--navy-blue);
-  color: #ffffff;
-  border: 1px solid rgba(197, 160, 89, 0.4);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  z-index: 1200;
-  box-shadow: 0 8px 24px rgba(11, 29, 77, 0.35);
-  transition: var(--transition-smooth);
-  padding: 0;
-  outline: none;
-  backdrop-filter: blur(8px);
+  animation: spin 1s linear infinite;
 }
 
-.scrollToTopBtn:hover {
-  background: var(--primary-gold);
-  color: #071321;
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-glow), 0 12px 30px rgba(0, 0, 0, 0.3);
-  border-color: #ffffff;
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
-.scrollToTopBtn:active {
-  transform: translateY(-1px) scale(0.96);
-}
-
-.scrollProgressSvg {
-  position: absolute;
+/* Navbars (Placeholder spacing) */
+nav {
+  height: var(--nav-height);
+  background: white;
+  border-bottom: 1px solid var(--border-color);
+  position: sticky;
   top: 0;
-  left: 0;
-  transform: rotate(-90deg);
-  pointer-events: none;
+  z-index: 1000;
 }
 
-.scrollProgressBg {
-  fill: transparent;
-  stroke: rgba(255, 255, 255, 0.12);
+/* --- Typography & Elements --- */
+h1, h2, h3 {
+  margin-bottom: 1rem;
+  font-weight: 700;
+  color: var(--text-main);
 }
 
-.scrollProgressFill {
-  fill: transparent;
-  stroke: var(--primary-gold);
-  stroke-linecap: round;
-  transition: stroke-dashoffset 0.15s ease-out;
+a {
+  text-decoration: none;
+  color: var(--primary-color);
+  transition: var(--transition);
 }
 
-.scrollToTopBtn:hover .scrollProgressFill {
-  stroke: #ffffff;
+a:hover {
+  color: var(--primary-hover);
 }
 
-.scrollArrowIcon {
-  position: relative;
-  z-index: 2;
-  transition: transform 0.25s ease;
+button {
+  cursor: pointer;
+  border: none;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  font-weight: 500;
+  transition: var(--transition);
 }
 
-.scrollToTopBtn:hover .scrollArrowIcon {
-  transform: translateY(-2px);
+/* --- Utilities --- */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
 }
 
-/* Mobile Adjustments for Scroll-To-Top */
+.shadow { box-shadow: var(--shadow); }
+
+/* --- Responsive Adjustments --- */
 @media (max-width: 768px) {
-  .scrollToTopBtn {
-    bottom: 20px;
-    right: 20px;
-    width: 46px;
-    height: 46px;
+  .admin-container {
+    padding: 1rem;
   }
-
-  .scrollProgressSvg {
-    width: 46px;
-    height: 46px;
-    viewBox: 0 0 52 52;
+  
+  :root {
+    --nav-height: 60px;
   }
 }

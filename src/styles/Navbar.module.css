@@ -1,365 +1,729 @@
 :root {
+
   --primary-gold: #c5a059;
+
   --navy-blue: #0b1d4d;
+
   --dark-text: #f8fafc;
+
   --light-text: #dfe7f5;
+
   --tint-bg: rgba(10, 18, 39, 0.82);
+
   --tint-border: rgba(197, 160, 89, 0.3);
+
   --transition-smooth: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+
   --shadow-sm: 0 4px 20px rgba(0, 0, 0, 0.15);
+
   --shadow-md: 0 8px 30px rgba(0, 0, 0, 0.2);
+
 }
+
+
 
 /* --- Global Header Styles --- */
+
 .siteHeader {
+
   position: sticky;
+
   top: 0;
+
   left: 0;
+
   width: 100%;
+
   z-index: 1000;
+
   background: #ffffff;
+
   transition: var(--transition-smooth);
+
   padding: 1.35rem 0;
+
   border-bottom: 1px solid rgba(11, 29, 77, 0.08);
+
 }
+
+
 
 .scrolled {
+
   background: rgba(255, 255, 255, 0.92);
+
   backdrop-filter: blur(12px);
+
   padding: 0.8rem 0;
+
   box-shadow: var(--shadow-sm);
+
 }
+
+
 
 .headerContainer {
+
   max-width: 1300px;
+
   margin: 0 auto;
+
   display: flex;
+
   align-items: center;
+
   justify-content: space-between;
+
   padding: 0 2.5rem;
+
 }
+
+
 
 /* --- Brand/Logo Styling --- */
+
 .brandWrap {
+
   display: flex;
+
   align-items: center;
+
   gap: 14px;
+
   text-decoration: none;
+
   cursor: pointer;
+
   z-index: 1100; /* Keeps logo above drawer if needed */
+
 }
+
+
 
 .brandLogo {
+
   height: 48px;
+
   width: auto;
+
   transition: transform 0.3s ease;
+
 }
+
+
 
 .brandWrap:hover .brandLogo {
+
   transform: scale(1.05);
+
 }
+
+
 
 .brandCopy {
+
   display: flex;
+
   flex-direction: column;
+
 }
+
+
 
 .brandName {
+
   margin: 0;
+
   font-family: 'Inter', sans-serif;
+
   font-weight: 700;
+
   font-size: 0.95rem;
+
   text-transform: uppercase;
+
   letter-spacing: 1.5px;
+
   color: var(--navy-blue);
+
   line-height: 1.1;
+
 }
+
+
 
 .brandName span {
+
   color: var(--primary-gold);
+
   font-family: 'Playfair Display', serif;
+
   font-style: italic;
+
   text-transform: lowercase;
+
   font-size: 1.2rem;
+
   margin-left: 2px;
+
 }
+
+
 
 .brandTag {
+
   font-family: 'Playfair Display', serif;
+
   font-style: italic;
+
   font-size: 0.85rem;
+
   color: var(--navy-blue);
+
   letter-spacing: 0.3px;
+
   margin-top: 3px;
+
   opacity: 0.9;
+
 }
+
+
 
 /* --- Desktop Navigation --- */
+
 .nav {
+
   display: flex;
+
   align-items: center;
+
   gap: 3rem;
+
 }
+
+
 
 .navLinks {
+
   display: flex;
+
   gap: 2rem;
+
 }
+
+
 
 .navLink {
+
   text-decoration: none;
+
   color: var(--navy-blue);
+
   font-family: 'Inter', sans-serif;
+
   font-weight: 500;
+
   font-size: 0.9rem;
+
   letter-spacing: 0.5px;
+
   position: relative;
+
   transition: color 0.3s ease;
+
   padding-bottom: 4px;
+
 }
+
+
 
 .navLink::after {
+
   content: '';
+
   position: absolute;
+
   bottom: -4px;
+
   left: 50%;
+
   width: 0;
+
   height: 2px;
+
   background: var(--primary-gold);
+
   transition: var(--transition-smooth);
+
   transform: translateX(-50%);
+
 }
+
+
 
 .navLink:hover,
+
 .navLink:focus-visible,
+
 .activeLink {
+
   color: var(--primary-gold);
+
 }
+
+
 
 .navLink:hover::after,
+
 .activeLink::after {
+
   width: 100%;
+
 }
+
+
 
 /* --- Buttons --- */
+
 .navActions {
+
   display: flex;
+
   align-items: center;
+
   gap: 1.5rem;
+
 }
+
+
 
 .textButton {
+
   background: none;
+
   border: none;
+
   font-family: 'Inter', sans-serif;
+
   font-size: 0.8rem;
+
   font-weight: 600;
+
   color: var(--navy-blue);
+
   text-transform: uppercase;
+
   letter-spacing: 1.2px;
+
   cursor: pointer;
+
   transition: var(--transition-smooth);
+
 }
+
+
 
 .textButton:hover {
+
   color: var(--primary-gold);
+
   transform: translateY(-1px);
+
 }
+
+
 
 .profileButton {
+
   display: inline-flex;
+
   align-items: center;
+
   gap: 7px;
+
   background: rgba(11, 29, 77, 0.05);
+
   border: 1px solid rgba(11, 29, 77, 0.15);
+
   border-radius: 999px;
+
   padding: 7px 16px;
+
   font-family: 'Inter', sans-serif;
+
   font-size: 0.82rem;
+
   font-weight: 600;
+
   color: var(--navy-blue);
+
   letter-spacing: 0.8px;
+
   cursor: pointer;
+
   transition: var(--transition-smooth);
+
 }
+
+
 
 .profileButton:hover {
+
   background: rgba(197, 160, 89, 0.15);
+
   border-color: var(--primary-gold);
+
   color: #a9833c;
+
   transform: translateY(-1px);
+
   box-shadow: 0 4px 12px rgba(197, 160, 89, 0.15);
+
 }
+
+
 
 .profileButtonActive {
+
   background: rgba(197, 160, 89, 0.18);
+
   border-color: var(--primary-gold);
+
   color: #8c6823;
+
   font-weight: 700;
+
 }
+
+
 
 .profileIcon {
+
   color: var(--primary-gold);
+
   flex-shrink: 0;
+
 }
+
+
 
 .ctaButton {
+
   background: linear-gradient(135deg, var(--primary-gold), #e6c98a);
+
   color: #071321;
+
   padding: 10px 28px;
+
   border-radius: 100px;
+
   border: 1px solid rgba(255, 255, 255, 0.1);
+
   font-family: 'Inter', sans-serif;
+
   font-size: 0.85rem;
+
   font-weight: 700;
+
   text-decoration: none;
+
   box-shadow: 0 8px 24px rgba(197, 160, 89, 0.25);
+
   transition: var(--transition-smooth);
+
 }
+
+
 
 .ctaButton:hover {
+
   transform: translateY(-2px);
+
   box-shadow: 0 12px 30px rgba(197, 160, 89, 0.3);
+
 }
+
+
 
 /* --- Modern Hamburger Toggle --- */
+
 .mobileToggle {
+
   display: none;
+
   background: #ffffff;
+
   border: 1px solid rgba(11, 29, 77, 0.1);
+
   cursor: pointer;
+
   padding: 12px;
+
   z-index: 1200;
+
   border-radius: 12px;
+
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+
   transition: var(--transition-smooth);
+
   justify-content: center;
+
   align-items: center;
+
 }
+
+
 
 .hamburger {
+
   display: block;
+
   width: 22px;
+
   height: 2px;
+
   background: var(--navy-blue);
+
   position: relative;
+
   transition: 0.3s;
+
 }
+
+
 
 .hamburger::before,
+
 .hamburger::after {
+
   content: '';
+
   position: absolute;
+
   width: 100%;
+
   height: 2px;
+
   background: var(--navy-blue);
+
   left: 0;
+
   transition: 0.3s;
+
 }
+
+
 
 .hamburger::before { top: -7px; }
+
 .hamburger::after { top: 7px; }
 
+
+
 /* Hamburger Active State (X) */
+
 .mobileToggle.active .hamburger {
+
   background: transparent;
+
 }
+
+
 
 .mobileToggle.active .hamburger::before {
+
   top: 0;
+
   transform: rotate(45deg);
+
 }
+
+
 
 .mobileToggle.active .hamburger::after {
+
   top: 0;
+
   transform: rotate(-45deg);
+
 }
+
+
 
 /* --- Mobile Responsive Overrides --- */
+
 @media (max-width: 992px) {
+
   .headerContainer {
+
     padding: 0 1.5rem;
+
   }
+
+
 
   .mobileToggle {
+
     display: flex; /* Show the white button */
+
   }
+
+
 
   .nav {
+
     position: fixed;
+
     top: 0;
+
     right: -100%;
+
     height: 100vh;
+
     width: 100%; /* FULL SCREEN DRAWER */
+
     background: var(--navy-blue);
+
     flex-direction: column;
+
     justify-content: center;
+
     align-items: center;
+
     transition: all 0.5s cubic-bezier(0.77, 0.2, 0.05, 1.0);
+
     gap: 3.5rem;
+
     z-index: 1050;
+
     padding: 2rem;
+
     visibility: hidden;
+
   }
+
+
 
   .navOpen {
+
     right: 0;
+
     visibility: visible;
+
   }
+
+
 
   .navLinks {
+
     flex-direction: column;
+
     align-items: center;
+
     gap: 2.5rem;
+
   }
+
+
 
   .navLink {
+
     font-size: 2.2rem; /* Larger for full-screen impact */
+
     font-family: 'Playfair Display', serif;
+
     color: #ffffff;
+
     padding-bottom: 8px;
+
   }
+
+
 
   .navActions {
+
     flex-direction: column;
+
     align-items: center;
+
     gap: 1.5rem;
+
     width: 100%;
+
     max-width: 320px;
+
   }
+
+
 
   .textButton {
+
     color: #ffffff;
+
     font-size: 0.9rem;
+
     width: 100%;
+
     text-align: center;
+
     padding: 1rem;
+
     border-radius: 999px;
+
     border: 1px solid rgba(255, 255, 255, 0.2);
+
     background: rgba(255, 255, 255, 0.05);
+
   }
+
+
 
   .profileButton {
+
     color: #ffffff;
+
     font-size: 1rem;
+
     width: 100%;
+
     justify-content: center;
+
     padding: 1rem;
+
     border-radius: 999px;
+
     border: 1px solid rgba(197, 160, 89, 0.4);
+
     background: rgba(197, 160, 89, 0.15);
+
   }
+
+
 
   .profileButtonActive {
+
     background: rgba(197, 160, 89, 0.3);
+
     border-color: var(--primary-gold);
+
     color: #ffffff;
+
   }
 
+
+
   .ctaButton {
+
     width: 100%;
+
     text-align: center;
+
     padding: 1.2rem;
+
     font-size: 1rem;
+
   }
-}
+
+} 

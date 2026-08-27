@@ -1,13 +1,44 @@
-import { supabase } from '../supabaseClient'
+import { supabase } from '../supabaseClient';
 
-// Initial curated safari media with both high-res imagery and authentic 4K video clips
+const SUPABASE_PROJECT_ID = 'cccevikzhxeyxsjvomzg';
+const SUPABASE_STORAGE_BASE_URL = `https://${SUPABASE_PROJECT_ID}.supabase.co/storage/v1/object/public`;
+
+const STORAGE_KEY = 'cbs_international_gallery_items_v2';
+const DELETED_DEFAULTS_KEY = 'cbs_deleted_default_ids';
+const LIKES_KEY = 'cbs_gallery_user_likes';
+
+export const GALLERY_CATEGORIES = [
+  'All',
+  'Wildlife',
+  'Landscapes',
+  'Lodges',
+  'Conferences',
+  'Cultural',
+  'Aerial'
+];
+
+/**
+ * Normalizes relative paths into complete Supabase Storage Public URLs.
+ */
+export const formatStorageUrl = (url, bucket = 'CBSI') => {
+  if (!url) return '';
+  if (url.startsWith('http://') || url.startsWith('https://')) {
+    return url;
+  }
+  const cleanPath = url.replace(/^\/+/, '');
+  if (cleanPath.startsWith(`${bucket}/`)) {
+    return `${SUPABASE_STORAGE_BASE_URL}/${cleanPath}`;
+  }
+  return `${SUPABASE_STORAGE_BASE_URL}/${bucket}/${cleanPath}`;
+};
+
 export const INITIAL_GALLERY_ITEMS = [
   {
     id: 'safari-vid-1',
     type: 'video',
     title: 'Wildebeest River Crossing - Serengeti & Mara',
     category: 'Wildlife',
-    mediaUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4', // fallback safe mp4
+    mediaUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
     posterUrl: 'https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&q=80&w=1200',
     videoEmbedUrl: '',
     location: 'Maasai Mara National Reserve, Kenya',
@@ -140,190 +171,218 @@ export const INITIAL_GALLERY_ITEMS = [
     dateAdded: '2026-07-22',
     author: 'Ole Sankale'
   }
-]
+];
 
-const STORAGE_KEY = 'cbs_international_gallery_items_v2'
-const LIKES_KEY = 'cbs_gallery_user_likes'
-
-export const GALLERY_CATEGORIES = [
-  'All',
-  'Wildlife',
-  'Landscapes',
-  'Lodges',
-  'Conferences',
-  'Cultural',
-  'Aerial'
-]
-
-// Fetch all gallery items (localStorage + Supabase fallback)
-export async function getGalleryItems() {
-  // 1. Try local storage first for fast response
-  let items = []
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY)
-    if (raw) {
-      items = JSON.parse(raw)
-    }
-  } catch (err) {
-    console.warn('Failed to parse local gallery cache:', err)
-  }
-
-  // If local items empty, seed with initial items
-  if (!items || items.length === 0) {
-    items = INITIAL_GALLERY_ITEMS
+function parseTags(rawTags) {
+  if (!rawTags) return [];
+  if (Array.isArray(rawTags)) return rawTags;
+  
+  if (typeof rawTags === 'string') {
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(items))
+      const parsed = JSON.parse(rawTags);
+      if (Array.isArray(parsed)) return parsed;
     } catch {
-      // ignore
+      return rawTags.split(',').map(t => t.replace(/[\[\]"']/g, '').trim()).filter(Boolean);
     }
   }
+  return [];
+}
 
-  // 2. Try Supabase query in background if connected
+const formatRow = (row) => {
+  const rawMedia = row.media_url || row.image_url || row.mediaUrl || '';
+  const rawPoster = row.poster_url || row.posterUrl || rawMedia;
+
+  return {
+    id: row.id,
+    type: row.type || 'image',
+    title: row.title || 'Untitled',
+    category: row.category || 'Wildlife',
+    mediaUrl: formatStorageUrl(rawMedia),
+    posterUrl: formatStorageUrl(rawPoster),
+    videoEmbedUrl: row.video_embed_url || row.videoEmbedUrl || '',
+    location: row.location || 'East Africa',
+    description: row.description || '',
+    tags: parseTags(row.tags),
+    featured: Boolean(row.featured),
+    likes: Number(row.likes) || 0,
+    dateAdded: row.date_added || (row.created_at ? new Date(row.created_at).toISOString().split('T')[0] : new Date().toISOString().split('T')[0]),
+    author: row.author || 'CBSI Admin'
+  };
+};
+
+// Helper: Get blacklisted/deleted default item IDs
+function getDeletedDefaultIds() {
+  try {
+    const raw = localStorage.getItem(DELETED_DEFAULTS_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch {
+    return [];
+  }
+}
+
+export async function getGalleryItems() {
+  const deletedIds = getDeletedDefaultIds();
+
   try {
     const { data, error } = await supabase
       .from('gallery_items')
       .select('*')
-      .order('created_at', { ascending: false })
+      .order('created_at', { ascending: false });
 
-    if (!error && data && data.length > 0) {
-      // Merge remote and local
-      const remoteItems = data.map(row => ({
-        id: row.id,
-        type: row.type || 'image',
-        title: row.title,
-        category: row.category || 'Wildlife',
-        mediaUrl: row.media_url || row.mediaUrl,
-        posterUrl: row.poster_url || row.posterUrl || '',
-        videoEmbedUrl: row.video_embed_url || '',
-        location: row.location || 'East Africa',
-        description: row.description || '',
-        tags: Array.isArray(row.tags) ? row.tags : (row.tags ? row.tags.split(',') : []),
-        featured: !!row.featured,
-        likes: row.likes || 0,
-        dateAdded: row.date_added || row.created_at || new Date().toISOString().split('T')[0],
-        author: row.author || 'CBSI Admin'
-      }))
+    if (!error && data) {
+      const dbItems = data.map(formatRow);
+      
+      const combinedMap = new Map();
+      // Filter out deleted initial defaults before inserting into map
+      INITIAL_GALLERY_ITEMS.forEach(item => {
+        if (!deletedIds.includes(String(item.id))) {
+          combinedMap.set(String(item.id), item);
+        }
+      });
 
-      // Merge unique
-      const mergedMap = new Map()
-      items.forEach(it => mergedMap.set(it.id, it))
-      remoteItems.forEach(it => mergedMap.set(it.id, it))
-      items = Array.from(mergedMap.values())
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(items))
+      dbItems.forEach(item => {
+        if (!deletedIds.includes(String(item.id))) {
+          combinedMap.set(String(item.id), item);
+        }
+      });
+
+      const mergedList = Array.from(combinedMap.values());
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(mergedList));
+      return mergedList;
     }
-  } catch {
-    // Supabase table may not exist yet; gracefully keep using localStorage
-  }
-
-  return items
-}
-
-// Add or update an item
-export async function saveGalleryItem(item) {
-  const currentItems = await getGalleryItems()
-  const existingIndex = currentItems.findIndex(it => it.id === item.id)
-
-  let updatedList = []
-  const itemToSave = {
-    ...item,
-    id: item.id || `safari-media-${Date.now()}`,
-    likes: item.likes || 0,
-    dateAdded: item.dateAdded || new Date().toISOString().split('T')[0],
-    author: item.author || 'Admin Curated'
-  }
-
-  if (existingIndex >= 0) {
-    updatedList = [...currentItems]
-    updatedList[existingIndex] = itemToSave
-  } else {
-    updatedList = [itemToSave, ...currentItems]
-  }
-
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedList))
-  window.dispatchEvent(new CustomEvent('cbs-gallery-updated', { detail: updatedList }))
-
-  // Attempt Supabase insert/update
-  try {
-    await supabase.from('gallery_items').upsert({
-      id: itemToSave.id,
-      type: itemToSave.type,
-      title: itemToSave.title,
-      category: itemToSave.category,
-      media_url: itemToSave.mediaUrl,
-      poster_url: itemToSave.posterUrl,
-      video_embed_url: itemToSave.videoEmbedUrl,
-      location: itemToSave.location,
-      description: itemToSave.description,
-      tags: itemToSave.tags,
-      featured: itemToSave.featured,
-      likes: itemToSave.likes,
-      date_added: itemToSave.dateAdded,
-      author: itemToSave.author
-    })
   } catch (err) {
-    console.log('Supabase sync skipped, item saved locally:', err?.message)
+    console.warn('Supabase fetch failed, falling back to local cache:', err);
   }
 
-  return itemToSave
-}
-
-// Delete an item
-export async function deleteGalleryItem(id) {
-  const currentItems = await getGalleryItems()
-  const filtered = currentItems.filter(it => it.id !== id)
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(filtered))
-  window.dispatchEvent(new CustomEvent('cbs-gallery-updated', { detail: filtered }))
-
+  // Local storage fallback
   try {
-    await supabase.from('gallery_items').delete().eq('id', id)
-  } catch {
-    // ignore
+    const cached = localStorage.getItem(STORAGE_KEY);
+    if (cached) {
+      const parsed = JSON.parse(cached);
+      if (Array.isArray(parsed)) {
+        return parsed.filter(item => !deletedIds.includes(String(item.id))).map(formatRow);
+      }
+    }
+  } catch (err) {
+    console.warn('Failed to parse local gallery cache:', err);
   }
 
-  return filtered
+  // Default initial items filtered by blacklisted deleted items
+  const activeDefaults = INITIAL_GALLERY_ITEMS.filter(item => !deletedIds.includes(String(item.id)));
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(activeDefaults));
+  return activeDefaults;
 }
 
-// Toggle like for a user
+export async function saveGalleryItem(item) {
+  const formattedMediaUrl = formatStorageUrl(item.mediaUrl);
+  const formattedPosterUrl = formatStorageUrl(item.posterUrl);
+
+  const dbPayload = {
+    type: item.type || 'image',
+    title: item.title,
+    category: item.category || 'Wildlife',
+    media_url: formattedMediaUrl,
+    image_url: formattedMediaUrl,
+    poster_url: formattedPosterUrl || null,
+    video_embed_url: item.videoEmbedUrl || null,
+    location: item.location || '',
+    description: item.description || '',
+    tags: Array.isArray(item.tags) ? item.tags : parseTags(item.tags),
+    featured: Boolean(item.featured),
+    likes: Number(item.likes) || 0,
+    author: item.author || 'CBSI Admin',
+    date_added: item.dateAdded || new Date().toISOString().split('T')[0]
+  };
+
+  if (item.id && !String(item.id).startsWith('safari-')) {
+    dbPayload.id = item.id;
+  }
+
+  const { data, error } = await supabase
+    .from('gallery_items')
+    .upsert([dbPayload])
+    .select();
+
+  if (error) {
+    console.error('Supabase Upsert Error:', error);
+    throw new Error(error.details || error.message || 'Failed to save item to database');
+  }
+
+  const savedItem = formatRow(data[0]);
+  const freshItems = await getGalleryItems();
+  window.dispatchEvent(new CustomEvent('cbs-gallery-updated', { detail: freshItems }));
+
+  return savedItem;
+}
+
+export async function deleteGalleryItem(id) {
+  const strId = String(id);
+
+  // 1. If it's a default item ('safari-1'), add to deleted tracking list
+  if (strId.startsWith('safari-')) {
+    const deletedIds = getDeletedDefaultIds();
+    if (!deletedIds.includes(strId)) {
+      deletedIds.push(strId);
+      localStorage.setItem(DELETED_DEFAULTS_KEY, JSON.stringify(deletedIds));
+    }
+  } else {
+    // 2. If it's a Supabase DB row, execute database delete query
+    const { error } = await supabase.from('gallery_items').delete().eq('id', id);
+    if (error) {
+      console.error('Failed to delete row from Supabase:', error);
+      throw new Error(error.message || 'Database deletion rejected.');
+    }
+  }
+
+  // 3. Update cached state and dispatch update event
+  const currentItems = await getGalleryItems();
+  const filtered = currentItems.filter(item => String(item.id) !== strId);
+  
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(filtered));
+  window.dispatchEvent(new CustomEvent('cbs-gallery-updated', { detail: filtered }));
+
+  return filtered;
+}
+
 export function toggleLikeItem(id) {
   try {
-    const rawLikes = localStorage.getItem(LIKES_KEY)
-    const userLikes = rawLikes ? JSON.parse(rawLikes) : {}
-    const isLiked = !!userLikes[id]
+    const rawLikes = localStorage.getItem(LIKES_KEY);
+    const userLikes = rawLikes ? JSON.parse(rawLikes) : {};
+    const isLiked = !!userLikes[id];
 
-    userLikes[id] = !isLiked
-    localStorage.setItem(LIKES_KEY, JSON.stringify(userLikes))
+    userLikes[id] = !isLiked;
+    localStorage.setItem(LIKES_KEY, JSON.stringify(userLikes));
 
-    // Update item likes count
-    const rawItems = localStorage.getItem(STORAGE_KEY)
+    const rawItems = localStorage.getItem(STORAGE_KEY);
     if (rawItems) {
-      const items = JSON.parse(rawItems)
-      const target = items.find(it => it.id === id)
+      const items = JSON.parse(rawItems);
+      const target = items.find(it => String(it.id) === String(id));
       if (target) {
-        target.likes = Math.max(0, (target.likes || 0) + (isLiked ? -1 : 1))
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(items))
-        window.dispatchEvent(new CustomEvent('cbs-gallery-updated', { detail: items }))
+        target.likes = Math.max(0, (target.likes || 0) + (isLiked ? -1 : 1));
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+        window.dispatchEvent(new CustomEvent('cbs-gallery-updated', { detail: items }));
       }
     }
 
-    return !isLiked
+    return !isLiked;
   } catch (err) {
-    console.error('Error toggling like:', err)
-    return false
+    console.error('Error toggling like:', err);
+    return false;
   }
 }
 
 export function getUserLikes() {
   try {
-    const raw = localStorage.getItem(LIKES_KEY)
-    return raw ? JSON.parse(raw) : {}
+    const raw = localStorage.getItem(LIKES_KEY);
+    return raw ? JSON.parse(raw) : {};
   } catch {
-    return {}
+    return {};
   }
 }
 
-// Reset gallery to fresh curated defaults
 export function resetGalleryToDefaults() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(INITIAL_GALLERY_ITEMS))
-  window.dispatchEvent(new CustomEvent('cbs-gallery-updated', { detail: INITIAL_GALLERY_ITEMS }))
-  return INITIAL_GALLERY_ITEMS
+  localStorage.removeItem(DELETED_DEFAULTS_KEY);
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(INITIAL_GALLERY_ITEMS));
+  window.dispatchEvent(new CustomEvent('cbs-gallery-updated', { detail: INITIAL_GALLERY_ITEMS }));
+  return INITIAL_GALLERY_ITEMS;
 }

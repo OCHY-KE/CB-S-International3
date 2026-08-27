@@ -43,19 +43,26 @@ function AdminLogin() {
       // Verify admin status
       let isAdmin = false;
 
-      // Check profiles table
-      const { data: profile, error: profileError } = await supabase
-        .from('profiles')
-        .select('is_admin')
-        .eq('id', authData.user.id)
-        .single();
-
-      if (!profileError && profile?.is_admin) {
+      // 1. Check user metadata first
+      if (authData.user.user_metadata?.role === 'admin') {
         isAdmin = true;
       }
 
-      // Fallback: check user metadata
-      if (authData.user.user_metadata?.role === 'admin') {
+      // 2. Check profiles table safely using .maybeSingle()
+      if (!isAdmin) {
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('is_admin')
+          .eq('id', authData.user.id)
+          .maybeSingle();
+
+        if (profile?.is_admin) {
+          isAdmin = true;
+        }
+      }
+
+      // Fallback: If login email matches hardcoded admin email
+      if (authData.user.email === 'mannickochieng@gmail.com') {
         isAdmin = true;
       }
 
@@ -71,12 +78,12 @@ function AdminLogin() {
       window.dispatchEvent(new CustomEvent('login-success'));
 
       setTimeout(() => {
-        navigate('/admin-dashboard');
+        navigate('/admin/dashboard');
       }, 2500);
 
     } catch (err) {
       console.error('Unexpected error:', err);
-      setStatus({ type: 'error', msg: 'Something went wrong.' });
+      setStatus({ type: 'error', msg: 'Something went wrong during login.' });
       setLoading(false);
     }
   };

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
-import styles from '../styles/Ingia.module.css';
+import styles from '../styles/CA.module.css';
 import { Mail, Lock, Eye, EyeOff, Loader2, ArrowRight } from 'lucide-react';
 
 function CreateAccount({ onSignupSuccess }) {
