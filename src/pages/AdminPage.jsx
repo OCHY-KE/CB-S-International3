@@ -10,7 +10,11 @@ import {
   PlusCircle,
   Users,
   MessageSquare,
-  ArrowLeft
+  ArrowLeft,
+  ShieldAlert,
+  AlertTriangle,
+  Lock,
+  CheckCircle2
 } from 'lucide-react'
 import { adminSignOut } from '../utils/auth'
 import AdminGallery from './AdminGallery'
@@ -22,6 +26,26 @@ function AdminPage({ onBack }) {
   const [searchParams, setSearchParams] = useSearchParams()
   const initialTab = searchParams.get('tab') || 'overview'
   const [activeTab, setActiveTab] = useState(initialTab)
+
+  // Security warning pop-up logic: triggers only once per login session
+  const [showSecurityWarning, setShowSecurityWarning] = useState(() => {
+    const shouldShow = sessionStorage.getItem('cbsi_show_admin_security_warning') === 'true'
+    const alreadyDismissed = sessionStorage.getItem('cbsi_admin_warning_dismissed') === 'true'
+    return shouldShow && !alreadyDismissed
+  })
+
+  const handleDismissWarning = () => {
+    sessionStorage.removeItem('cbsi_show_admin_security_warning')
+    sessionStorage.setItem('cbsi_admin_warning_dismissed', 'true')
+    setShowSecurityWarning(false)
+  }
+
+  const handleLeaveToPublic = async () => {
+    sessionStorage.removeItem('cbsi_show_admin_security_warning')
+    sessionStorage.removeItem('cbsi_admin_warning_dismissed')
+    await adminSignOut()
+    navigate('/')
+  }
 
   const handleTabChange = (tab) => {
     setActiveTab(tab)
@@ -242,6 +266,63 @@ function AdminPage({ onBack }) {
       {activeTab === 'gallery' && (
         <div className={styles.contentArea}>
           <AdminGallery onBack={() => handleTabChange('overview')} />
+        </div>
+      )}
+
+      {/* Security Warning Modal - Appears once after login */}
+      {showSecurityWarning && (
+        <div className={styles.modalBackdrop} role="dialog" aria-modal="true" aria-labelledby="security-warning-title">
+          <div className={styles.securityModal}>
+            <div className={styles.modalIconHeader}>
+              <div className={styles.warningIconWrapper}>
+                <ShieldAlert size={36} />
+              </div>
+              <div className={styles.securityBadgePill}>
+                <Lock size={12} />
+                <span>Confidential Administrative Area</span>
+              </div>
+            </div>
+
+            <div className={styles.modalContent}>
+              <h2 id="security-warning-title" className={styles.modalTitle}>
+                Restricted Access Warning
+              </h2>
+              <p className={styles.modalDescription}>
+                You are accessing the <strong>private, secure administrative portal</strong> of Conference Bookings & Safaris International.
+              </p>
+              
+              <div className={styles.warningNoticeBox}>
+                <AlertTriangle size={18} className={styles.noticeIcon} />
+                <p>
+                  If you are <strong>not an authorized administrator</strong> or do not have explicit permission to access this console, <strong>please leave immediately and return to the public website</strong>.
+                </p>
+              </div>
+
+              <p className={styles.legalDisclaimer}>
+                All session activities, modifications, and administrative operations are securely recorded and audited for compliance.
+              </p>
+            </div>
+
+            <div className={styles.modalActionButtons}>
+              <button
+                type="button"
+                className={styles.leavePublicBtn}
+                onClick={handleLeaveToPublic}
+              >
+                <Globe size={16} />
+                <span>Leave to Public Site</span>
+              </button>
+
+              <button
+                type="button"
+                className={styles.acknowledgeBtn}
+                onClick={handleDismissWarning}
+              >
+                <CheckCircle2 size={16} />
+                <span>I Am Authorized — Proceed</span>
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>

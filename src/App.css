@@ -23,7 +23,10 @@
 }
 
 html, body {
-  height: 100%;
+  min-height: 100%;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: clip;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   color: var(--text-main);
   line-height: 1.5;
@@ -32,6 +35,9 @@ html, body {
 
 #root {
   min-height: 100vh;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: clip;
 }
 
 /* --- Layout Containers --- */
@@ -39,28 +45,40 @@ html, body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: clip;
 }
 
 .main-content {
   flex: 1 0 auto;
   width: 100%;
+  max-width: 100%;
+  overflow-x: clip;
 }
 
 .public-main {
+  width: 100%;
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem 1rem;
+  box-sizing: border-box;
 }
 
 /* Admin Specific Layout */
 .admin-bg {
   background-color: var(--bg-admin);
+  width: 100%;
+  max-width: 100%;
+  overflow-x: clip;
 }
 
 .admin-container {
   padding: 2rem;
+  width: 100%;
   max-width: 1600px;
   margin: 0 auto;
+  box-sizing: border-box;
 }
 
 /* Auth Pages Centering */
@@ -68,7 +86,10 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 2rem;
+  padding: 2rem 1rem;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
   background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
 }
 
@@ -99,16 +120,6 @@ html, body {
   100% { transform: rotate(360deg); }
 }
 
-/* Navbars (Placeholder spacing) */
-nav {
-  height: var(--nav-height);
-  background: white;
-  border-bottom: 1px solid var(--border-color);
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-}
-
 /* --- Typography & Elements --- */
 h1, h2, h3 {
   margin-bottom: 1rem;
@@ -127,12 +138,7 @@ a:hover {
 }
 
 button {
-  cursor: pointer;
-  border: none;
-  border-radius: 6px;
-  padding: 0.5rem 1rem;
-  font-weight: 500;
-  transition: var(--transition);
+  font-family: inherit;
 }
 
 /* --- Utilities --- */
@@ -152,5 +158,14 @@ button {
   
   :root {
     --nav-height: 60px;
+  }
+
+  .has-mobile-dock {
+    padding-bottom: calc(64px + env(safe-area-inset-bottom, 16px));
+  }
+
+  /* Smooth mobile touch tap highlights */
+  * {
+    -webkit-tap-highlight-color: transparent;
   }
 }

@@ -1,0 +1,516 @@
+/* ==========================================================================
+   Unified Authentication Stylesheet (Auth.module.css)
+   Shared across: UserLogin, AdminLogin, CreateAccount
+   ========================================================================== */
+
+.loginWrapper {
+  min-height: 100vh;
+  min-height: 100dvh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2.5rem 1.25rem;
+  background-color: #1a120b;
+  background-image: 
+    linear-gradient(180deg, rgba(11, 29, 77, 0.35) 0%, rgba(7, 19, 46, 0.6) 100%),
+    radial-gradient(ellipse at 50% 40%, rgba(0, 0, 0, 0.15) 0%, rgba(7, 19, 46, 0.68) 100%),
+    url('/src/assets/images/Giraffe.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+  background-attachment: fixed;
+  font-family: inherit;
+  box-sizing: border-box;
+  position: relative;
+  overflow-x: hidden;
+}
+
+.containerBox {
+  width: 100%;
+  max-width: 440px;
+  animation: authFadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  box-sizing: border-box;
+  position: relative;
+  z-index: 10;
+}
+
+/* Top Return Navigation */
+.topNavWrapper {
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.backToPublic {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #ffffff;
+  font-size: 0.84rem;
+  font-weight: 600;
+  text-decoration: none;
+  padding: 6px 16px;
+  background: rgba(15, 23, 42, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 50px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: all 0.2s ease;
+}
+
+.backToPublic:hover {
+  color: #ffffff;
+  border-color: #c5a059;
+  background: rgba(15, 23, 42, 0.92);
+  transform: translateX(-2px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+}
+
+/* Main Login / Auth Card */
+.loginCard {
+  background: rgba(255, 255, 255, 0.98);
+  width: 100%;
+  padding: 2.5rem 2.25rem;
+  border-radius: 22px;
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(197, 160, 89, 0.25);
+  box-sizing: border-box;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  transition: box-shadow 0.3s ease;
+}
+
+/* Header & Branding */
+.loginHeader {
+  text-align: center;
+  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.logoBadge {
+  background: linear-gradient(135deg, #1e3a5f 0%, #0f172a 100%);
+  color: #ffffff;
+  width: 58px;
+  height: 58px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.25rem;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.adminBadge {
+  background: linear-gradient(135deg, #1e293b 0%, #090e17 100%);
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.25);
+}
+
+.userBadge {
+  background: linear-gradient(135deg, #2d5a27 0%, #1c3b18 100%);
+  box-shadow: 0 8px 20px rgba(45, 90, 39, 0.25);
+}
+
+.badgeIcon {
+  font-size: 1.65rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loginHeader h1 {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0 0 0.35rem 0;
+  letter-spacing: -0.3px;
+  line-height: 1.25;
+}
+
+.subtitle {
+  color: #64748b;
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* Form Styles */
+.loginForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  text-align: left;
+}
+
+.formGroup label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #334155;
+  letter-spacing: 0.1px;
+}
+
+.inputWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.inputIcon {
+  position: absolute;
+  left: 14px;
+  color: #94a3b8;
+  pointer-events: none;
+  flex-shrink: 0;
+}
+
+.inputWrapper input {
+  width: 100%;
+  padding: 0.75rem 1rem 0.75rem 2.65rem;
+  background-color: #f8fafc;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  color: #0f172a;
+  outline: none;
+  box-sizing: border-box;
+  transition: all 0.2s ease;
+}
+
+.inputWrapper input:focus {
+  background-color: #ffffff;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3.5px rgba(37, 99, 235, 0.12);
+}
+
+.inputWrapper input:disabled {
+  background-color: #f1f5f9;
+  color: #94a3b8;
+  cursor: not-allowed;
+}
+
+.inputWrapper input::placeholder {
+  color: #94a3b8;
+}
+
+.passwordToggle {
+  position: absolute;
+  right: 12px;
+  background: none;
+  border: none;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #94a3b8;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.passwordToggle:hover {
+  color: #334155;
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+/* Error Banner */
+.errorBanner {
+  background-color: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #dc2626;
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  animation: authShake 0.3s ease-in-out;
+}
+
+/* Submit Buttons */
+.submitBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.85rem 1.25rem;
+  margin-top: 0.35rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #ffffff;
+  background: #1e293b;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(30, 41, 59, 0.2);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.submitBtn:hover:not(:disabled) {
+  background: #0f172a;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.3);
+}
+
+.submitBtn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.submitBtn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.userSubmitBtn {
+  background: #2d5a27;
+  box-shadow: 0 4px 12px rgba(45, 90, 39, 0.25);
+}
+
+.userSubmitBtn:hover:not(:disabled) {
+  background: #22441d;
+  box-shadow: 0 6px 16px rgba(45, 90, 39, 0.35);
+}
+
+.adminSubmitBtn {
+  background: #1e293b;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.25);
+}
+
+.adminSubmitBtn:hover:not(:disabled) {
+  background: #090e17;
+  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.35);
+}
+
+/* Secondary Buttons */
+.publicBtn {
+  background-color: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  color: #334155;
+  padding: 0.75rem 1.25rem;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+}
+
+.publicBtn:hover {
+  background-color: #e2e8f0;
+  color: #0f172a;
+}
+
+.outlineBtn {
+  background: none;
+  border: 1.5px solid #e2e8f0;
+  color: #64748b;
+  padding: 0.75rem 1.25rem;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  width: 100%;
+  transition: all 0.2s ease;
+}
+
+.outlineBtn:hover {
+  background-color: #f8fafc;
+  border-color: #cbd5e1;
+  color: #0f172a;
+}
+
+.buttonGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  margin-top: 1rem;
+}
+
+/* Footer & Switch Links */
+.loginFooter {
+  margin-top: 1.75rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid #f1f5f9;
+}
+
+.loginFooter p {
+  font-size: 0.85rem;
+  color: #64748b;
+  margin: 0;
+}
+
+.inlineLink {
+  color: #2563eb;
+  text-decoration: none;
+  font-weight: 700;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.inlineLink:hover {
+  color: #1d4ed8;
+  text-decoration: underline;
+}
+
+.publicReturnDivider {
+  margin-top: 0.4rem;
+  padding-top: 0.85rem;
+  border-top: 1px solid #f1f5f9;
+}
+
+.returnPublicLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #64748b !important;
+  font-size: 0.84rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.returnPublicLink:hover {
+  color: #0f172a !important;
+}
+
+/* Success Card States */
+.successCard {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: authSlideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.animateCheck {
+  color: #16a34a;
+  margin-bottom: 1.25rem;
+  animation: authScaleIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.iconSuccess {
+  color: #16a34a;
+  margin-bottom: 1rem;
+}
+
+.successWrapper {
+  text-align: center;
+  padding: 1.5rem 0;
+}
+
+.checkmark {
+  width: 54px;
+  height: 54px;
+  background: #dcfce7;
+  color: #16a34a;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.75rem;
+  font-weight: 800;
+  margin: 0 auto 1.25rem;
+  animation: authScaleIn 0.4s ease-out;
+}
+
+.loadingBar,
+.progressBar {
+  width: 100%;
+  height: 4px;
+  background-color: #f1f5f9;
+  border-radius: 4px;
+  margin-top: 1.5rem;
+  overflow: hidden;
+  position: relative;
+}
+
+.loadingBar::after,
+.progressFill {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 40%;
+  background-color: #16a34a;
+  border-radius: 4px;
+  animation: authLoadingProgress 1.3s infinite ease-in-out;
+}
+
+/* Spinners & Animations */
+.spinner {
+  animation: authRotate 1s linear infinite;
+}
+
+@keyframes authRotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes authScaleIn {
+  0% { transform: scale(0); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes authSlideUp {
+  0% { transform: translateY(16px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes authFadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes authLoadingProgress {
+  0% { left: -40%; }
+  100% { left: 100%; }
+}
+
+@keyframes authShake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
+}
+
+/* Responsive Mobile Layout */
+@media (max-width: 480px) {
+  .loginWrapper {
+    padding: 1rem 0.75rem;
+    align-items: flex-start;
+  }
+  
+  .loginCard {
+    padding: 1.75rem 1.25rem;
+    border-radius: 16px;
+  }
+
+  .loginHeader h1 {
+    font-size: 1.4rem;
+  }
+}

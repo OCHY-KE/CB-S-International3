@@ -13,7 +13,7 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* 1. Use a more-intuitive box-sizing model. */
+/* 1. Use a more-intuitive box-sizing model for all elements. */
 *, *::before, *::after {
   box-sizing: border-box;
 }
@@ -24,31 +24,67 @@
   padding: 0;
 }
 
-/* 3. Allow percentage-based heights in the application */
-html, body {
+/* 3. Allow percentage-based heights and guarantee zero horizontal overflow without breaking sticky positioning */
+html {
   height: 100%;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: clip;
 }
 
-/* 4. Improve media defaults */
-img, picture, video, canvas, svg {
+body {
+  min-height: 100%;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: clip;
+  position: relative;
+}
+
+/* 4. Improve media & embed defaults to never breach container width */
+img, picture, video, canvas, iframe, embed, object {
   display: block;
   max-width: 100%;
+  height: auto;
+}
+
+/* Ensure SVG icons render smoothly without distortion */
+svg {
+  max-width: 100%;
+  flex-shrink: 0;
+}
+
+svg.lucide, .lucide {
+  display: inline-block;
+  vertical-align: middle;
+  flex-shrink: 0;
 }
 
 /* 5. Remove built-in form typography styles */
 input, button, textarea, select {
   font: inherit;
+  max-width: 100%;
 }
 
-/* 6. Avoid text overflows */
-p, h1, h2, h3, h4, h5, h6 {
+/* 6. Avoid text & code block overflows */
+p, h1, h2, h3, h4, h5, h6, span, a, label, li, td, th {
   overflow-wrap: break-word;
+  word-break: break-word;
 }
 
-/* 7. Create a root stacking context */
+pre, code {
+  overflow-x: auto;
+  max-width: 100%;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* 7. Create a root stacking context strictly contained in viewport width */
 #root {
   isolation: isolate;
   min-height: 100%;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: clip;
   display: flex;
   flex-direction: column;
 }

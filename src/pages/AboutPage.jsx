@@ -1,17 +1,38 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Compass, Eye, Target, Sparkles, CheckCircle2, ChevronLeft, ChevronRight, Play, Pause } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { 
+  Compass, 
+  Eye, 
+  Target, 
+  Sparkles, 
+  CheckCircle2, 
+  ChevronLeft, 
+  ChevronRight, 
+  Play, 
+  Pause, 
+  ShieldCheck, 
+  Users, 
+  Award, 
+  Globe2, 
+  MessageCircle, 
+  ArrowRight,
+  HeartHandshake
+} from 'lucide-react';
+import SEO from '../components/SEO';
 import styles from '../styles/AboutPage.module.css';
+
+const WHATSAPP_PHONE = '254722774952';
 
 const BIG_FIVE_ANIMALS = [
   {
-    "id": "lion",
-    "name": "African Lion",
-    "swahili": "Simba",
-    "scientific": "Panthera leo",
-    "role": "Apex Sovereign of the Savannah",
-    "habitat": "Masai Mara & Serengeti",
-    "image": "https://images.unsplash.com/photo-1546182990-dffeafbe841d?auto=format&fit=crop&q=80&w=1600",
-    "description": "Renowned for commanding roars resonating over 8km across open grasslands and matriarchal pride coordination."
+    id: 'lion',
+    name: 'African Lion',
+    swahili: 'Simba',
+    scientific: 'Panthera leo',
+    role: 'Apex Sovereign of the Savannah',
+    habitat: 'Masai Mara & Serengeti Ecosystem',
+    image: 'https://images.unsplash.com/photo-1546182990-dffeafbe841d?auto=format&fit=crop&q=80&w=1600',
+    description: 'Renowned for commanding roars resonating over 8km across open grasslands and matriarchal pride coordination in legendary Mara hunts.'
   },
   {
     id: 'elephant',
@@ -19,48 +40,72 @@ const BIG_FIVE_ANIMALS = [
     swahili: 'Ndovu / Tembo',
     scientific: 'Loxodonta africana',
     role: 'Gentle Giant of Mount Kilimanjaro',
-    habitat: 'Amboseli & Tsavo Ecosystems',
+    habitat: 'Amboseli & Tsavo National Parks',
     image: 'https://images.unsplash.com/photo-1557050543-4d5f4e07ef46?auto=format&fit=crop&q=80&w=1600',
-    description: 'Earth’s largest terrestrial mammal, navigating ancient ancestral migration corridors with immense wisdom.'
-  },
- {
-  "id": "buffalo",
-  "name": "Cape Buffalo",
-  "swahili": "Nyati / Mbogo",
-  "scientific": "Syncerus caffer",
-  "role": "Indomitable Sentinel of the Plains",
-  "habitat": "Ngorongoro & Lake Nakuru",
-  "image": "https://res.cloudinary.com/cioghqt5/image/upload/v1787301558/BUFFALO.webp? auto=format&fit=crop&q=80&w=1600",
-  "description": "Unflinchingly protective with continuous fused horn bosses, thriving in formidable savannah herds."
-},
-  {
-    "id": "leopard",
-    "name": "African Leopard",
-    "swahili": "Chui",
-    "scientific": "Panthera pardus",
-    "role": "The Elusive Solitary Ghost",
-    "habitat": "Samburu & Great Rift Valley",
-    "image": "https://images.unsplash.com/photo-1456926631375-92c8ce872def?auto=format&fit=crop&q=80&w=1600",
-    "description": "Master of stealth with rosette camouflage, hauling prey into high acacia branches with unmatched power."
+    description: 'Earth’s largest terrestrial mammal, navigating ancient ancestral migration corridors beneath snow-capped Kilimanjaro with immense wisdom.'
   },
   {
-    "id": "rhino",
-    "name": "Black Rhino",
-    "swahili": "Kifaru",
-    "scientific": "Diceros bicornis",
-    "role": "Prehistoric Armored Icon",
-    "habitat": "Ol Pejeta & Lewa Conservancy",
-    "image": "https://res.cloudinary.com/cioghqt5/image/upload/v1787300298/Bufallo.jpg?auto=format&fit=crop&q=80&w=1600",
-    "description": "A living relic of evolutionary endurance, zealously protected in Kenya’s premier high-security sanctuaries."
+    id: 'buffalo',
+    name: 'Cape Buffalo',
+    swahili: 'Nyati / Mbogo',
+    scientific: 'Syncerus caffer',
+    role: 'Indomitable Sentinel of the Plains',
+    habitat: 'Ngorongoro Crater & Lake Nakuru',
+    image: 'https://res.cloudinary.com/cioghqt5/image/upload/v1787301558/BUFFALO.webp?auto=format&fit=crop&q=80&w=1600',
+    description: 'Unflinchingly protective with continuous fused horn bosses, thriving in formidable savannah herds that deter the fiercest predators.'
+  },
+  {
+    id: 'leopard',
+    name: 'African Leopard',
+    swahili: 'Chui',
+    scientific: 'Panthera pardus',
+    role: 'The Elusive Solitary Ghost',
+    habitat: 'Samburu & Great Rift Valley',
+    image: 'https://images.unsplash.com/photo-1456926631375-92c8ce872def?auto=format&fit=crop&q=80&w=1600',
+    description: 'Master of stealth with rosette camouflage, hauling prey into high acacia branches with unmatched agility and strength.'
+  },
+  {
+    id: 'rhino',
+    name: 'Black Rhino',
+    swahili: 'Kifaru',
+    scientific: 'Diceros bicornis',
+    role: 'Prehistoric Armored Icon',
+    habitat: 'Ol Pejeta & Lewa Wildlife Conservancy',
+    image: 'https://images.unsplash.com/photo-1575550959106-5a7defe28b56?auto=format&fit=crop&q=80&w=1600',
+    description: 'A living relic of evolutionary endurance, zealously protected in Kenya’s premier high-security conservation sanctuaries.'
   }
-]
+];
+
+const IMPACT_METRICS = [
+  {
+    icon: Award,
+    value: '15+',
+    label: 'Years of Safari Excellence'
+  },
+  {
+    icon: Users,
+    value: '8,500+',
+    label: 'Satisfied Global Explorers'
+  },
+  {
+    icon: ShieldCheck,
+    value: '100%',
+    label: 'KATO Bonded & Certified'
+  },
+  {
+    icon: Globe2,
+    value: '45+',
+    label: 'National Parks & Sanctuaries'
+  }
+];
 
 function About() {
+  const navigate = useNavigate();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
   const touchStartX = useRef(null);
 
-  // Auto-slide timer
+  // Auto-slide timer for Big Five showcase
   useEffect(() => {
     if (!isPlaying) return;
 
@@ -91,27 +136,41 @@ function About() {
     touchStartX.current = null;
   };
 
-  const currentAnimal = BIG_FIVE_ANIMALS[currentIndex];
+  const handleOpenWhatsApp = () => {
+    window.open(`https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent('Hello CBSI Safaris! I am interested in learning more about your heritage and booking an expedition.')}`, '_blank');
+  };
 
   return (
     <main className={styles.aboutPage}>
-      {/* Hero Header with Sliding Big Five Showcase & 2-Color Giraffe Palette */}
+      <SEO 
+        title="About Us | CBSI Safaris - East Africa's Premier Tour Architect" 
+        description="Learn about Conference Bookings & Safaris International (CBSI). 15+ years crafting bespoke Kenyan and Tanzanian luxury wildlife safaris, conference summits, and conservation expeditions."
+      />
+
+      {/* Hero Header with Sliding Big Five Showcase */}
       <section className={styles.hero}>
         <div className={styles.heroOverlay}></div>
         
         <div className={styles.heroContent}>
-          <div className={styles.giraffeBadge}>
+          <div className={styles.badgePill}>
             <Sparkles size={14} />
-            <span>Savannah Heritage</span>
+            <span>Savannah Heritage & Luxury Logistics</span>
           </div>
-          <h1>Defining Safari Frontiers</h1>
-          <p className={styles.tagline}>Conference Bookings & Safaris International</p>
+          <h1 className={styles.heroTitle}>
+            Defining the Frontiers of <span className={styles.heroTitleGold}>African Safari Craft</span>
+          </h1>
+          <p className={styles.heroTagline}>
+            Conference Bookings & Safaris International (CBSI) unites bespoke luxury wildlife adventures, high-level summit logistics, and grassroots conservation across East Africa.
+          </p>
         </div>
 
         {/* Big Five Sliding Showcase */}
         <div className={styles.sliderContainer}>
           <div className={styles.sliderHeader}>
-            <span className={styles.sliderBadge}>The African Big Five Expeditions</span>
+            <div className={styles.sliderHeaderLeft}>
+              <Compass size={18} color="#c5a059" />
+              <span className={styles.sliderBadge}>The African Big Five Expeditions</span>
+            </div>
             <div className={styles.sliderControls}>
               <button 
                 className={styles.controlBtn} 
@@ -159,11 +218,12 @@ function About() {
                     alt={`${animal.name} - Big Five Safari`} 
                     className={styles.slideImage} 
                   />
+                  <div className={styles.slideImageOverlay}></div>
                   <div className={styles.slideCard}>
                     <div className={styles.animalTitleRow}>
                       <div>
                         <span className={styles.swahiliTag}>{animal.swahili}</span>
-                        <h3>{animal.name}</h3>
+                        <h3 className={styles.animalName}>{animal.name}</h3>
                         <p className={styles.scientificName}>{animal.scientific}</p>
                       </div>
                       <span className={styles.orderNumber}>0{idx + 1} / 05</span>
@@ -198,36 +258,72 @@ function About() {
         </div>
       </section>
 
-      {/* About Us Content with Giraffe Ivory & Earthy Tones */}
+      {/* Impact Stats Strip */}
+      <section className={styles.statsSection}>
+        <div className={styles.statsContainer}>
+          {IMPACT_METRICS.map((metric, idx) => {
+            const Icon = metric.icon;
+            return (
+              <div key={idx} className={styles.statBlock}>
+                <div className={styles.statIconBox}>
+                  <Icon size={24} />
+                </div>
+                <div>
+                  <h4 className={styles.statNumber}>{metric.value}</h4>
+                  <p className={styles.statLabel}>{metric.label}</p>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* Heritage & Brand Story */}
       <section className={styles.introSection}>
         <div className={styles.container}>
           <div className={styles.aboutGrid}>
             <div className={styles.textSide}>
               <div className={styles.sectionLabel}>
                 <Compass size={18} />
-                <span>Our Heritage</span>
+                <span>Our Heritage & Vision</span>
               </div>
-              <h2>Pioneering East African Safaris</h2>
-              <p>
-                <strong>Conference Bookings & Safaris International (CB&SI)</strong> is rooted in Kenya, where our expedition journey began. 
-                Our inspiration stems from our founders and field rangers who carry an unwavering love for the African wild—dedicated to 
-                preserving Kenya’s magnificent wildlife habitats, from majestic giraffes on the open savannahs to the Great Migration.
+              <h2 className={styles.sectionTitle}>Pioneering East African Luxury & Expedition Safaris</h2>
+              <p className={styles.storyParagraph}>
+                <strong>Conference Bookings & Safaris International (CB&SI)</strong> was founded in Nairobi with a singular mission: to provide discerning global travelers and corporate delegations with deeply authentic, flawless East African travel experiences.
               </p>
-              <p>
-                Backed by decades of field expertise, CB&SI has expanded across premier East African conservancies, partnering exclusively 
-                with eco-conscious lodges and master safari guides who share our passion for authentic wildlife encounters.
+              <p className={styles.storyParagraph}>
+                From the thunderous river crossings of the Masai Mara to the serene elephant corridors of Amboseli and the volcanic vistas of the Great Rift Valley, our custom 4x4 expedition fleet and seasoned multilingual guides unlock the continent's most breathtaking wilderness.
               </p>
+              <div className={styles.highlightList}>
+                <div className={styles.highlightItem}>
+                  <CheckCircle2 size={18} className={styles.checkIcon} />
+                  <span>Licensed KATO Category 'A' Tour Operator</span>
+                </div>
+                <div className={styles.highlightItem}>
+                  <CheckCircle2 size={18} className={styles.checkIcon} />
+                  <span>Custom Extended 4x4 Safari Land Cruisers</span>
+                </div>
+                <div className={styles.highlightItem}>
+                  <CheckCircle2 size={18} className={styles.checkIcon} />
+                  <span>Certified Gold & Silver Field Guides</span>
+                </div>
+                <div className={styles.highlightItem}>
+                  <CheckCircle2 size={18} className={styles.checkIcon} />
+                  <span>24/7 Ground Ops & Emergency Flying Doctors</span>
+                </div>
+              </div>
             </div>
+
             <div className={styles.imageSide}>
               <div className={styles.imageWrapper}>
                 <img 
-                  src="https://images.unsplash.com/photo-1549366021-9f761d450615?auto=format&fit=crop&q=80&w=900" 
-                  alt="East African Reticulated Giraffes at Sunrise" 
+                  src="https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&q=80&w=900" 
+                  alt="CBSI Safari Land Cruiser in Masai Mara" 
                   className={styles.roundedImage} 
                 />
                 <div className={styles.imageFloatingBadge}>
                   <strong>15+</strong>
-                  <span>Years in Conservation</span>
+                  <span>Years of Wildlife Conservation</span>
                 </div>
               </div>
             </div>
@@ -235,49 +331,77 @@ function About() {
         </div>
       </section>
 
-      {/* Mission & Vision Section with Giraffe Pattern & Warm Tawny Cards */}
+      {/* Mission & Vision Cards */}
       <section className={styles.visionMission}>
-        <div className={styles.giraffePatternOverlay}></div>
         <div className={styles.container}>
           <div className={styles.cardGrid}>
-            <div className={`${styles.card} ${styles.creamGiraffeCard}`}>
+            <div className={styles.pillarCard}>
               <div className={styles.cardIconBox}>
-                <Target size={26} />
+                <Target size={28} />
               </div>
-              <h3>Our Mission</h3>
-              <p>
-                To deliver bespoke, world-class tourism and conference expeditions that exceed expectations while actively championing 
-                environmental stewardship, community conservation, and the preservation of Africa’s rich biodiversity.
+              <h3 className={styles.cardTitle}>Our Mission</h3>
+              <p className={styles.cardText}>
+                To engineer bespoke, world-class tourism and conference summits that exceed expectations while actively championing environmental stewardship, community empowerment, and the preservation of Africa’s rich biodiversity for generations to come.
               </p>
             </div>
-            <div className={`${styles.card} ${styles.chestnutGiraffeCard}`}>
+
+            <div className={styles.pillarCard}>
               <div className={styles.cardIconBox}>
-                <Eye size={26} />
+                <Eye size={28} />
               </div>
-              <h3>Our Vision</h3>
-              <p>
-                To be Africa's leading safari architect—inspiring global travelers, fostering unforgettable wildlife connections, 
-                and setting the gold standard for sustainable luxury expeditions and international summits.
+              <h3 className={styles.cardTitle}>Our Vision</h3>
+              <p className={styles.cardText}>
+                To stand as East Africa's benchmark safari architect—inspiring global travelers, fostering life-changing wildlife connections, and setting the gold standard for sustainable luxury expeditions and high-impact international corporate summits.
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Our Product Section with Giraffe Ochre Accents */}
-      <section className={styles.products}>
+      {/* Conservation & Accreditation Banner */}
+      <section className={styles.accreditationSection}>
         <div className={styles.container}>
-          <div className={styles.productContent}>
-            <h2>Bespoke Journeys & Conferences</h2>
-            <p>
-              We handcraft seamless itineraries across iconic national reserves and private sanctuaries. From high-altitude mountain retreats 
-              to 4x4 game drives amidst towering giraffe herds, we guarantee unbeatable hospitality, safety, and luxury value.
-            </p>
-            <div className={styles.serviceHighlights}>
-              <span><CheckCircle2 size={16} /> Tailor-Made Itineraries</span>
-              <span><CheckCircle2 size={16} /> 24/7 Concierge Support</span>
-              <span><CheckCircle2 size={16} /> Eco-Certified Safari Lodges</span>
-              <span><CheckCircle2 size={16} /> Expert Local Wildlife Rangers</span>
+          <div className={styles.trustBanner}>
+            <div className={styles.trustText}>
+              <div className={styles.sectionLabel}>
+                <HeartHandshake size={18} />
+                <span>Ethical Travel</span>
+              </div>
+              <h3>Responsible Tourism & Community Partnerships</h3>
+              <p>
+                Every journey booked with CBSI directly contributes to indigenous community conservancies, anti-poaching patrol equipment, and sustainable tree reforestation around the Mau and Aberdare water towers.
+              </p>
+              <div className={styles.trustPoints}>
+                <div className={styles.trustPointItem}>
+                  <ShieldCheck size={16} color="#c5a059" />
+                  <span>Fair wages & training for local Maasai and Samburu scouts</span>
+                </div>
+                <div className={styles.trustPointItem}>
+                  <ShieldCheck size={16} color="#c5a059" />
+                  <span>Plastic-free and solar-powered partner safari camps</span>
+                </div>
+              </div>
+            </div>
+
+            <div className={styles.ctaBox}>
+              <h4>Ready to Plan Your Safari?</h4>
+              <p>Speak directly with our safari directors or design your custom itinerary in minutes.</p>
+              
+              <button 
+                className={styles.ctaButtonPrimary}
+                onClick={() => navigate('/itineraries')}
+              >
+                <span>Browse All Itineraries</span>
+                <ArrowRight size={18} />
+              </button>
+
+              <button 
+                className={styles.ctaButtonWA}
+                onClick={handleOpenWhatsApp}
+              >
+                <MessageCircle size={18} />
+                <span>WhatsApp Safari Desk</span>
+              </button>
             </div>
           </div>
         </div>
