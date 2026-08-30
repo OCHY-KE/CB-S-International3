@@ -1,154 +1,143 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { ChevronDown, Award, CalendarCheck, Compass, Users } from "lucide-react";
+import { 
+  ChevronDown, Award, CalendarCheck, Compass, Users, 
+  MapPin, ShieldCheck, Globe, ArrowRight, Heart, Mountain, Plane
+} from "lucide-react";
 import AcceleratingCounter from "../components/AcceleratingCounter";
 import styles from "../styles/HomePage.module.css";
+import ItineraryS from "../components/sections/ItineraryS";
+import Hero from "../components/sections/Hero";
 
 const HomePage = ({ currentPage, onPageChange }) => {
   const navigate = useNavigate();
 
-  const handleExplore = () => {
-    const servicesSection = document.getElementById("services");
-    if (servicesSection) {
-      const headerOffset = 85;
-      const elementPosition = servicesSection.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: "smooth"
-      });
-    } else if (typeof onPageChange === 'function') {
-      onPageChange('about');
-    } else {
-      navigate('/about');
-    }
-  };
-
-  const handlePlan = () => {
+  const handleAction = (path) => {
     if (typeof onPageChange === 'function') {
-      onPageChange('about');
+      onPageChange(path);
     } else {
-      navigate('/about');
-    }
-  };
-
-  const scrollToServices = () => {
-    const servicesSection = document.getElementById("services");
-    if (servicesSection) {
-      const headerOffset = 85;
-      const elementPosition = servicesSection.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: "smooth"
-      });
+      navigate(`/${path}`);
     }
   };
 
   return (
     <div className={styles.pageWrapper}>
-      {/* Hero Section */}
-      <section id="hero" className={styles.hero}>
-        <div className={styles.heroOverlay}>
-          <div className={styles.heroContent}>
-            <h1>Unforgettable Safaris. <br /><span>Seamless Conferences.</span></h1>
-            <p>
-              Experience the wild heart of Africa with world-class logistics and 
-              bespoke travel experiences tailored for explorers and professionals.
-            </p>
-            <div className={styles.heroActions}>
-              <button className={styles.btnPrimary} onClick={handleExplore}>
-                Explore Safaris
-              </button>
-              <button className={styles.btnSecondary} onClick={handlePlan}>
-                Plan a Conference
-              </button>
+      {/* 1. Hero Section - Updated with official tagline */}
+      <Hero 
+        title="Conference Bookings & Safaris International" 
+        subtitle="Defining Safari Frontiers"
+      />
+
+      {/* 2. Philosophy/About Section - Integrated Page 2 Info */}
+      <section id="philosophy" className={styles.philosophy}>
+        <div className={styles.container}>
+          <div className={styles.splitContent}>
+            <div className={styles.textContent}>
+              <span>About Us</span>
+              <h2>Luxury, Style, and Authenticity <br />Born in Kenya.</h2>
+              <p>
+                Inspiration came from a deep-seated commitment to not only preserve 
+                Kenya’s wildlife and natural wonders, but to share them with the rest of the world. 
+                Strengthened by expertise in our home market, CB&SI has expanded into numerous 
+                African destinations, partnering with suppliers who share our drive for excellence.
+              </p>
+              <ul className={styles.featureList}>
+                <li><ShieldCheck size={20} /> Talented, responsible, and caring guides</li>
+                <li><Plane size={20} /> Optimized travel with internal flights to maximize your time</li>
+                <li><Award size={20} /> High-standard properties and hand-picked destinations</li>
+              </ul>
+            </div>
+            <div className={styles.imageContent}>
+              <div className={styles.experienceCard}>
+                {/* Image of the elephant from Page 1 of the PDF */}
+                <img src="https://res.cloudinary.com/cioghqt5/image/upload/v1788093014/Waterfalls-in-Kenya.jpg" alt="CB&SI Safari" />
+                <div className={styles.floatingTag}>Defining Frontiers</div>
+              </div>
             </div>
           </div>
         </div>
-
-        {/* Floating smooth scroll down indicator */}
-        <button
-          type="button"
-          onClick={scrollToServices}
-          className={styles.scrollDownIndicator}
-          aria-label="Scroll to services"
-        >
-          <span>Discover More</span>
-          <ChevronDown className={styles.scrollChevron} size={22} />
-        </button>
       </section>
 
-      {/* Quick Services Section */}
+      {/* 3. Mission & Vision Section - New section from Page 2 */}
+      <section className={styles.missionVision}>
+        <div className={styles.container}>
+          <div className={styles.missionGrid}>
+            <div className={styles.missionCard}>
+              <Heart className={styles.cardIcon} />
+              <h3>Our Mission</h3>
+              <p>
+                To serve our customers to their entire satisfaction and provide quality 
+                tourism services, committing to the social, cultural and environmental 
+                reality of our country’s beauty and biodiversity.
+              </p>
+            </div>
+            <div className={styles.visionCard}>
+              <Globe className={styles.cardIcon} />
+              <h3>Our Vision</h3>
+              <p>
+                To be your travel champion and companion, making your experience 
+                memorable with innovative guides, competitive prices, and 24/7 service.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 4. Core Services - Refined using "Our Product" info from Page 3 */}
       <section id="services" className={styles.services}>
         <div className={styles.container}>
-          <div className={styles.sectionHeader}>
-            <span>Our Expertise</span>
-            <h2>Why Choose CB&SI?</h2>
+          <div className={styles.sectionHeaderCentered}>
+            <span>Our Product</span>
+            <h2>Tailored To Your Dreams</h2>
+            <p>"You dream it... CB&SI will make it happen!"</p>
           </div>
 
           <div className={styles.serviceGrid}>
             <div className={styles.serviceCard}>
-              <div className={styles.icon}>🦒</div>
-              <h3>Bespoke Safaris</h3>
-              <p>Custom-tailored wildlife journeys through the most iconic parks in East Africa.</p>
+              <div className={styles.iconCircle}><Compass /></div>
+              <h3>Tailor-Made Itineraries</h3>
+              <p>Personalized packages for special occasions, off-the-beaten-track adventures, or well-needed breaks.</p>
             </div>
             <div className={styles.serviceCard}>
-              <div className={styles.icon}>🤝</div>
-              <h3>Corporate Events</h3>
-              <p>End-to-end conference management, from venue booking to professional logistics.</p>
+              <div className={styles.iconCircle}><Mountain /></div>
+              <h3>Safaris & Climbs</h3>
+              <p>Expertly conducted expeditions with a focus on safety, responsibility, and unforgettable wildlife encounters.</p>
             </div>
             <div className={styles.serviceCard}>
-              <div className={styles.icon}>✈️</div>
-              <h3>Travel Logistics</h3>
-              <p>Seamless airport transfers, local flight bookings, and 24/7 travel support.</p>
+              <div className={styles.iconCircle}><Users /></div>
+              <h3>Buying Power</h3>
+              <p>Strong relationships with local suppliers ensure high value for money without compromising quality.</p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Stats Section */}
+      {/* Featured Destinations */}
+      <ItineraryS />
+
+      {/* 5. Stats Section - Modern Counter Layout */}
       <section id="stats" className={styles.stats}>
-        <div className={styles.statItem}>
-          <div className={styles.statIconBadge}>
-            <Award size={24} />
+        <div className={styles.statsGrid}>
+          <div className={styles.statItem}>
+            <strong><AcceleratingCounter start={0} end={15} suffix="+" duration={2000} /></strong>
+            <span>Years in Kenya</span>
           </div>
-          <strong>
-            <AcceleratingCounter start={0} end={15} suffix="+" duration={2000} />
-          </strong>
-          <span>Years Experience</span>
-        </div>
-
-        <div className={styles.statItem}>
-          <div className={styles.statIconBadge}>
-            <CalendarCheck size={24} />
+          <div className={styles.statItem}>
+            <strong>24/7</strong>
+            <span>Customer Service</span>
           </div>
-          <strong>
-            <AcceleratingCounter start={0} end={500} suffix="+" duration={2400} />
-          </strong>
-          <span>Conferences Hosted</span>
-        </div>
-
-        <div className={styles.statItem}>
-          <div className={styles.statIconBadge}>
-            <Users size={24} />
+          <div className={styles.statItem}>
+            <strong>100%</strong>
+            <span>Personalized</span>
           </div>
-          <strong>
-            <AcceleratingCounter start={0} end={10000} suffix="+" duration={2600} />
-          </strong>
-          <span>Happy Explorers</span>
-        </div>
-
-        <div className={styles.statItem}>
-          <div className={styles.statIconBadge}>
-            <Compass size={24} />
+          <div className={styles.statItem}>
+            <strong><Award size={40} /></strong>
+            <span>Quality Guaranteed</span>
           </div>
-          <strong>
-            <AcceleratingCounter start={0} end={99.8} decimals={1} suffix="%" duration={2200} />
-          </strong>
-          <span>Satisfaction Rate</span>
         </div>
       </section>
+
+      
     </div>
   );
 };

@@ -29,21 +29,27 @@ function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [user, setUser] = useState(null);
 
+  // Track scroll state for header styling changes
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Lock body scroll when mobile menu is open
+  // Lock body scroll and automatically scroll to top when opening the mobile menu
   useEffect(() => {
     if (isMenuOpen) {
+      // Force viewport scroll to 0 to show the navbar header completely
+      window.scrollTo({ top: 0, behavior: 'instant' });
       document.body.style.overflow = 'hidden';
+      document.body.style.touchAction = 'none';
     } else {
       document.body.style.overflow = '';
+      document.body.style.touchAction = '';
     }
     return () => {
       document.body.style.overflow = '';
+      document.body.style.touchAction = '';
     };
   }, [isMenuOpen]);
 
@@ -91,37 +97,46 @@ function Navbar() {
   };
 
   const handleWhatsAppChat = () => {
-    window.open(`https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent('Hello CBSI Safaris! I would like to inquire about safari booking.')}`, '_blank');
+    window.open(
+      `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(
+        'Hello CBSI Safaris! I would like to inquire about safari booking.'
+      )}`,
+      '_blank'
+    );
     setIsMenuOpen(false);
   };
 
   return (
     <header className={`${styles.siteHeader} ${scrolled ? styles.scrolled : ''}`}>
       <div className={styles.headerContainer}>
-        <div className={styles.brandWrap} onClick={() => { navigate('/'); setIsMenuOpen(false); }}>
+        {/* Brand Logo & Name */}
+        <div 
+          className={styles.brandWrap} 
+          onClick={() => { navigate('/'); setIsMenuOpen(false); }}
+        >
           <img
             src="https://res.cloudinary.com/cioghqt5/image/upload/v1787046490/cbsis_original.jpg"
-            alt="CB SI Logo"
+            alt="CBSI Safaris Logo"
             className={styles.brandLogo}
           />
           <div className={styles.brandCopy}>
-            <p className={styles.brandName}>
-              Conference Bookings &
-            </p>
+            <p className={styles.brandName}>Conference Bookings &</p>
             <p className={styles.brandName}>Safaris International</p>
             <span className={styles.brandTag}>defining safari frontiers</span>
           </div>
         </div>
 
+        {/* Mobile Hamburger Toggle Button */}
         <button
           className={`${styles.mobileToggle} ${isMenuOpen ? styles.active : ''}`}
           onClick={() => setIsMenuOpen(!isMenuOpen)}
           aria-label="Toggle navigation"
+          aria-expanded={isMenuOpen}
         >
           <span className={styles.hamburger}></span>
         </button>
 
-        {/* Backdrop for mobile drawer */}
+        {/* Fullscreen Mobile Backdrop */}
         {isMenuOpen && (
           <div 
             className={styles.mobileBackdrop} 
@@ -129,18 +144,20 @@ function Navbar() {
           />
         )}
 
+        {/* Navigation Drawer Container */}
         <nav className={`${styles.nav} ${isMenuOpen ? styles.navOpen : ''}`}>
-          {/* Mobile Drawer Top Bar */}
+          {/* Mobile Drawer Header */}
           <div className={styles.mobileDrawerHeader}>
             <div className={styles.drawerBrand}>
               <img
                 src="https://res.cloudinary.com/cioghqt5/image/upload/v1787046490/cbsis_original.jpg"
-                alt="CBSI"
+                alt="CBSI Logo"
                 className={styles.drawerLogo}
               />
-              <span className={styles.drawerBrandText}>CBSI SAFARIS</span>
+              <span className={styles.drawerBrandText}>CB&S INTERNATIONAL</span>
             </div>
             <button 
+              type="button"
               className={styles.drawerCloseBtn}
               onClick={() => setIsMenuOpen(false)}
               aria-label="Close menu"
@@ -149,6 +166,7 @@ function Navbar() {
             </button>
           </div>
 
+          {/* Navigation Links */}
           <div className={styles.navLinks}>
             {navItems.map((item) => (
               <NavLink
@@ -157,7 +175,11 @@ function Navbar() {
                 end={item.path === '/'}
                 onClick={handleNavClick}
                 className={({ isActive }) =>
-                  `${styles.navLink} ${isActive || (item.path === '/' && location.pathname === '/') ? styles.activeLink : ''}`
+                  `${styles.navLink} ${
+                    isActive || (item.path === '/' && location.pathname === '/')
+                      ? styles.activeLink
+                      : ''
+                  }`
                 }
               >
                 <span>{item.label}</span>
@@ -165,7 +187,7 @@ function Navbar() {
             ))}
           </div>
 
-          {/* Quick Action Highlight for Custom Safari Builder in Drawer */}
+          {/* Custom Safari Builder Drawer Card */}
           <div className={styles.drawerBuilderCard}>
             <div className={styles.builderCardContent}>
               <div className={styles.builderBadge}>
@@ -173,7 +195,9 @@ function Navbar() {
                 <span>100% Bespoke</span>
               </div>
               <h4 className={styles.builderTitle}>Tailor-Made Safari</h4>
-              <p className={styles.builderSubtitle}>Calculate live estimate & pick your favorite parks</p>
+              <p className={styles.builderSubtitle}>
+                Calculate live estimate & pick your favorite parks
+              </p>
             </div>
             <button 
               type="button"
@@ -184,11 +208,15 @@ function Navbar() {
             </button>
           </div>
 
+          {/* User Account / Login & Primary CTA Actions */}
           <div className={styles.navActions}>
             {user ? (
               <button
+                type="button"
                 id="navbar-profile-btn"
-                className={`${styles.profileButton} ${location.pathname === '/profile' ? styles.profileButtonActive : ''}`}
+                className={`${styles.profileButton} ${
+                  location.pathname === '/profile' ? styles.profileButtonActive : ''
+                }`}
                 onClick={() => {
                   navigate('/profile');
                   setIsMenuOpen(false);
@@ -200,6 +228,7 @@ function Navbar() {
               </button>
             ) : (
               <button
+                type="button"
                 id="navbar-login-btn"
                 className={styles.textButton}
                 onClick={() => {
@@ -212,6 +241,7 @@ function Navbar() {
             )}
 
             <button 
+              type="button"
               className={styles.ctaButton} 
               onClick={() => { navigate('/contact'); setIsMenuOpen(false); }}
             >
@@ -219,7 +249,7 @@ function Navbar() {
             </button>
           </div>
 
-          {/* Mobile Direct Contact Quick Bar in Drawer */}
+          {/* Direct Mobile Contact Strip */}
           <div className={styles.mobileContactStrip}>
             <button 
               type="button" 
@@ -240,7 +270,7 @@ function Navbar() {
             </a>
           </div>
 
-          {/* Mobile Drawer Footer */}
+          {/* Mobile Drawer Footer Trust Badge */}
           <div className={styles.mobileDrawerFooter}>
             <div className={styles.mobileTrustBadge}>
               <ShieldCheck size={14} />

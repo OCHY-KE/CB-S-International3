@@ -11,6 +11,8 @@ import SEO from './components/SEO';
 import Breadcrumb from './components/Breadcrumb';
 import AdminRoute from './components/AdminRoute';
 import ProtectedRoute from './components/ProtectedRoute';
+import ItineraryS from './components/sections/ItineraryS';
+import Hero from './components/sections/Hero';
 
 // Styles
 import './App.css';

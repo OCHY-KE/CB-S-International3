@@ -4,43 +4,50 @@
  */
 
 export const getVideoTypeAndEmbed = (url) => {
-  if (!url || typeof url !== 'string') return { type: 'unknown', embedUrl: null, isDirect: false };
+  if (!url || typeof url !== 'string') {
+    return { type: 'unknown', embedUrl: null, isDirect: false };
+  }
 
   const trimmed = url.trim();
 
-  // 1. YouTube detection
-  const ytMatch = trimmed.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=|shorts\/)|youtu\.be\/)([^"&?\/\s]{11})/i);
-  if (ytMatch && ytMatch[1]) {
+  // 1. YouTube detection (standard, shorts, embed, youtu.be)
+  const ytMatch = trimmed.match(
+    /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=|shorts\/)|youtu\.be\/)([^"&?\/\s]{11})/i
+  );
+  if (ytMatch?.[1]) {
+    const videoId = ytMatch[1];
     return {
       type: 'youtube',
-      videoId: ytMatch[1],
-      embedUrl: `https://www.youtube.com/embed/${ytMatch[1]}?autoplay=1&rel=0&modestbranding=1&playsinline=1`,
+      videoId,
+      embedUrl: `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1&playsinline=1`,
       isDirect: false
     };
   }
 
   // 2. Vimeo detection
   const vimeoMatch = trimmed.match(/(?:vimeo\.com\/(?:video\/)?|player\.vimeo\.com\/video\/)([0-9]+)/i);
-  if (vimeoMatch && vimeoMatch[1]) {
+  if (vimeoMatch?.[1]) {
+    const videoId = vimeoMatch[1];
     return {
       type: 'vimeo',
-      videoId: vimeoMatch[1],
-      embedUrl: `https://player.vimeo.com/video/${vimeoMatch[1]}?autoplay=1&color=c5a059&title=0&byline=0&portrait=0`,
+      videoId,
+      embedUrl: `https://player.vimeo.com/video/${videoId}?autoplay=1&color=c5a059&title=0&byline=0&portrait=0`,
       isDirect: false
     };
   }
 
-  // 3. Direct video (MP4, WebM, OGG, Cloudinary video stream, etc.)
-  const isDirectVideo = /\.(mp4|webm|ogg|mov|m4v)(\?.*)?$/i.test(trimmed) || 
+  // 3. Direct video detection (MP4, WebM, OGG, MOV, M4V, Cloudinary, blob, data URI)
+  const isDirectVideo =
+    /\.(mp4|webm|ogg|mov|m4v)(\?.*)?$/i.test(trimmed) ||
     trimmed.includes('/video/upload/') ||
-    trimmed.includes('blob:') ||
+    trimmed.startsWith('blob:') ||
     trimmed.startsWith('data:video/');
 
   return {
-    type: isDirectVideo ? 'direct' : 'direct', // default to direct video tag if not youtube/vimeo
+    type: isDirectVideo ? 'direct' : 'unknown',
     embedUrl: null,
-    isDirect: true,
-    directUrl: trimmed
+    isDirect: isDirectVideo,
+    directUrl: isDirectVideo ? trimmed : null
   };
 };
 
@@ -49,11 +56,20 @@ export const getVideoTypeAndEmbed = (url) => {
  */
 export const getMediaFormatLabel = (item) => {
   if (!item) return 'Media';
+
   if (item.type === 'video') {
     const videoInfo = getVideoTypeAndEmbed(item.url);
-    if (videoInfo.type === 'youtube') return 'YouTube 4K Reel';
-    if (videoInfo.type === 'vimeo') return 'Vimeo Safari Footage';
-    return '4K Safari Video';
+    switch (videoInfo.type) {
+      case 'youtube':
+        return 'YouTube 4K Reel';
+      case 'vimeo':
+        return 'Vimeo Safari Footage';
+      case 'direct':
+        return '4K Safari Video';
+      default:
+        return 'Video';
+    }
   }
+
   return 'Wildlife Photograph';
 };

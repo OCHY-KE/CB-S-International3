@@ -34,37 +34,6 @@ export const formatStorageUrl = (url, bucket = 'CBSI') => {
 
 export const INITIAL_GALLERY_ITEMS = [
   {
-    id: 'safari-vid-1',
-    type: 'video',
-    title: 'Wildebeest River Crossing - Serengeti & Mara',
-    category: 'Wildlife',
-    mediaUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
-    posterUrl: 'https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&q=80&w=1200',
-    videoEmbedUrl: '',
-    location: 'Maasai Mara National Reserve, Kenya',
-    description: 'Witness the thunderous Great Migration as thousands of wildebeest and zebras brave the Mara River crocodiles in an epic struggle of nature.',
-    tags: ['GreatMigration', 'BigFive', 'MaraRiver', 'WildlifeVideo'],
-    featured: true,
-    likes: 142,
-    dateAdded: '2026-08-15',
-    author: 'Chief Guide Ole Sankale'
-  },
-  {
-    id: 'safari-img-1',
-    type: 'image',
-    title: 'Majestic Mara Lion at Dawn',
-    category: 'Wildlife',
-    mediaUrl: 'https://images.unsplash.com/photo-1546182990-dffeafbe841d?auto=format&fit=crop&q=80&w=1200',
-    posterUrl: 'https://images.unsplash.com/photo-1546182990-dffeafbe841d?auto=format&fit=crop&q=80&w=600',
-    location: 'Maasai Mara, Kenya',
-    description: 'Golden hour silhouette of a dominant male lion scanning the vast plains of the Mara triangle.',
-    tags: ['Lion', 'KingOfTheJungle', 'GoldenHour', 'BigFive'],
-    featured: true,
-    likes: 98,
-    dateAdded: '2026-08-10',
-    author: 'Samson Kimani (Senior Safari Lead)'
-  },
-  {
     id: 'safari-vid-2',
     type: 'video',
     title: 'Serengeti Endless Plains - Aerial 4K Expedition',
@@ -81,36 +50,6 @@ export const INITIAL_GALLERY_ITEMS = [
     author: 'CBSI Aerial Film Unit'
   },
   {
-    id: 'safari-img-2',
-    type: 'image',
-    title: 'Amboseli Elephants under Mount Kilimanjaro',
-    category: 'Landscapes',
-    mediaUrl: 'https://images.unsplash.com/photo-1589182397057-b163ce479c83?auto=format&fit=crop&q=80&w=1200',
-    posterUrl: 'https://images.unsplash.com/photo-1589182397057-b163ce479c83?auto=format&fit=crop&q=80&w=600',
-    location: 'Amboseli National Park, Kenya',
-    description: 'An iconic African tableau of bull elephants grazing beneath the snow-capped peak of Mount Kilimanjaro.',
-    tags: ['Kilimanjaro', 'Amboseli', 'Elephants', 'AfricanIcon'],
-    featured: false,
-    likes: 87,
-    dateAdded: '2026-08-08',
-    author: 'David Mwangi'
-  },
-  {
-    id: 'safari-img-3',
-    type: 'image',
-    title: 'Luxury Tented Haven & Sunset Deck',
-    category: 'Lodges',
-    mediaUrl: 'https://images.unsplash.com/photo-1493246507139-91e8bef99c02?auto=format&fit=crop&q=80&w=1200',
-    posterUrl: 'https://images.unsplash.com/photo-1493246507139-91e8bef99c02?auto=format&fit=crop&q=80&w=600',
-    location: 'Oloololo Escarpment, Kenya',
-    description: 'Private infinity plunge pool and hardwood deck overlooking 180 degrees of uninterrupted African wilderness.',
-    tags: ['LuxuryLodge', 'Glamping', 'RomanticSafari', 'EcoTourism'],
-    featured: true,
-    likes: 76,
-    dateAdded: '2026-08-05',
-    author: 'Hospitality Concierge'
-  },
-  {
     id: 'safari-img-4',
     type: 'image',
     title: 'International MICE Summit & Gala Setup',
@@ -124,21 +63,6 @@ export const INITIAL_GALLERY_ITEMS = [
     likes: 64,
     dateAdded: '2026-08-01',
     author: 'Events Directorate'
-  },
-  {
-    id: 'safari-img-5',
-    type: 'image',
-    title: 'Leopard on an Acacia Perch',
-    category: 'Wildlife',
-    mediaUrl: 'https://images.unsplash.com/photo-1575550959106-5a7defe28b56?auto=format&fit=crop&q=80&w=1200',
-    posterUrl: 'https://images.unsplash.com/photo-1575550959106-5a7defe28b56?auto=format&fit=crop&q=80&w=600',
-    location: 'Samburu National Reserve, Kenya',
-    description: 'Elusive female leopard resting peacefully in the canopy after a successful morning hunt.',
-    tags: ['Leopard', 'Samburu', 'Predators', 'WildlifePhotography'],
-    featured: false,
-    likes: 91,
-    dateAdded: '2026-07-28',
-    author: 'Samson Kimani'
   },
   {
     id: 'safari-img-6',
