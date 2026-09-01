@@ -16,7 +16,8 @@ const navItems = [
   { label: 'About', path: '/about' },
   { label: 'Itineraries', path: '/itineraries' },
   { label: 'Gallery', path: '/gallery' },
-  { label: 'Contact', path: '/contact' }
+  { label: 'Contact', path: '/contact' },
+ 
 ];
 
 const WHATSAPP_PHONE = '254722774952';

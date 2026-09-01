@@ -32,6 +32,7 @@ const AdminGallery = lazy(() => import('./pages/AdminGallery'));
 const ItinerariesAdmin = lazy(() => import('./pages/ItinerariesAdmin'));
 
 const ItineraryReader = lazy(() => import('./pages/ItineraryReader')); // Add this
+const Donate = lazy(() => import('./pages/Donate'));
 
 // --- Layout Components ---
 
@@ -85,7 +86,7 @@ function App() {
                 <Route path="gallery" element={<Gallery />} />
                 <Route path="contact" element={<ContactPage />} />
                 <Route path="itineraries" element={<Itineraries />} />
-
+                <Route path="donate" element={<Donate />} />
                 {/* ADD THIS NEW ROUTE */}
                 <Route path="itineraries/:id" element={<ItineraryReader />} />
                 <Route

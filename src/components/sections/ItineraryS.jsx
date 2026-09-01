@@ -86,7 +86,7 @@ const ItinerariesSection = () => {
       <div className={styles.headerContainer}>
         <div className={styles.titleGroup}>
           <span className={styles.kicker}><Sparkles size={16} /> Signature Collections</span>
-          <h2 className={styles.title}>Plan Your <span>Next Chapter</span></h2>
+          <h2 className={styles.title}>Plan Your <span>Next Stop</span></h2>
         </div>
         <button className={styles.viewAllBtn} onClick={() => navigate('/itineraries')}>
           View All <ArrowRight size={18} />

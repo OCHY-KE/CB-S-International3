@@ -36,10 +36,7 @@ const HomePage = ({ currentPage, onPageChange }) => {
               <span>About Us</span>
               <h2>Luxury, Style, and Authenticity <br />Born in Kenya.</h2>
               <p>
-                Inspiration came from a deep-seated commitment to not only preserve 
-                Kenya’s wildlife and natural wonders, but to share them with the rest of the world. 
-                Strengthened by expertise in our home market, CB&SI has expanded into numerous 
-                African destinations, partnering with suppliers who share our drive for excellence.
+              Conference Bookings & Safaris International (CB&SI) was founded in Kenya, inspired by the passion of its owners and team, who share a deep love for the country and a strong commitment to protecting its wildlife and natural treasures while showcasing them to the world. Building on extensive experience in its home market, CB&SI has recently broadened its reach across Africa, collaborating with leading partners who bring the same expertise, enthusiasm, and dedication to delivering exceptional safari experiences.
               </p>
               <ul className={styles.featureList}>
                 <li><ShieldCheck size={20} /> Talented, responsible, and caring guides</li>
@@ -83,35 +80,7 @@ const HomePage = ({ currentPage, onPageChange }) => {
         </div>
       </section>
 
-      {/* 4. Core Services - Refined using "Our Product" info from Page 3 */}
-      <section id="services" className={styles.services}>
-        <div className={styles.container}>
-          <div className={styles.sectionHeaderCentered}>
-            <span>Our Product</span>
-            <h2>Tailored To Your Dreams</h2>
-            <p>"You dream it... CB&SI will make it happen!"</p>
-          </div>
-
-          <div className={styles.serviceGrid}>
-            <div className={styles.serviceCard}>
-              <div className={styles.iconCircle}><Compass /></div>
-              <h3>Tailor-Made Itineraries</h3>
-              <p>Personalized packages for special occasions, off-the-beaten-track adventures, or well-needed breaks.</p>
-            </div>
-            <div className={styles.serviceCard}>
-              <div className={styles.iconCircle}><Mountain /></div>
-              <h3>Safaris & Climbs</h3>
-              <p>Expertly conducted expeditions with a focus on safety, responsibility, and unforgettable wildlife encounters.</p>
-            </div>
-            <div className={styles.serviceCard}>
-              <div className={styles.iconCircle}><Users /></div>
-              <h3>Buying Power</h3>
-              <p>Strong relationships with local suppliers ensure high value for money without compromising quality.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
+      
       {/* Featured Destinations */}
       <ItineraryS />
 
