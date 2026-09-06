@@ -1,5 +1,5 @@
 import React, { useMemo, useEffect } from 'react';
-import { Link, useLocation, useSearchParams } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Home, ChevronRight, Compass, ShieldCheck, User, Film, Info, Headphones } from 'lucide-react';
 import { generateBreadcrumbSchema } from '../utils/seoConfig';
 import styles from '../styles/Breadcrumb.module.css';
@@ -14,15 +14,14 @@ const ROUTE_CONFIG = {
   '/create-account': { label: 'Join Explorer Club', parent: { label: 'Client Portal', path: '/login' }, category: 'Account', icon: User },
   '/profile': { label: 'Explorer Profile', parent: { label: 'Client Portal', path: '/profile' }, category: 'Account', icon: User },
   '/admin-login': { label: 'Admin Sign In', parent: { label: 'Management', path: '/admin-login' }, category: 'Admin', icon: ShieldCheck },
-  '/admin-dashboard': { label: 'Operations Dashboard', parent: { label: 'Admin Console', path: '/admin-dashboard' }, category: 'Management', icon: ShieldCheck },
-  '/admin-gallery': { label: 'Gallery & Media Studio', parent: { label: 'Admin Console', path: '/admin-dashboard' }, category: 'Management', icon: Film }
+  '/admin/dashboard': { label: 'Operations Dashboard', parent: { label: 'Admin Console', path: '/admin/dashboard' }, category: 'Management', icon: ShieldCheck },
+  '/admin/gallery': { label: 'Gallery & Media Studio', parent: { label: 'Admin Console', path: '/admin/dashboard' }, category: 'Management', icon: Film },
+  '/admin/itineraries': { label: 'Itinerary Manager', parent: { label: 'Admin Console', path: '/admin/dashboard' }, category: 'Management', icon: Compass }
 };
 
 const Breadcrumb = ({ customItems, hideOnHome = true }) => {
   const location = useLocation();
-  const [searchParams] = useSearchParams();
   const pathname = location.pathname;
-  const currentTab = searchParams.get('tab');
 
   // Compute breadcrumb items
   const breadcrumbItems = useMemo(() => {
@@ -44,10 +43,6 @@ const Breadcrumb = ({ customItems, hideOnHome = true }) => {
       }
       items.push({ label: config.label, path: pathname });
 
-      // Handle query tab sub-navigation (e.g. /admin-dashboard?tab=gallery)
-      if (pathname === '/admin-dashboard' && currentTab === 'gallery') {
-        items.push({ label: 'Gallery & 4K Studio', path: '/admin-dashboard?tab=gallery' });
-      }
     } else {
       // Fallback: build from path segments
       const segments = pathname.split('/').filter(Boolean);
@@ -67,7 +62,7 @@ const Breadcrumb = ({ customItems, hideOnHome = true }) => {
     }
 
     return items;
-  }, [pathname, currentTab, customItems]);
+  }, [pathname, customItems]);
 
   // Inject Schema.org BreadcrumbList structured data for SEO rich snippets
   useEffect(() => {

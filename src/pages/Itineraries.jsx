@@ -117,10 +117,14 @@ const Itineraries = () => {
           </div>
         ) : (
           <div className={styles.grid}>
-            {filteredPackages.map((pkg) => {
+            {filteredPackages.map((pkg, index) => {
               const { primaryImage, primaryVideo, hasVideo } = getPackageMedia(pkg);
               return (
-                <div key={pkg.id} className={styles.card} onClick={() => navigate(`/itineraries/${pkg.id}`)}>
+                <article
+                  key={pkg.id}
+                  className={`${styles.card} ${index === 0 ? styles.featuredCard : ''}`}
+                  onClick={() => navigate(`/itineraries/${pkg.id}`)}
+                >
                   <div className={styles.imageSection}>
                     <img src={primaryImage} alt={pkg.title} loading="lazy" />
                     <div className={styles.cardCategory}>{pkg.category}</div>
@@ -138,6 +142,7 @@ const Itineraries = () => {
                   </div>
                   <div className={styles.cardInfo}>
                     <div className={styles.cardMeta}>
+                      <span className={styles.storyLabel}>{index === 0 ? 'Featured journey' : `Journey ${String(index + 1).padStart(2, '0')}`}</span>
                       <span className={styles.durationTag}><Clock size={14} /> {pkg.duration}</span>
                     </div>
                     <h3>{pkg.title}</h3>
@@ -149,7 +154,7 @@ const Itineraries = () => {
                       <ChevronRight size={18} />
                     </div>
                   </div>
-                </div>
+                </article>
               );
             })}
           </div>

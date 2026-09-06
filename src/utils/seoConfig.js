@@ -77,13 +77,13 @@ export const ROUTE_SEO = {
     ogType: 'website',
     noIndex: true
   },
-  '/admin-dashboard': {
+  '/admin/dashboard': {
     title: 'Management Dashboard & Safari Operations Console',
     description: 'Executive admin panel for managing safari packages, delegate registrations, and media publications.',
     ogType: 'website',
     noIndex: true
   },
-  '/admin-gallery': {
+  '/admin/gallery': {
     title: 'Admin Gallery Studio | 4K Video & Imagery Publisher',
     description: 'Publish and curate high-resolution wildlife captures and 4K safari footage for the public gallery.',
     ogType: 'website',

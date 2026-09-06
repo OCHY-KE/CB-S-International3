@@ -44,9 +44,9 @@ const Footer = () => {
               service, and authenticity to provide unique, exciting adventures across the wild heart of Africa.
             </p>
             <div className={styles.socialLinks}>
-              <a href="#" aria-label="Facebook"><FaFacebookF /></a>
-              <a href="#" aria-label="Instagram"><FaInstagram /></a>
-              <a href="#" aria-label="TripAdvisor"><FaTripadvisor /></a>
+              <a href="https://facebook.com/cbsisafaris" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><FaFacebookF /></a>
+              <a href="https://instagram.com/cbsisafaris" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><FaInstagram /></a>
+              <a href="https://tripadvisor.com" target="_blank" rel="noopener noreferrer" aria-label="TripAdvisor"><FaTripadvisor /></a>
             </div>
           </div>
 

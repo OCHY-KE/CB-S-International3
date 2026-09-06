@@ -9,6 +9,7 @@ import {
 import { supabase } from '../supabaseClient';
 import SEO from '../components/SEO';
 import ItineraryGallery from '../components/ItineraryGallery';
+import MarkdownContent from '../components/MarkdownContent';
 import styles from '../styles/ItineraryReader.module.css';
 
 const DEFAULT_SAMPLES = [
@@ -94,6 +95,15 @@ const ItineraryReader = () => {
     window.open(`https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(message)}`, '_blank');
   };
 
+  const handleShare = async () => {
+    const shareData = { title: pkg.title, url: window.location.href };
+    if (navigator.share) {
+      await navigator.share(shareData);
+      return;
+    }
+    await navigator.clipboard?.writeText(window.location.href);
+  };
+
   const allMediaItems = useMemo(() => {
     if (!pkg) return [];
     const list = [];
@@ -120,9 +130,9 @@ const ItineraryReader = () => {
       <SEO title={`${pkg.title} | Safari Itinerary`} description={pkg.route} />
 
       <nav className={styles.floatingNav}>
-        <button onClick={() => navigate('/itineraries')} className={styles.iconCircle}><ArrowLeft size={20} /></button>
+        <button aria-label="Back to itineraries" onClick={() => navigate('/itineraries')} className={styles.iconCircle}><ArrowLeft size={20} /></button>
         <div className={styles.navActions}>
-          <button className={styles.iconCircle} onClick={() => navigator.share({title: pkg.title, url: window.location.href})}><Share2 size={20} /></button>
+          <button aria-label="Share itinerary" className={styles.iconCircle} onClick={handleShare}><Share2 size={20} /></button>
         </div>
       </nav>
 
@@ -134,7 +144,7 @@ const ItineraryReader = () => {
             <h1>{pkg.title}</h1>
             <div className={styles.quickFacts}>
               <span><Clock size={18} /> {pkg.duration}</span>
-              <span><MapPin size={18} /> {pkg.route}</span>
+              <span className={styles.routeFact}><MapPin size={18} /> {pkg.route}</span>
               <span><Users size={18} /> Private Safari</span>
             </div>
           </div>
@@ -148,6 +158,7 @@ const ItineraryReader = () => {
               <Sparkles size={20} className={styles.accent} />
               <h2>Experience Highlights</h2>
             </div>
+            <p className={styles.sectionIntro}>Everything arranged for a smooth, unhurried safari experience.</p>
             <div className={styles.highlightsGrid}>
               {['Professional Guide', '4x4 Landcruiser', 'All Park Fees', 'Luxury Lodging'].map((h, i) => (
                 <div key={i} className={styles.hCard}><CheckCircle2 size={16} /> {h}</div>
@@ -160,6 +171,7 @@ const ItineraryReader = () => {
               <Calendar size={20} className={styles.accent} />
               <h2>Your Journey</h2>
             </div>
+            <p className={styles.sectionIntro}>A day-by-day view of the places, wildlife, and moments ahead.</p>
             <div className={styles.timeline}>
               {pkg.days?.map((day, idx) => (
                 <div key={idx} className={styles.timelineItem}>
@@ -169,7 +181,7 @@ const ItineraryReader = () => {
                   </div>
                   <div className={styles.timelineContent}>
                     <h3>{day.location}</h3>
-                    <p>{day.activity}</p>
+                    <MarkdownContent>{day.activity}</MarkdownContent>
                     {day.media?.video && (
                       <button className={styles.inlineVideoBtn} onClick={() => setActiveVideoModal({url: day.media.video, title: day.location})}>
                         <Play size={14} fill="currentColor" /> Watch Day {day.day} Footage

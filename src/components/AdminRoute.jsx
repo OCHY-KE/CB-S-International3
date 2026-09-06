@@ -4,7 +4,7 @@ import { ShieldAlert, Loader2, ShieldCheck, Lock } from 'lucide-react';
 import { verifyAdminStatus } from '../utils/auth';
 
 /**
- * AdminRoute protects administrative operations routes (/admin-dashboard, /admin-gallery).
+ * AdminRoute protects administrative operations routes under /admin.
  * Only users authenticated as administrators are permitted access.
  * Non-admins and unauthenticated visitors are redirected to /admin-login.
  */

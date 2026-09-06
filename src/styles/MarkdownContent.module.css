@@ -1,0 +1,32 @@
+.content {
+  line-height: 1.7;
+}
+
+.content :global(p) {
+  margin: 0 0 1rem;
+}
+
+.content :global(p:last-child) {
+  margin-bottom: 0;
+}
+
+.content :global(ul),
+.content :global(ol) {
+  margin: 0.5rem 0 0.75rem;
+  padding-left: 1.25rem;
+}
+
+.content :global(a) {
+  color: inherit;
+  text-decoration: underline;
+}
+
+.content :global(strong) {
+  font-weight: 700;
+}
+
+.content :global(br) {
+  content: '';
+  display: block;
+  margin-bottom: 0.5rem;
+}

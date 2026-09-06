@@ -1,15 +1,37 @@
 {
+  "id": "/",
   "short_name": "CB & SI",
   "name": "Conference Bookings & Safaris International",
+  "description": "Luxury East Africa safaris, bespoke journeys, and conference planning by Conference Bookings & Safaris International.",
+  "lang": "en",
+  "dir": "ltr",
   "icons": [
     {
-      "src": "/favicon.ico",
-      "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/x-icon"
+      "src": "https://res.cloudinary.com/cioghqt5/image/upload/v1786973128/cbsi1.ico",
+      "sizes": "any",
+      "type": "image/x-icon",
+      "purpose": "any"
     }
   ],
   "start_url": "/",
-  "background_color": "#ffffff",
-  "theme_color": "#000000",
-  "display": "standalone"
+  "scope": "/",
+  "background_color": "#071321",
+  "theme_color": "#071321",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "categories": ["travel", "lifestyle"],
+  "shortcuts": [
+    {
+      "name": "Explore Itineraries",
+      "short_name": "Itineraries",
+      "url": "/itineraries",
+      "icons": [{ "src": "https://res.cloudinary.com/cioghqt5/image/upload/v1786973128/cbsi1.ico", "sizes": "any", "type": "image/x-icon" }]
+    },
+    {
+      "name": "Plan Your Trip",
+      "short_name": "Contact",
+      "url": "/contact",
+      "icons": [{ "src": "https://res.cloudinary.com/cioghqt5/image/upload/v1786973128/cbsi1.ico", "sizes": "any", "type": "image/x-icon" }]
+    }
+  ]
 }

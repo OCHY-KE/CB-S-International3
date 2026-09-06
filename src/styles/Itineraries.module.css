@@ -37,7 +37,7 @@
   background-image: url('https://images.unsplash.com/photo-1581888227599-779811939961?auto=format&fit=crop&w=1920&q=80');
   background-size: cover;
   background-position: center 30%; /* Slightly adjusted to keep the jackal in view */
-  background-attachment: fixed;
+  background-attachment: scroll;
 }
 
 .heroOverlay {
@@ -182,40 +182,51 @@
 /* Main Content Grid */
 .mainContent {
   max-width: 1200px;
-  margin: 50px auto;
+  margin: 64px auto 80px;
   padding: 0 20px;
   box-sizing: border-box;
 }
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
-  gap: 35px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0 28px;
+  border-top: 1px solid #dfe2dc;
 }
 
 /* Itinerary Card Styling */
 .card {
-  background: var(--white);
-  border-radius: 20px;
+  background: transparent;
   overflow: hidden;
-  box-shadow: var(--shadow-sm);
-  transition: var(--transition);
+  transition: transform 0.3s ease, border-color 0.3s ease;
   cursor: pointer;
   display: flex;
   flex-direction: column;
   height: 100%;
-  border: 1px solid rgba(0,0,0,0.03);
+  border-bottom: 1px solid #dfe2dc;
+  padding: 28px 0 34px;
 }
 
 .card:hover {
-  transform: translateY(-10px);
-  box-shadow: var(--shadow-lg);
+  transform: translateY(-4px);
+}
+
+.featuredCard {
+  grid-column: span 2;
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(260px, 0.65fr);
+  gap: 30px;
+  padding-top: 34px;
 }
 
 .imageSection {
   position: relative;
   height: 260px;
   overflow: hidden;
+}
+
+.featuredCard .imageSection {
+  height: 360px;
 }
 
 .imageSection img {
@@ -274,7 +285,7 @@
 }
 
 .cardInfo {
-  padding: 28px;
+  padding: 10px 0 0;
   flex-grow: 1;
   display: flex;
   flex-direction: column;
@@ -290,12 +301,34 @@
   margin-bottom: 12px;
 }
 
+.cardMeta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.8rem 1rem;
+}
+
+.storyLabel {
+  color: var(--safari-green);
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
 .cardInfo h3 {
-  font-size: 1.4rem;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 1.45rem;
   margin-bottom: 14px;
   color: var(--safari-green);
   line-height: 1.3;
   font-weight: 700;
+}
+
+.featuredCard .cardInfo h3 {
+  font-size: clamp(2rem, 3.2vw, 3.1rem);
+  line-height: 1.08;
+  margin-top: 1.1rem;
 }
 
 .location {
@@ -435,8 +468,12 @@
 /* Responsive Overrides */
 @media (max-width: 1024px) {
   .grid {
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 25px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 22px;
+  }
+
+  .featuredCard {
+    grid-column: span 2;
   }
 }
 
@@ -460,6 +497,16 @@
   
   .grid {
     grid-template-columns: 1fr;
+  }
+
+  .featuredCard {
+    grid-column: auto;
+    display: flex;
+    gap: 0;
+  }
+
+  .featuredCard .imageSection {
+    height: 280px;
   }
 
   .modal {
@@ -490,7 +537,7 @@
   }
 
   .cardInfo {
-    padding: 20px;
+    padding: 18px 0 0;
   }
 }
 

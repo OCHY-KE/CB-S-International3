@@ -1,7 +1,11 @@
 /* --- Wrapper: Full Width, No Margins --- */
 .wrapper {
   width: 100%;
-  background: #000000;
+  background-color: #11120f;
+  background-image: linear-gradient(rgba(16, 24, 18, 0.48), rgba(16, 24, 18, 0.62)), url('https://images.unsplash.com/photo-1535338454770-8be927b5a00b?auto=format&fit=crop&w=2200&q=85');
+  background-size: cover;
+  background-position: center;
+  background-attachment: scroll;
   margin: 0;
   padding: 0;
   overflow: hidden; /* Prevents unwanted horizontal scroll */
@@ -10,18 +14,26 @@
 
 /* --- Header: Clean Contrast --- */
 .headerContainer {
-  padding: 4rem 5% 3rem;
+  padding: clamp(3rem, 7vw, 6rem) 5% clamp(2.5rem, 5vw, 4rem);
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  background: #ffffff;
-  border-bottom: 1px solid #f0f0f0;
+  background: #f5f2eb;
+  border-bottom: 1px solid #ded8ca;
 }
 
 .titleGroup {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+}
+
+.intro {
+  max-width: 38rem;
+  margin: 0.75rem 0 0;
+  color: #66645c;
+  font-size: 1rem;
+  line-height: 1.7;
 }
 
 .kicker {
@@ -69,11 +81,11 @@
 /* --- The Grid: Edge-to-Edge landscape --- */
 .landscapeGrid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* 2 landscape images per row */
-  gap: 0; /* NO GAPS: Seamless fit */
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 0.7fr);
+  gap: 1.5rem;
   width: 100%;
-  background: #000;
-  line-height: 0; /* Removes tiny browser spacing below images */
+  padding: clamp(1rem, 3vw, 2.5rem) 5%;
+  background: rgba(17, 18, 15, 0.28);
 }
 
 /* --- Grid Item: Fixed Aspect Ratio --- */
@@ -83,9 +95,154 @@
   background: #111;
   cursor: pointer;
   /* Forces 16:9 Landscape - IMPORTANT for no-jump reshuffling */
-  aspect-ratio: 16 / 9; 
+  min-width: 0;
   transition: opacity 0.8s ease-in-out, transform 0.8s ease-in-out;
   will-change: opacity, transform;
+}
+
+.gridItem:focus-visible {
+  outline: 3px solid #c5a059;
+  outline-offset: -3px;
+  z-index: 3;
+}
+
+.featured {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  background: #f5f2eb;
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.2);
+}
+
+.featured .mediaWrapper {
+  flex: 1 1 auto;
+  min-height: 320px;
+  aspect-ratio: auto;
+}
+
+.featuredInfo {
+  padding: clamp(1.25rem, 3vw, 2.25rem);
+  color: #1a1a1a;
+}
+
+.featuredInfo .tag,
+.supportingInfo .tag {
+  display: block;
+  margin-bottom: 0.55rem;
+  color: #a97d34;
+}
+
+.featuredInfo h3 {
+  margin: 0 0 0.9rem;
+  color: #1a1a1a;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(1.8rem, 3.2vw, 3rem);
+  line-height: 1.08;
+}
+
+.featuredInfo .meta,
+.supportingInfo .meta {
+  margin-top: 0;
+  color: #65635b;
+}
+
+.featuredInfo .exploreCue {
+  opacity: 1;
+  transform: none;
+  color: #1b2924;
+}
+
+.supportingGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  height: 100%;
+  width: 100%;
+  min-width: 0;
+}
+
+.supportingCard {
+  display: flex;
+  flex: 1 1 0;
+  width: 100%;
+  max-width: none;
+  min-height: 138px;
+  background: #f5f2eb;
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.16);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.supportingCard:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.2);
+}
+
+.supportingCard .mediaWrapper {
+  flex: 0 0 36%;
+  min-height: 138px;
+  border-radius: 11px 0 0 11px;
+  overflow: hidden;
+}
+
+.supportingInfo {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 1rem 1.15rem;
+  color: #1a1a1a;
+}
+
+.supportingInfo h3 {
+  margin: 0 0 0.6rem;
+  color: #1a1a1a;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(1rem, 1.5vw, 1.35rem);
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+}
+
+.supportingInfo .meta {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  align-items: start;
+  gap: 0.35rem 0.75rem;
+  max-width: 100%;
+}
+
+.supportingInfo .meta span {
+  white-space: normal;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.supportingInfo .routeMeta {
+  display: flex;
+  align-items: flex-start;
+  min-width: 0;
+  line-height: 1.35;
+}
+
+.supportingInfo .routeText {
+  min-width: 0;
+  white-space: normal !important;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.supportingAction {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin-top: auto;
+  padding-top: 0.65rem;
+  color: #1b2924;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
 }
 
 /* --- Shuffle Animations --- */
@@ -101,8 +258,13 @@
 
 .mediaWrapper {
   width: 100%;
-  height: 100%;
+  min-height: 0;
+  aspect-ratio: 16 / 10;
   position: relative;
+}
+
+.supportingCard .mediaWrapper {
+  aspect-ratio: auto;
 }
 
 .media {
@@ -156,10 +318,31 @@
 
 .content h3 {
   color: #ffffff;
-  font-size: clamp(1.1rem, 2.5vw, 1.8rem);
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(1.05rem, 2vw, 1.5rem);
   margin: 0;
   font-weight: 700;
   text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.exploreCue {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 1rem;
+  color: #fff;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  opacity: 0;
+  transform: translateY(0.35rem);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.gridItem:hover .exploreCue,
+.gridItem:focus-visible .exploreCue {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .meta {
@@ -174,6 +357,11 @@
   display: flex;
   align-items: center;
   gap: 0.4rem;
+}
+
+.featuredInfo .meta span,
+.supportingInfo .meta span {
+  white-space: nowrap;
 }
 
 /* --- Video Play Button --- */
@@ -251,7 +439,7 @@
 /* --- Responsive Layouts --- */
 @media (max-width: 900px) {
   .landscapeGrid {
-    grid-template-columns: 1fr; /* Stack into 1 column on mobile but keep landscape ratio */
+    grid-template-columns: 1fr;
   }
   
   .headerContainer {
@@ -261,17 +449,61 @@
     padding: 3rem 5%;
   }
 
+  .featured .mediaWrapper {
+    flex: 0 0 auto;
+    aspect-ratio: 16 / 9;
+    min-height: 0;
+  }
+
+  .supportingGrid {
+    height: auto;
+  }
+
+  .supportingCard {
+    flex: 0 0 auto;
+  }
+
   .content h3 {
     font-size: 1.4rem;
   }
 }
 
 @media (max-width: 480px) {
+  .landscapeGrid {
+    padding: 1rem;
+  }
+
   .overlay {
     padding: 1.2rem;
   }
   .meta {
     gap: 0.8rem;
     font-size: 0.75rem;
+  }
+
+  .exploreCue {
+    opacity: 1;
+    transform: none;
+  }
+
+  .supportingCard {
+    min-height: 118px;
+  }
+
+  .supportingCard .mediaWrapper {
+    min-height: 118px;
+    flex-basis: 34%;
+  }
+
+  .supportingInfo {
+    padding: 0.8rem;
+  }
+}
+
+@media (hover: none) {
+  .playBtn {
+    opacity: 1;
+    background: rgba(197, 160, 89, 0.9);
+    border-color: #c5a059;
   }
 }

@@ -5,6 +5,7 @@ import {
 } from 'lucide-react'
 import { supabase } from '../supabaseClient'
 import Uploader from '../components/Uploader'
+import MarkdownContent from '../components/MarkdownContent'
 import styles from '../styles/ItinerariesAdmin.module.css'
 
 const WHATSAPP_NUMBER = '254700000000'
@@ -315,7 +316,7 @@ const ItinerariesAdmin = () => {
                         <div className={styles.dayCircle}>{dayItem.day}</div>
                         <div className={styles.dayContent}>
                           <h5>{dayItem.location || `Day ${dayItem.day}`}</h5>
-                          <p>{dayItem.activity}</p>
+                          <MarkdownContent>{dayItem.activity}</MarkdownContent>
 
                           {dayItem.media && (dayItem.media.images?.length > 0 || dayItem.media.video) && (
                             <div className={styles.mediaGallery}>

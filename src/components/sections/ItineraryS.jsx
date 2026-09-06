@@ -5,14 +5,16 @@ import { supabase } from '../../supabaseClient';
 import styles from '../../styles/IS.module.css';
 
 const ItinerariesSection = () => {
-  const [allPool, setAllPool] = useState([]); // All fetched items
-  const [displayItems, setDisplayItems] = useState([]); // The 6 currently visible
+  const visibleCount = 7;
+  const [allPool, setAllPool] = useState(fallbackData); // All fetched items
+  const [displayItems, setDisplayItems] = useState(() => getDisplayItems(fallbackData, visibleCount));
   const [fadeIndex, setFadeIndex] = useState(null); // Which index is currently fading
-  const [loading, setLoading] = useState(true);
   const [activeVideo, setActiveVideo] = useState(null);
   const navigate = useNavigate();
   
   const timerRef = useRef(null);
+  const replaceTimerRef = useRef(null);
+  const fadeInTimerRef = useRef(null);
 
   const getPackageMedia = (pkg) => {
     if (!pkg) return {};
@@ -25,7 +27,6 @@ const ItinerariesSection = () => {
   useEffect(() => {
     const fetchPackages = async () => {
       try {
-        setLoading(true);
         const { data } = await supabase
           .from('itineraries')
           .select('*')
@@ -34,12 +35,10 @@ const ItinerariesSection = () => {
 
         const pool = data?.length > 0 ? data : fallbackData;
         setAllPool(pool);
-        setDisplayItems(pool.slice(0, 6)); // Show first 6 initially
+        setDisplayItems(getDisplayItems(pool, visibleCount));
       } catch (err) {
         setAllPool(fallbackData);
-        setDisplayItems(fallbackData.slice(0, 6));
-      } finally {
-        setLoading(false);
+        setDisplayItems(getDisplayItems(fallbackData, visibleCount));
       }
     };
     fetchPackages();
@@ -47,16 +46,15 @@ const ItinerariesSection = () => {
 
   // Shuffle Logic: Swaps one item at a time every 5 seconds
   useEffect(() => {
-    if (allPool.length <= 6) return;
+    if (allPool.length <= visibleCount) return;
 
     timerRef.current = setInterval(() => {
-      // 1. Pick a random slot in the 6-grid to change
-      const randomIndexToReplace = Math.floor(Math.random() * 6);
+      const randomIndexToReplace = Math.floor(Math.random() * visibleCount);
       
       // 2. Start fade out
       setFadeIndex(randomIndexToReplace);
 
-      setTimeout(() => {
+      replaceTimerRef.current = setTimeout(() => {
         setDisplayItems(prevDisplay => {
           const newDisplay = [...prevDisplay];
           // 3. Find an item in allPool that isn't currently displayed
@@ -71,15 +69,17 @@ const ItinerariesSection = () => {
         });
         
         // 4. Fade back in
-        setTimeout(() => setFadeIndex(null), 50);
+        fadeInTimerRef.current = setTimeout(() => setFadeIndex(null), 50);
       }, 800); // Wait for fade out duration
 
     }, 5000); // Swap every 5 seconds
 
-    return () => clearInterval(timerRef.current);
+    return () => {
+      clearInterval(timerRef.current);
+      clearTimeout(replaceTimerRef.current);
+      clearTimeout(fadeInTimerRef.current);
+    };
   }, [allPool]);
-
-  if (loading || displayItems.length === 0) return null;
 
   return (
     <section className={styles.wrapper}>
@@ -87,52 +87,111 @@ const ItinerariesSection = () => {
         <div className={styles.titleGroup}>
           <span className={styles.kicker}><Sparkles size={16} /> Signature Collections</span>
           <h2 className={styles.title}>Plan Your <span>Next Stop</span></h2>
+          <p className={styles.intro}>
+            Handpicked journeys across Kenya and Tanzania, shaped around the places and wildlife you want to remember.
+          </p>
         </div>
         <button className={styles.viewAllBtn} onClick={() => navigate('/itineraries')}>
-          View All <ArrowRight size={18} />
+          Explore all journeys <ArrowRight size={18} />
         </button>
       </div>
 
       <div className={styles.landscapeGrid}>
-        {displayItems.map((pkg, index) => {
+        {displayItems[0] && (() => {
+          const pkg = displayItems[0];
           const { primaryImage, primaryVideo, hasVideo } = getPackageMedia(pkg);
-          const isFading = fadeIndex === index;
-
           return (
-            <div 
-              key={pkg.id} 
-              className={`${styles.gridItem} ${isFading ? styles.fadeOut : styles.fadeIn}`}
+            <article
+              className={`${styles.gridItem} ${styles.featured} ${fadeIndex === 0 ? styles.fadeOut : styles.fadeIn}`}
               onClick={() => navigate(`/itineraries/${pkg.id}`)}
+              onKeyDown={(event) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                  event.preventDefault();
+                  navigate(`/itineraries/${pkg.id}`);
+                }
+              }}
+              role="button"
+              tabIndex={0}
+              aria-label={`View ${pkg.title} itinerary`}
             >
               <div className={styles.mediaWrapper}>
                 <img src={primaryImage} alt={pkg.title} className={styles.media} />
-                
-                <div className={styles.overlay}>
-                  <div className={styles.content}>
-                    <span className={styles.tag}>{pkg.category}</span>
-                    <h3>{pkg.title}</h3>
-                    <div className={styles.meta}>
-                      <span><Clock size={14} /> {pkg.duration}</span>
-                      <span><MapPin size={14} /> {pkg.route?.split('→')[0]}</span>
-                    </div>
-                  </div>
+                {hasVideo && (
+                  <button
+                    className={styles.playBtn}
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      setActiveVideo({ url: primaryVideo, title: pkg.title });
+                    }}
+                    aria-label={`Watch ${pkg.title} video`}
+                  >
+                    <Play fill="white" size={24} />
+                  </button>
+                )}
+              </div>
+              <div className={styles.featuredInfo}>
+                <span className={styles.tag}>{pkg.category}</span>
+                <h3>{pkg.title}</h3>
+                <div className={styles.meta}>
+                  <span><Clock size={14} /> {pkg.duration}</span>
+                  <span><MapPin size={14} /> {pkg.route?.split('→')[0]}</span>
+                </div>
+                <span className={styles.exploreCue}>View itinerary <ArrowRight size={15} /></span>
+              </div>
+            </article>
+          );
+        })()}
 
+        <div className={styles.supportingGrid}>
+          {displayItems.slice(1).map((pkg, index) => {
+            const { primaryImage, primaryVideo, hasVideo } = getPackageMedia(pkg);
+            const itemIndex = index + 1;
+            return (
+              <article
+                key={pkg.id}
+                className={`${styles.gridItem} ${styles.supportingCard} ${fadeIndex === itemIndex ? styles.fadeOut : styles.fadeIn}`}
+                onClick={() => navigate(`/itineraries/${pkg.id}`)}
+                onKeyDown={(event) => {
+                  if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    navigate(`/itineraries/${pkg.id}`);
+                  }
+                }}
+                role="button"
+                tabIndex={0}
+                aria-label={`View ${pkg.title} itinerary`}
+              >
+                <div className={styles.mediaWrapper}>
+                  <img src={primaryImage} alt={pkg.title} className={styles.media} />
                   {hasVideo && (
-                    <button 
+                    <button
                       className={styles.playBtn}
-                      onClick={(e) => {
-                        e.stopPropagation();
+                      onClick={(event) => {
+                        event.stopPropagation();
                         setActiveVideo({ url: primaryVideo, title: pkg.title });
                       }}
+                      aria-label={`Watch ${pkg.title} video`}
                     >
-                      <Play fill="white" size={24} />
+                      <Play fill="white" size={18} />
                     </button>
                   )}
                 </div>
-              </div>
-            </div>
-          );
-        })}
+                <div className={styles.supportingInfo}>
+                  <span className={styles.tag}>{pkg.category}</span>
+                  <h3>{pkg.title}</h3>
+                  <div className={styles.meta}>
+                    <span><Clock size={13} /> {pkg.duration}</span>
+                    <span className={styles.routeMeta}>
+                      <MapPin size={13} />
+                      <span className={styles.routeText}>{pkg.route}</span>
+                    </span>
+                  </div>
+                  <span className={styles.supportingAction}>View journey <ArrowRight size={14} /></span>
+                </div>
+              </article>
+            );
+          })}
+        </div>
       </div>
 
       {activeVideo && (
@@ -145,6 +204,12 @@ const ItinerariesSection = () => {
       )}
     </section>
   );
+};
+
+const getDisplayItems = (pool, visibleCount) => {
+  const poolIds = new Set(pool.map((item) => item.id));
+  const supplementalItems = fallbackData.filter((item) => !poolIds.has(item.id));
+  return [...pool, ...supplementalItems].slice(0, visibleCount);
 };
 
 const fallbackData = [

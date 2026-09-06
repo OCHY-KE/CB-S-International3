@@ -110,10 +110,10 @@ const Hero = () => {
           transition={{ duration: 0.8, delay: 0.8 }}
           className={styles.heroActions}
         >
-          <Link href="/itineraries"  className={styles.primaryBtn}>
+          <Link to="/itineraries" className={styles.primaryBtn}>
             Explore Itineraries
           </Link>
-          <Link href="/about" className={styles.secondaryBtn}>
+          <Link to="/about" className={styles.secondaryBtn}>
             Our Story
           </Link>
         </motion.div>
