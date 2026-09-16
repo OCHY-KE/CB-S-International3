@@ -7,6 +7,8 @@ import { initAppPrecaching } from './utils/precache'
 // Global Styles
 import './index.css'
 
+
+
 // Initialize pre-caching before the app renders to ensure 
 // service workers/assets start loading in the background.
 initAppPrecaching();

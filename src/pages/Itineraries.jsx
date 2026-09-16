@@ -128,6 +128,7 @@ const Itineraries = () => {
                   <div className={styles.imageSection}>
                     <img src={primaryImage} alt={pkg.title} loading="lazy" />
                     <div className={styles.cardCategory}>{pkg.category}</div>
+                    {index === 0 && <span className={styles.featuredStamp}>Lead journey</span>}
                     {hasVideo && (
                       <button 
                         className={styles.playTrigger}
@@ -140,12 +141,17 @@ const Itineraries = () => {
                       </button>
                     )}
                   </div>
-                  <div className={styles.cardInfo}>
+                  <div className={`${styles.cardInfo} ${index === 0 ? styles.featuredInfo : ''}`}>
                     <div className={styles.cardMeta}>
                       <span className={styles.storyLabel}>{index === 0 ? 'Featured journey' : `Journey ${String(index + 1).padStart(2, '0')}`}</span>
                       <span className={styles.durationTag}><Clock size={14} /> {pkg.duration}</span>
                     </div>
                     <h3>{pkg.title}</h3>
+                    {index === 0 && (
+                      <p className={styles.featuredSummary}>
+                        A considered route through East Africa, shaped around unhurried wildlife encounters and memorable landscapes.
+                      </p>
+                    )}
                     <div className={styles.location}>
                       <MapPin size={14} /> <span>{pkg.route}</span>
                     </div>

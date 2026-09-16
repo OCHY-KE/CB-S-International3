@@ -31,7 +31,7 @@ export default async function handler(req, res) {
       });
       if (error) throw error;
 
-      const role = data.user?.user_metadata?.role;
+      const role = data.user?.app_metadata?.role;
       if (role !== 'admin') {
         return res.status(403).json({ error: 'Access denied. Admin privileges required.' });
       }
@@ -40,22 +40,6 @@ export default async function handler(req, res) {
         message: 'Admin login successful',
         user: data.user,
         session: data.session, // includes access_token
-      });
-    }
-
-    if (action === 'register-admin') {
-      const { data, error } = await supabase.auth.signUp({
-        email: identifier.trim(),
-        password: password.trim(),
-        options: {
-          data: { role: 'admin', login_id: 'CBSI@ADMIN' },
-        },
-      });
-      if (error) throw error;
-
-      return res.status(201).json({
-        message: 'Admin registered successfully',
-        user: data.user,
       });
     }
 

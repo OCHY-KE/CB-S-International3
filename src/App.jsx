@@ -2,7 +2,7 @@ import { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 
-// Layouts
+// Layouts & Core Components
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
@@ -11,8 +11,6 @@ import SEO from './components/SEO';
 import Breadcrumb from './components/Breadcrumb';
 import AdminRoute from './components/AdminRoute';
 import ProtectedRoute from './components/ProtectedRoute';
-import ItineraryS from './components/sections/ItineraryS';
-import Hero from './components/sections/Hero';
 
 // Styles
 import './App.css';
@@ -30,8 +28,9 @@ const AdminLogin = lazy(() => import('./pages/AdminLogin'));
 const AdminPage = lazy(() => import('./pages/AdminPage'));
 const AdminGallery = lazy(() => import('./pages/AdminGallery'));
 const ItinerariesAdmin = lazy(() => import('./pages/ItinerariesAdmin'));
-
-const ItineraryReader = lazy(() => import('./pages/ItineraryReader')); // Add this
+const Conferences = lazy(() => import('./pages/Conferences'));
+const ConferencesAdmin = lazy(() => import('./components/conf/ConferenceAdmin'));
+const ItineraryReader = lazy(() => import('./pages/ItineraryReader'));
 const Donate = lazy(() => import('./pages/Donate'));
 
 // --- Layout Components ---
@@ -86,9 +85,9 @@ function App() {
                 <Route path="gallery" element={<Gallery />} />
                 <Route path="contact" element={<ContactPage />} />
                 <Route path="itineraries" element={<Itineraries />} />
-                <Route path="donate" element={<Donate />} />
-                {/* ADD THIS NEW ROUTE */}
                 <Route path="itineraries/:id" element={<ItineraryReader />} />
+                <Route path="conferences" element={<Conferences />} />
+                <Route path="donate" element={<Donate />} />
                 <Route
                   path="profile"
                   element={
@@ -99,14 +98,14 @@ function App() {
                 />
               </Route>
 
-              {/* 2. Auth Routes (No Navbar/Footer) */}
+              {/* 2. Auth Routes */}
               <Route element={<AuthLayout />}>
                 <Route path="login" element={<UserLogin />} />
                 <Route path="create-account" element={<CreateAccount />} />
                 <Route path="admin-login" element={<AdminLogin />} />
               </Route>
 
-              {/* 3. Admin Routes */}
+              {/* 3. Admin Protected Routes */}
               <Route
                 path="admin"
                 element={
@@ -119,9 +118,10 @@ function App() {
                 <Route path="dashboard" element={<AdminPage />} />
                 <Route path="gallery" element={<AdminGallery />} />
                 <Route path="itineraries" element={<ItinerariesAdmin />} />
+                <Route path="conferences" element={<ConferencesAdmin />} />
               </Route>
 
-              {/* 4. Fallback */}
+              {/* 4. Fallback Catch-All */}
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           </Suspense>

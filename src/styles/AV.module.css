@@ -1,0 +1,313 @@
+/* AV.module.css */
+
+.contentArea {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+}
+
+/* --- Stats Bar --- */
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.statCard {
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.statLabel {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+}
+
+.statValue {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #111827;
+  line-height: 1.2;
+}
+
+.statChange {
+  font-size: 0.8125rem;
+  color: #059669;
+  font-weight: 500;
+}
+
+/* --- Dashboard Section Layout --- */
+.dashboardLayout {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 20px;
+}
+
+.dashboardCard {
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+}
+
+.cardHeaderRow {
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.cardHeaderRow h2 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #111827;
+  margin: 0;
+}
+
+/* --- Action Grid Tiles --- */
+.actionGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.actionTile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 16px;
+  background-color: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  color: #374151;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  outline: none;
+}
+
+.actionTile:hover {
+  background-color: #eff6ff;
+  border-color: #bfdbfe;
+  color: #2563eb;
+  transform: translateY(-1px);
+}
+
+.actionTile:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: 2px;
+}
+
+/* --- Package List --- */
+.packageList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.packageItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background-color: #f9fafb;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  color: #374151;
+}
+
+.itemIcon {
+  color: #2563eb;
+  flex-shrink: 0;
+}
+
+/* --- Reservations Table --- */
+.tableCard {
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.tableWrapper {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.bookingsTable {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.875rem;
+}
+
+.bookingsTable th {
+  background-color: #f9fafb;
+  color: #6b7280;
+  font-weight: 600;
+  padding: 12px 16px;
+  border-bottom: 1px solid #e5e7eb;
+  white-space: nowrap;
+}
+
+.bookingsTable td {
+  padding: 14px 16px;
+  border-bottom: 1px solid #f3f4f6;
+  color: #4b5563;
+  white-space: nowrap;
+}
+
+.bookingsTable tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.bookingsTable tbody tr:hover {
+  background-color: #f9fafb;
+}
+
+.clientName {
+  font-weight: 600;
+  color: #111827 !important;
+}
+
+/* --- Status Badges --- */
+.statusBadge {
+  display: inline-block;
+  padding: 4px 10px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 9999px;
+  text-transform: capitalize;
+}
+
+.statusConfirmed {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+.statusPending {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.statusAwaiting {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+/* --- Mobile Breakpoints (< 640px) --- */
+@media (max-width: 640px) {
+  .statsGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .statCard {
+    padding: 12px;
+  }
+
+  .statValue {
+    font-size: 1.375rem;
+  }
+
+  .dashboardLayout {
+    grid-template-columns: 1fr;
+  }
+
+  .actionGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  .actionTile {
+    padding: 12px 8px;
+    font-size: 0.8125rem;
+  }
+}
+
+/* --- Dark Mode Support --- */
+@media (prefers-color-scheme: dark) {
+  .statCard,
+  .dashboardCard,
+  .tableCard {
+    background-color: #1f2937;
+    border-color: #374151;
+  }
+
+  .statLabel {
+    color: #9ca3af;
+  }
+
+  .statValue,
+  .cardHeaderRow h2,
+  .clientName {
+    color: #f9fafb !important;
+  }
+
+  .cardHeaderRow {
+    border-bottom-color: #374151;
+  }
+
+  .actionTile,
+  .packageItem {
+    background-color: #111827;
+    border-color: #374151;
+    color: #d1d5db;
+  }
+
+  .actionTile:hover {
+    background-color: rgba(37, 99, 235, 0.2);
+    border-color: #2563eb;
+    color: #60a5fa;
+  }
+
+  .bookingsTable th {
+    background-color: #111827;
+    color: #9ca3af;
+    border-bottom-color: #374151;
+  }
+
+  .bookingsTable td {
+    color: #d1d5db;
+    border-bottom-color: #374151;
+  }
+
+  .bookingsTable tbody tr:hover {
+    background-color: #111827;
+  }
+
+  .statusConfirmed {
+    background-color: rgba(16, 185, 129, 0.2);
+    color: #34d399;
+  }
+
+  .statusPending {
+    background-color: rgba(245, 158, 11, 0.2);
+    color: #fbbf24;
+  }
+
+  .statusAwaiting {
+    background-color: rgba(239, 68, 68, 0.2);
+    color: #f87171;
+  }
+}

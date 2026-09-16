@@ -1,0 +1,108 @@
+/* Outer Navigation Bar Container */
+.tabBar {
+  width: 100%;
+  background-color: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+  margin-bottom: 24px;
+  /* Removes blue touch box on mobile tap */
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Horizontal Scroll Container */
+.scrollContainer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  
+  /* Enable Horizontal Scrolling */
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+  
+  /* Smooth Momentum Scrolling for Touch Devices */
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+
+  /* Hide Scrollbar for Clean UI */
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+/* Hide Scrollbar for Chrome, Safari, and Opera */
+.scrollContainer::-webkit-scrollbar {
+  display: none;
+}
+
+/* Tab Button Styling */
+.tabButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  min-height: 44px; /* Optimal mobile touch height */
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: #6b7280;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.2s ease-in-out;
+  
+  /* CRITICAL: Prevents buttons from shrinking inside scrollview */
+  flex-shrink: 0;
+  scroll-snap-align: center;
+}
+
+/* Inactive Hover / Touch States */
+.tabButton:hover:not(.activeTab) {
+  color: #111827;
+  background-color: #f3f4f6;
+}
+
+.tabButton:active:not(.activeTab) {
+  background-color: #e5e7eb;
+}
+
+/* Active Tab Styling */
+.activeTab {
+  color: #2563eb;
+  background-color: #eff6ff;
+  border-color: #bfdbfe;
+  font-weight: 600;
+}
+
+.tabButton:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: 2px;
+}
+
+.tabButton svg {
+  flex-shrink: 0;
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  .tabBar {
+    background-color: #1f2937;
+    border-bottom-color: #374151;
+  }
+
+  .tabButton {
+    color: #9ca3af;
+  }
+
+  .tabButton:hover:not(.activeTab) {
+    color: #f9fafb;
+    background-color: #374151;
+  }
+
+  .activeTab {
+    color: #60a5fa;
+    background-color: rgba(37, 99, 235, 0.15);
+    border-color: #1e40af;
+  }
+}

@@ -17,6 +17,7 @@ const navItems = [
   { label: 'Itineraries', path: '/itineraries' },
   { label: 'Gallery', path: '/gallery' },
   { label: 'Contact', path: '/contact' },
+  { label: 'Conferences', path: '/conferences' },
  
 ];
 

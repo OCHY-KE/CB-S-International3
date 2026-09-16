@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
 import styles from '../styles/AL.module.css';
-import { Mail, Lock, Loader2, AlertCircle, Eye, EyeOff, ShieldCheck } from 'lucide-react';
+import { User, Lock, Loader2, AlertCircle, Eye, EyeOff, ShieldCheck } from 'lucide-react';
 
 function AdminLogin() {
   const navigate = useNavigate();
-  const [username, setUsername] = useState('');
+  const [adminId, setAdminId] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [status, setStatus] = useState({ type: '', msg: '' });
@@ -18,19 +18,24 @@ function AdminLogin() {
     setStatus({ type: '', msg: '' });
 
     try {
-      // Map Admin ID to email
-      let email;
-      if (username.trim().toLowerCase() === 'cbsi@admin') {
-        email = 'mannickochieng@gmail.com';
-      } else {
-        setStatus({ type: 'error', msg: 'Invalid Admin Credentials' });
+      const formattedAdminId = adminId.trim().toLowerCase();
+
+      // 1. Look up the account email associated with this Admin ID in Supabase
+      const { data: adminProfile, error: lookupError } = await supabase
+        .from('admin_profiles')
+        .select('user_id, email, is_admin')
+        .eq('admin_id', formattedAdminId)
+        .maybeSingle();
+
+      if (lookupError || !adminProfile) {
+        setStatus({ type: 'error', msg: 'Invalid Admin Credentials.' });
         setLoading(false);
         return;
       }
 
-      // Authenticate with Supabase
+      // 2. Authenticate against Supabase Auth using the retrieved email
       const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
-        email,
+        email: adminProfile.email,
         password,
       });
 
@@ -40,33 +45,8 @@ function AdminLogin() {
         return;
       }
 
-      // Verify admin status
-      let isAdmin = false;
-
-      // 1. Check user metadata first
-      if (authData.user.user_metadata?.role === 'admin') {
-        isAdmin = true;
-      }
-
-      // 2. Check profiles table safely using .maybeSingle()
-      if (!isAdmin) {
-        const { data: profile } = await supabase
-          .from('profiles')
-          .select('is_admin')
-          .eq('id', authData.user.id)
-          .maybeSingle();
-
-        if (profile?.is_admin) {
-          isAdmin = true;
-        }
-      }
-
-      // Fallback: If login email matches hardcoded admin email
-      if (authData.user.email === 'mannickochieng@gmail.com') {
-        isAdmin = true;
-      }
-
-      if (!isAdmin) {
+      // 3. Double-check admin privilege verification
+      if (!adminProfile.is_admin) {
         await supabase.auth.signOut();
         setStatus({ type: 'error', msg: 'Unauthorized: Admin access required.' });
         setLoading(false);
@@ -79,10 +59,10 @@ function AdminLogin() {
 
       setTimeout(() => {
         navigate('/admin/dashboard');
-      }, 2500);
+      }, 2000);
 
     } catch (err) {
-      console.error('Unexpected error:', err);
+      console.error('Unexpected error during login:', err);
       setStatus({ type: 'error', msg: 'Something went wrong during login.' });
       setLoading(false);
     }
@@ -117,17 +97,18 @@ function AdminLogin() {
               )}
 
               <div className={styles.formGroup}>
-                <label htmlFor="username">Admin ID</label>
+                <label htmlFor="adminId">Admin ID</label>
                 <div className={styles.inputWrapper}>
-                  <Mail size={18} className={styles.inputIcon} />
+                  <User size={18} className={styles.inputIcon} />
                   <input
-                    id="username"
+                    id="adminId"
                     type="text"
-                    placeholder="CBSI@ADMIN"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
+                    placeholder="private@admin"
+                    value={adminId}
+                    onChange={(e) => setAdminId(e.target.value)}
                     required
                     disabled={loading}
+                    autoComplete="username"
                   />
                 </div>
               </div>
@@ -144,6 +125,7 @@ function AdminLogin() {
                     onChange={(e) => setPassword(e.target.value)}
                     required
                     disabled={loading}
+                    autoComplete="current-password"
                   />
                   <button
                     type="button"

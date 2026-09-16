@@ -1,14 +1,26 @@
-import React, { useState, useEffect, useCallback } from 'react'
-import { 
-  Plus, Trash2, Clock, MapPin, X, Edit3, ChevronDown, Save, Loader, 
-  Image as ImageIcon, Video as VideoIcon, ChevronLeft, ChevronRight, MessageCircle 
-} from 'lucide-react'
+import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react'
+import { Plus, Loader, Sparkles, Search, SlidersHorizontal, X, ChevronLeft, ChevronRight } from 'lucide-react'
 import { supabase } from '../supabaseClient'
-import Uploader from '../components/Uploader'
-import MarkdownContent from '../components/MarkdownContent'
+import ItineraryCard from '../components/it/IC'
+import ItineraryModal from '../components/it/IM'
 import styles from '../styles/ItinerariesAdmin.module.css'
 
-const WHATSAPP_NUMBER = '254700000000'
+const CATEGORIES = [
+  'All',
+  'Safari & Adventure',
+  'Luxury Safari',
+  'Mid-Range Safari',
+  'Corporate Retreat'
+]
+
+const DEFAULT_FORM_STATE = {
+  title: '',
+  duration: '',
+  category: 'Safari & Adventure',
+  route: '',
+  featured_image: '',
+  days: [{ day: 1, location: '', activity: '', media: { images: [], video: '' } }]
+}
 
 const ItinerariesAdmin = () => {
   const [packages, setPackages] = useState([])
@@ -17,6 +29,14 @@ const ItinerariesAdmin = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [editingId, setEditingId] = useState(null)
   const [expandedPkg, setExpandedPkg] = useState(null)
+  
+  // Filters & Search
+  const [selectedCategory, setSelectedCategory] = useState('All')
+  const [searchQuery, setSearchQuery] = useState('')
+
+  // Touch handling for mobile lightbox swipe
+  const touchStartX = useRef(0)
+  const touchEndX = useRef(0)
 
   // Slideshow State
   const [activeSlideshow, setActiveSlideshow] = useState({
@@ -25,16 +45,7 @@ const ItinerariesAdmin = () => {
     currentIndex: 0
   })
 
-  // Default Form Data Blank Model
-  const defaultFormState = {
-    title: '',
-    duration: '',
-    category: 'Safari & Adventure',
-    route: '',
-    days: [{ day: 1, location: '', activity: '', media: { images: [], video: '' } }]
-  }
-
-  const [formData, setFormData] = useState(defaultFormState)
+  const [formData, setFormData] = useState(DEFAULT_FORM_STATE)
 
   // Fetch packages from Supabase
   const fetchPackages = useCallback(async () => {
@@ -56,16 +67,37 @@ const ItinerariesAdmin = () => {
     fetchPackages()
   }, [fetchPackages])
 
-  // Lock body scroll when overlay modals are open
+  // Lock body scroll when overlay modals or slideshows are open
   useEffect(() => {
     if (isModalOpen || activeSlideshow.isOpen) {
       document.body.style.overflow = 'hidden'
+      document.body.style.touchAction = 'none'
     } else {
-      document.body.style.overflow = 'unset'
+      document.body.style.overflow = ''
+      document.body.style.touchAction = ''
+    }
+
+    return () => {
+      document.body.style.overflow = ''
+      document.body.style.touchAction = ''
     }
   }, [isModalOpen, activeSlideshow.isOpen])
 
-  // Slideshow Navigation Actions
+  // Filtered packages pipeline
+  const filteredPackages = useMemo(() => {
+    return packages.filter((pkg) => {
+      const matchesCategory = selectedCategory === 'All' || pkg.category === selectedCategory
+      const matchesSearch = pkg.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                            pkg.route?.toLowerCase().includes(searchQuery.toLowerCase())
+      return matchesCategory && matchesSearch
+    })
+  }, [packages, selectedCategory, searchQuery])
+
+  // Slideshow Actions
+  const openSlideshow = (images, startIndex = 0) => {
+    setActiveSlideshow({ isOpen: true, images, currentIndex: startIndex })
+  }
+
   const closeSlideshow = useCallback(() => {
     setActiveSlideshow({ isOpen: false, images: [], currentIndex: 0 })
   }, [])
@@ -83,6 +115,31 @@ const ItinerariesAdmin = () => {
       currentIndex: (prev.currentIndex - 1 + prev.images.length) % prev.images.length
     }))
   }, [])
+
+  // Mobile Swipe Gesture Handlers for Slideshow
+  const handleTouchStart = (e) => {
+    touchStartX.current = e.targetTouches[0].clientX
+  }
+
+  const handleTouchMove = (e) => {
+    touchEndX.current = e.targetTouches[0].clientX
+  }
+
+  const handleTouchEnd = () => {
+    if (!touchStartX.current || !touchEndX.current) return
+    const distance = touchStartX.current - touchEndX.current
+    const isLeftSwipe = distance > 40
+    const isRightSwipe = distance < -40
+
+    if (isLeftSwipe && activeSlideshow.images.length > 1) {
+      nextSlide()
+    } else if (isRightSwipe && activeSlideshow.images.length > 1) {
+      prevSlide()
+    }
+
+    touchStartX.current = 0
+    touchEndX.current = 0
+  }
 
   // Keyboard Navigation for Slideshow
   useEffect(() => {
@@ -108,13 +165,14 @@ const ItinerariesAdmin = () => {
         duration: pkg.duration || '',
         category: pkg.category || 'Safari & Adventure',
         route: pkg.route || '',
+        featured_image: pkg.featured_image || '',
         days: pkg.days && pkg.days.length > 0 
           ? (typeof structuredClone === 'function' ? structuredClone(pkg.days) : JSON.parse(JSON.stringify(pkg.days)))
-          : defaultFormState.days
+          : DEFAULT_FORM_STATE.days
       })
     } else {
       setEditingId(null)
-      setFormData(defaultFormState)
+      setFormData(DEFAULT_FORM_STATE)
     }
     setIsModalOpen(true)
   }
@@ -122,77 +180,9 @@ const ItinerariesAdmin = () => {
   const handleCloseModal = () => {
     setIsModalOpen(false)
     setEditingId(null)
-    setFormData(defaultFormState)
+    setFormData(DEFAULT_FORM_STATE)
   }
 
-  // WhatsApp Redirect Handler
-  const handleWhatsAppBooking = (pkgTitle, duration) => {
-    const textMessage = `Hello! I would like to book or request more details regarding the *${pkgTitle}* (${duration}) itinerary package.`
-    const encodedText = encodeURIComponent(textMessage)
-    window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodedText}`, '_blank')
-  }
-
-  const openSlideshow = (images, startIndex = 0) => {
-    setActiveSlideshow({ isOpen: true, images, currentIndex: startIndex })
-  }
-
-  // Day Form Builders
-  const handleAddDay = () => {
-    setFormData((prev) => ({
-      ...prev,
-      days: [
-        ...prev.days,
-        { day: prev.days.length + 1, location: '', activity: '', media: { images: [], video: '' } }
-      ]
-    }))
-  }
-
-  const handleRemoveDay = (index) => {
-    const updatedDays = formData.days
-      .filter((_, i) => i !== index)
-      .map((d, idx) => ({ ...d, day: idx + 1 }))
-    setFormData((prev) => ({ ...prev, days: updatedDays }))
-  }
-
-  const handleDayChange = (index, field, value) => {
-    const updatedDays = [...formData.days]
-    updatedDays[index] = { ...updatedDays[index], [field]: value }
-    setFormData((prev) => ({ ...prev, days: updatedDays }))
-  }
-
-  // Media Management
-  const handleImageUploaded = (index, fileData) => {
-    const updatedDays = [...formData.days]
-    const currentImages = updatedDays[index].media?.images || []
-    updatedDays[index].media = {
-      ...updatedDays[index].media,
-      images: [...currentImages, fileData.url]
-    }
-    setFormData((prev) => ({ ...prev, days: updatedDays }))
-  }
-
-  const handleVideoUploaded = (index, fileData) => {
-    const updatedDays = [...formData.days]
-    updatedDays[index].media = {
-      ...updatedDays[index].media,
-      video: fileData.url
-    }
-    setFormData((prev) => ({ ...prev, days: updatedDays }))
-  }
-
-  const handleRemoveImage = (dayIdx, imgIdx) => {
-    const updatedDays = [...formData.days]
-    updatedDays[dayIdx].media.images = updatedDays[dayIdx].media.images.filter((_, i) => i !== imgIdx)
-    setFormData((prev) => ({ ...prev, days: updatedDays }))
-  }
-
-  const handleRemoveVideo = (dayIdx) => {
-    const updatedDays = [...formData.days]
-    updatedDays[dayIdx].media.video = ''
-    setFormData((prev) => ({ ...prev, days: updatedDays }))
-  }
-
-  // Database Actions
   const handleSavePackage = async (e) => {
     e.preventDefault()
     if (!formData.title || !formData.duration) return
@@ -240,267 +230,108 @@ const ItinerariesAdmin = () => {
 
   return (
     <div className={styles.sectionContainer}>
-      {/* Tab Inner Header */}
-      <div className={styles.header}>
+      {/* Header Area */}
+      <header className={styles.header}>
         <div className={styles.titleArea}>
-          <h2>Safari Itineraries</h2>
-          <p>Create and manage multi-day travel packages with photos & videos</p>
+          <div className={styles.liveTag}>
+            <Sparkles size={13} />
+            <span>Itinerary Portal</span>
+          </div>
+          <h2>Safari Packages & Timelines</h2>
+          <p>Curate featured expeditions, upload travel media, and publish interactive itineraries.</p>
         </div>
         <button className={styles.addButton} onClick={() => handleOpenModal()}>
           <Plus size={18} />
-          <span>New Package</span>
+          <span>New Expedition</span>
         </button>
+      </header>
+
+      {/* Responsive Filter & Search Bar */}
+      <div className={styles.filterBar}>
+        <div className={styles.categoryTabs}>
+          {CATEGORIES.map((cat) => (
+            <button
+              key={cat}
+              className={`${styles.tabBtn} ${selectedCategory === cat ? styles.activeTab : ''}`}
+              onClick={() => setSelectedCategory(cat)}
+            >
+              {cat}
+            </button>
+          ))}
+        </div>
+
+        <div className={styles.searchBox}>
+          <Search size={16} className={styles.searchIcon} />
+          <input
+            type="text"
+            placeholder="Search itineraries or locations..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            aria-label="Search itineraries"
+          />
+          {searchQuery && (
+            <button 
+              className={styles.clearSearch} 
+              onClick={() => setSearchQuery('')}
+              aria-label="Clear search query"
+            >
+              <X size={14} />
+            </button>
+          )}
+        </div>
       </div>
 
-      {/* Content Area */}
+      {/* Main Grid / States Container */}
       {loading ? (
         <div className={styles.loadingState}>
           <Loader className={styles.spinner} size={32} />
-          <p>Loading itineraries...</p>
+          <p>Loading featured itineraries...</p>
+        </div>
+      ) : filteredPackages.length === 0 ? (
+        <div className={styles.emptyState}>
+          <div className={styles.emptyIconWrapper}>
+            <SlidersHorizontal size={28} />
+          </div>
+          <h3>No Itineraries Found</h3>
+          <p>Try adjusting your search query or switching active filters.</p>
         </div>
       ) : (
         <div className={styles.packageGrid}>
-          {packages.map((pkg) => (
-            <div key={pkg.id} className={`${styles.card} ${expandedPkg === pkg.id ? styles.expanded : ''}`}>
-              <div className={styles.cardMain}>
-                <div className={styles.cardHeader}>
-                  <span className={styles.categoryBadge}>{pkg.category}</span>
-                  <div className={styles.cardActions}>
-                    <button className={styles.iconBtn} onClick={() => handleOpenModal(pkg)} title="Edit Package">
-                      <Edit3 size={16} />
-                    </button>
-                    <button className={`${styles.iconBtn} ${styles.delete}`} onClick={() => handleDelete(pkg.id)} title="Delete Package">
-                      <Trash2 size={16} />
-                    </button>
-                  </div>
-                </div>
-
-                <h3 className={styles.pkgTitle}>{pkg.title}</h3>
-
-                <div className={styles.metaInfo}>
-                  <div className={styles.metaItem}>
-                    <Clock size={14} /> <span>{pkg.duration}</span>
-                  </div>
-                  <div className={styles.metaItem}>
-                    <MapPin size={14} /> <span>{pkg.days?.length || 0} Stops</span>
-                  </div>
-                </div>
-
-                <p className={styles.routePreview}>{pkg.route}</p>
-
-                <div className={styles.actionButtonGroup}>
-                  <button 
-                    className={styles.whatsappBtn}
-                    onClick={() => handleWhatsAppBooking(pkg.title, pkg.duration)}
-                  >
-                    <MessageCircle size={18} />
-                    <span>Book via WhatsApp</span>
-                  </button>
-
-                  <button 
-                    className={styles.viewDetailsBtn} 
-                    onClick={() => toggleExpand(pkg.id)}
-                  >
-                    {expandedPkg === pkg.id ? 'Close Timeline' : 'View Full Itinerary'}
-                    <ChevronDown className={expandedPkg === pkg.id ? styles.rotate : ''} size={18} />
-                  </button>
-                </div>
-              </div>
-
-              {expandedPkg === pkg.id && (
-                <div className={styles.timelineSection}>
-                  <h4>Day-by-Day Schedule & Media</h4>
-                  <div className={styles.timeline}>
-                    {pkg.days?.map((dayItem) => (
-                      <div key={dayItem.day} className={styles.timelineItem}>
-                        <div className={styles.dayCircle}>{dayItem.day}</div>
-                        <div className={styles.dayContent}>
-                          <h5>{dayItem.location || `Day ${dayItem.day}`}</h5>
-                          <MarkdownContent>{dayItem.activity}</MarkdownContent>
-
-                          {dayItem.media && (dayItem.media.images?.length > 0 || dayItem.media.video) && (
-                            <div className={styles.mediaGallery}>
-                              {dayItem.media.images?.map((imgUrl, index) => (
-                                <div 
-                                  key={index} 
-                                  className={styles.imageWrapper}
-                                  onClick={() => openSlideshow(dayItem.media.images, index)}
-                                >
-                                  <img src={imgUrl} alt={`${dayItem.location} detail ${index + 1}`} />
-                                </div>
-                              ))}
-
-                              {dayItem.media.video && (
-                                <div className={styles.videoWrapper}>
-                                  <video src={dayItem.media.video} controls poster={dayItem.media.images?.[0]}>
-                                    Your browser does not support video playback.
-                                  </video>
-                                </div>
-                              )}
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
+          {filteredPackages.map((pkg) => (
+            <ItineraryCard
+              key={pkg.id}
+              pkg={pkg}
+              isExpanded={expandedPkg === pkg.id}
+              onToggleExpand={() => toggleExpand(pkg.id)}
+              onEdit={() => handleOpenModal(pkg)}
+              onDelete={() => handleDelete(pkg.id)}
+              onOpenSlideshow={openSlideshow}
+            />
           ))}
         </div>
       )}
 
-      {/* Modal: Create/Edit Package */}
+      {/* Form Modal */}
       {isModalOpen && (
-        <div className={styles.modalOverlay} onClick={handleCloseModal}>
-          <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
-            <div className={styles.modalHeader}>
-              <h2>{editingId ? 'Edit Safari Package' : 'Create New Safari Package'}</h2>
-              <button onClick={handleCloseModal} className={styles.closeBtn}><X size={20} /></button>
-            </div>
-
-            <form className={styles.form} onSubmit={handleSavePackage}>
-              <div className={styles.inputGroup}>
-                <label>Package Name</label>
-                <input 
-                  type="text" 
-                  value={formData.title} 
-                  onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                  placeholder="e.g. KENTANGA 15 DAYS" 
-                  required
-                />
-              </div>
-
-              <div className={styles.inputRow}>
-                <div className={styles.inputGroup}>
-                  <label>Duration</label>
-                  <input 
-                    type="text" 
-                    value={formData.duration} 
-                    onChange={(e) => setFormData({ ...formData, duration: e.target.value })}
-                    placeholder="e.g. 15 Days / 14 Nights" 
-                    required
-                  />
-                </div>
-                <div className={styles.inputGroup}>
-                  <label>Category</label>
-                  <select 
-                    value={formData.category} 
-                    onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                  >
-                    <option>Safari & Adventure</option>
-                    <option>Luxury Safari</option>
-                    <option>Mid-Range Safari</option>
-                    <option>Corporate Retreat</option>
-                  </select>
-                </div>
-              </div>
-
-              <div className={styles.inputGroup}>
-                <label>Route Overview</label>
-                <input 
-                  type="text" 
-                  value={formData.route} 
-                  onChange={(e) => setFormData({ ...formData, route: e.target.value })}
-                  placeholder="e.g. Nairobi - Samburu - Mara - Serengeti - Nairobi" 
-                />
-              </div>
-
-              <div className={styles.daysBuilder}>
-                <div className={styles.daysHeader}>
-                  <h3>Itinerary Days & Media</h3>
-                  <button type="button" onClick={handleAddDay} className={styles.addDayBtn}>
-                    <Plus size={16} /> Add Day
-                  </button>
-                </div>
-
-                {formData.days.map((day, idx) => (
-                  <div key={idx} className={styles.dayCardInput}>
-                    <div className={styles.dayInputHeader}>
-                      <span>Day {day.day}</span>
-                      {formData.days.length > 1 && (
-                        <button type="button" onClick={() => handleRemoveDay(idx)} className={styles.removeDayBtn}>
-                          <Trash2 size={14} />
-                        </button>
-                      )}
-                    </div>
-
-                    <div className={styles.inputRow}>
-                      <input 
-                        type="text" 
-                        placeholder="Location (e.g. Samburu)" 
-                        value={day.location}
-                        onChange={(e) => handleDayChange(idx, 'location', e.target.value)}
-                      />
-                    </div>
-
-                    <textarea 
-                      placeholder="Activity description..." 
-                      value={day.activity}
-                      onChange={(e) => handleDayChange(idx, 'activity', e.target.value)}
-                      rows={2}
-                    />
-
-                    {/* Media Uploaders & Previews */}
-                    <div className={styles.uploaderSection}>
-                      <div className={styles.uploadBlock}>
-                        <label><ImageIcon size={14} /> Upload Photos</label>
-                        <Uploader 
-                          bucket="CBSI"
-                          folder={`Itineraries/Day_${day.day}/Images`}
-                          allowedTypes={['image/jpeg', 'image/png', 'image/webp']}
-                          maxSizeMB={10}
-                          label="Upload Image"
-                          onUploadSuccess={(fileData) => handleImageUploaded(idx, fileData)}
-                        />
-                        {day.media?.images?.length > 0 && (
-                          <div className={styles.mediaPreviewList}>
-                            {day.media.images.map((img, imgIdx) => (
-                              <div key={imgIdx} className={styles.previewThumb}>
-                                <img src={img} alt="preview" />
-                                <button type="button" onClick={() => handleRemoveImage(idx, imgIdx)}><X size={12} /></button>
-                              </div>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-
-                      <div className={styles.uploadBlock}>
-                        <label><VideoIcon size={14} /> Upload Video</label>
-                        <Uploader 
-                          bucket="CBSI"
-                          folder={`Itineraries/Day_${day.day}/Videos`}
-                          allowedTypes={['video/mp4', 'video/quicktime', 'video/webm']}
-                          maxSizeMB={100}
-                          label="Upload Video"
-                          onUploadSuccess={(fileData) => handleVideoUploaded(idx, fileData)}
-                        />
-                        {day.media?.video && (
-                          <div className={styles.previewVideo}>
-                            <video src={day.media.video} controls />
-                            <button type="button" onClick={() => handleRemoveVideo(idx)}><X size={12} /></button>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              <button type="submit" className={styles.saveBtn} disabled={isSaving}>
-                {isSaving ? <Loader className={styles.spinner} size={18} /> : <Save size={18} />}
-                <span>{editingId ? 'Update Package' : 'Save Package'}</span>
-              </button>
-            </form>
-          </div>
-        </div>
+        <ItineraryModal
+          editingId={editingId}
+          formData={formData}
+          setFormData={setFormData}
+          isSaving={isSaving}
+          onClose={handleCloseModal}
+          onSave={handleSavePackage}
+        />
       )}
 
-      {/* Modal: Fullscreen Slideshow */}
+      {/* Lightbox / Slideshow Modal */}
       {activeSlideshow.isOpen && (
         <div className={styles.slideshowOverlay} onClick={closeSlideshow}>
-          <button className={styles.slideshowClose} onClick={closeSlideshow}>
-            <X size={28} />
+          <button 
+            className={styles.slideshowClose} 
+            onClick={closeSlideshow}
+            aria-label="Close slideshow"
+          >
+            <X size={24} />
           </button>
           
           {activeSlideshow.images.length > 1 && (
@@ -508,22 +339,30 @@ const ItinerariesAdmin = () => {
               <button 
                 className={`${styles.slideNavBtn} ${styles.prev}`} 
                 onClick={(e) => { e.stopPropagation(); prevSlide(); }}
+                aria-label="Previous image"
               >
-                <ChevronLeft size={32} />
+                <ChevronLeft size={28} />
               </button>
               <button 
                 className={`${styles.slideNavBtn} ${styles.next}`} 
                 onClick={(e) => { e.stopPropagation(); nextSlide(); }}
+                aria-label="Next image"
               >
-                <ChevronRight size={32} />
+                <ChevronRight size={28} />
               </button>
             </>
           )}
 
-          <div className={styles.slideshowContainer} onClick={(e) => e.stopPropagation()}>
+          <div 
+            className={styles.slideshowContainer} 
+            onClick={(e) => e.stopPropagation()}
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+          >
             <img 
               src={activeSlideshow.images[activeSlideshow.currentIndex]} 
-              alt={`Slide ${activeSlideshow.currentIndex + 1}`} 
+              alt={`Slide ${activeSlideshow.currentIndex + 1} of ${activeSlideshow.images.length}`} 
             />
             <span className={styles.slideCounter}>
               {activeSlideshow.currentIndex + 1} / {activeSlideshow.images.length}

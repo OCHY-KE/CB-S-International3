@@ -1,418 +1,84 @@
-/* ==========================================================================
-   Admin Page Layout & Shell
-   ========================================================================== */
+/* AdminPage.module.css */
 
+/* Main layout wrapper */
 .adminShell {
-  width: 100%;
   min-height: 100vh;
-  background-color: #f8fafc;
-  color: #1e293b;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-  box-sizing: border-box;
-  padding-bottom: 3rem;
-}
-
-/* ==========================================================================
-   Top Header Console
-   ========================================================================== */
-
-.adminHeader {
-  background-color: #0f172a;
-  color: #ffffff;
-  padding: 1.5rem 2rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 1.5rem;
-  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
-}
-
-.brandInfo {
   display: flex;
   flex-direction: column;
-  gap: 0.35rem;
+  background-color: #f9fafb;
+  color: #111827;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
 }
 
-.eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  font-size: 0.75rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: #38bdf8;
-}
-
-.brandInfo h1 {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #f8fafc;
-  margin: 0;
-  letter-spacing: -0.02em;
-}
-
-.headerActions {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  flex-wrap: wrap;
-}
-
-/* Header Buttons */
-.ctaButtonSecondary,
-.signOutButton {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 1rem;
-  font-size: 0.85rem;
-  font-weight: 600;
-  border-radius: 0.375rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  border: 1px solid transparent;
-}
-
-.ctaButtonSecondary {
-  background-color: rgba(255, 255, 255, 0.1);
-  color: #f1f5f9;
-  border-color: rgba(255, 255, 255, 0.15);
-}
-
-.ctaButtonSecondary:hover {
-  background-color: rgba(255, 255, 255, 0.2);
-  color: #ffffff;
-}
-
-.signOutButton {
-  background-color: #dc2626;
-  color: #ffffff;
-}
-
-.signOutButton:hover {
-  background-color: #b91c1c;
-  box-shadow: 0 4px 6px -1px rgba(220, 38, 38, 0.3);
-}
-
-/* ==========================================================================
-   Navigation Tabs
-   ========================================================================== */
-
-.tabBar {
-  background-color: #ffffff;
-  border-bottom: 1px solid #e2e8f0;
-  padding: 0 2rem;
-  display: flex;
-  gap: 1.5rem;
-  overflow-x: auto;
-}
-
-.tabBar button {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 1rem 0.5rem;
-  font-size: 0.9rem;
-  font-weight: 600;
-  background: none;
-  border: none;
-  border-bottom: 2px solid transparent;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  white-space: nowrap;
-}
-
-.activeTab {
-  color: #2563eb;
-  border-bottom-color: #2563eb !important;
-}
-
-.inactiveTab {
-  color: #64748b;
-}
-
-.inactiveTab:hover {
-  color: #0f172a;
-}
-
-/* ==========================================================================
-   Content Container
-   ========================================================================== */
-
-.contentArea {
+/* Main content viewport container */
+.mainContent {
+  flex: 1;
+  width: 100%;
   max-width: 1280px;
-  margin: 2rem auto 0 auto;
-  padding: 0 1.5rem;
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
+  margin: 0 auto;
+  padding: 0 16px 32px 16px;
+  box-sizing: border-box;
 }
 
-/* ==========================================================================
-   Dashboard Overview: Stats Cards
-   ========================================================================== */
-
-.statsGrid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1.25rem;
-}
-
-.statCard {
+/* Common container wrapper for tab modules */
+.contentArea {
   background-color: #ffffff;
-  padding: 1.25rem;
-  border-radius: 0.75rem;
-  border: 1px solid #e2e8f0;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-  display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  padding: 24px;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px 0 rgba(0, 0, 0, 0.03);
+  animation: fadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.statLabel {
-  font-size: 0.8rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  color: #64748b;
-  letter-spacing: 0.025em;
-}
-
-.statValue {
-  font-size: 1.75rem;
-  font-weight: 700;
-  color: #0f172a;
-  letter-spacing: -0.02em;
-}
-
-.statChange {
-  font-size: 0.8rem;
-  font-weight: 500;
-  color: #059669;
-}
-
-/* ==========================================================================
-   Dashboard Overview: Two-Column Section
-   ========================================================================== */
-
-.dashboardLayout {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1.5rem;
-}
-
-.dashboardCard {
-  background-color: #ffffff;
-  border-radius: 0.75rem;
-  border: 1px solid #e2e8f0;
-  padding: 1.5rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-}
-
-.cardHeaderRow {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid #f1f5f9;
-  padding-bottom: 0.75rem;
-}
-
-.cardHeaderRow h2 {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: #0f172a;
-  margin: 0;
-}
-
-/* Action Tiles Grid */
-.actionGrid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1rem;
-}
-
-.actionTile {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-  gap: 0.625rem;
-  padding: 1.25rem;
-  background-color: #f8fafc;
-  border: 1px solid #e2e8f0;
-  border-radius: 0.5rem;
-  color: #334155;
-  font-size: 0.875rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.actionTile svg {
-  color: #2563eb;
-}
-
-.actionTile:hover {
-  background-color: #eff6ff;
-  border-color: #bfdbfe;
-  color: #1d4ed8;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.1);
-}
-
-/* Featured Packages List */
-.packageList {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
-.packageItem {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0.75rem 1rem;
-  background-color: #f8fafc;
-  border: 1px solid #f1f5f9;
-  border-radius: 0.5rem;
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: #334155;
-}
-
-.itemIcon {
-  color: #0284c7;
-  flex-shrink: 0;
-}
-
-/* ==========================================================================
-   Table Section: Recent Reservations
-   ========================================================================== */
-
-.tableCard {
-  background-color: #ffffff;
-  border-radius: 0.75rem;
-  border: 1px solid #e2e8f0;
-  padding: 1.5rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.tableWrapper {
-  width: 100%;
-  overflow-x: auto;
-}
-
-.bookingsTable {
-  width: 100%;
-  border-collapse: collapse;
-  text-align: left;
-  font-size: 0.875rem;
-}
-
-.bookingsTable th {
-  background-color: #f8fafc;
-  color: #475569;
-  font-weight: 600;
-  padding: 0.75rem 1rem;
-  border-bottom: 1px solid #e2e8f0;
-  white-space: nowrap;
-}
-
-.bookingsTable td {
-  padding: 1rem;
-  border-bottom: 1px solid #f1f5f9;
-  color: #334155;
-  vertical-align: middle;
-}
-
-.bookingsTable tbody tr:hover {
-  background-color: #f8fafc;
-}
-
-.clientName {
-  font-weight: 600;
-  color: #0f172a;
-}
-
-/* Status Badges */
-.statusBadge {
-  display: inline-block;
-  padding: 0.25rem 0.625rem;
-  font-size: 0.75rem;
-  font-weight: 600;
-  border-radius: 9999px;
-  white-space: nowrap;
-}
-
-.statusConfirmed {
-  background-color: #dcfce7;
-  color: #166534;
-}
-
-.statusPending {
-  background-color: #fef9c3;
-  color: #854d0e;
-}
-
-.statusAwaiting {
-  background-color: #fee2e2;
-  color: #991b1b;
-}
-
-/* ==========================================================================
-   Responsive Adaptations
-   ========================================================================== */
-
-@media (max-width: 1024px) {
-  .statsGrid {
-    grid-template-columns: repeat(2, 1fr);
+/* Subtle fade-in transition when switching tabs */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
+/* --- Responsive Layout Breakpoints --- */
+
+/* Tablet & Mobile Screens (< 768px) */
 @media (max-width: 768px) {
-  .adminHeader {
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 1.25rem 1rem;
-  }
-
-  .headerActions {
-    width: 100%;
-  }
-
-  .headerActions button {
-    flex: 1;
-    justify-content: center;
-  }
-
-  .tabBar {
-    padding: 0 1rem;
+  .mainContent {
+    padding: 0 12px 24px 12px;
   }
 
   .contentArea {
-    padding: 0 0.75rem;
-    margin-top: 1.25rem;
+    padding: 16px;
+    border-radius: 8px;
+  }
+}
+
+/* Small Mobile Screens (< 480px) */
+@media (max-width: 480px) {
+  .mainContent {
+    padding: 0 8px 16px 8px;
   }
 
-  .statsGrid {
-    grid-template-columns: 1fr;
+  .contentArea {
+    padding: 12px;
+    box-shadow: none;
+    border-color: #e5e7eb;
+  }
+}
+
+/* --- Dark Mode Support --- */
+@media (prefers-color-scheme: dark) {
+  .adminShell {
+    background-color: #111827;
+    color: #f9fafb;
   }
 
-  .dashboardLayout {
-    grid-template-columns: 1fr;
-  }
-
-  .actionGrid {
-    grid-template-columns: 1fr;
+  .contentArea {
+    background-color: #1f2937;
+    border-color: #374151;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3);
   }
 }

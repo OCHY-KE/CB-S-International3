@@ -17,12 +17,9 @@
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
-  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
   z-index: 1;
-
-  /* Touch & Scroll Lock */
-  overscroll-behavior: none;
-  touch-action: none;
 
   /* Optimized Layered Background (Linear Gradient + Radial Vignette + Giraffe Image) */
   background: 

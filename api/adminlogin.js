@@ -29,7 +29,7 @@ export default async function handler(req, res) {
 
     if (error) throw error;
 
-    const role = data.user?.user_metadata?.role;
+    const role = data.user?.app_metadata?.role;
     if (role !== 'admin') {
       return res.status(403).json({ message: 'Access denied. Admin only.' });
     }

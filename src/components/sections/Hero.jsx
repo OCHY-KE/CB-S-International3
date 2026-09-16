@@ -5,10 +5,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import styles from '../../styles/H.module.css';
 
 const images = [
-  "https://images.unsplash.com/photo-1546182990-dffeafbe841d?auto=format&fit=crop&q=80&w=2000",
-  "https://cccevikzhxeyxsjvomzg.supabase.co/storage/v1/object/public/CBSI/Media/elephant_1787353876793.webp?auto=format&fit=crop&q=80&w=2000",
-  "https://cccevikzhxeyxsjvomzg.supabase.co/storage/v1/object/public/CBSI/Media/IMG-20260817-WA0032_1788011397586.jpg?auto=format&fit=crop&q=80&w=2000",
-  "https://cccevikzhxeyxsjvomzg.supabase.co/storage/v1/object/public/CBSI/Media/IMG_20260830_093052_1788071547437.jpg?auto=format&fit=crop&q=80&w=2000",
   "https://cccevikzhxeyxsjvomzg.supabase.co/storage/v1/object/public/CBSI/Media/WhatsApp_Image_2026-08-17_at_1.42.34_PM_1788009853215.jpeg?auto=format&fit=crop&q=80&w=2000",
   "https://cccevikzhxeyxsjvomzg.supabase.co/storage/v1/object/public/CBSI/Media/IMG-20260817-WA0063_1788075289678.jpg?auto=format&fit=crop&q=80&w=2000",
   "https://images.unsplash.com/photo-1521651201144-634f700b36ef?auto=format&fit=crop&q=80&w=2000",
@@ -31,6 +27,10 @@ const images = [
   "https://res.cloudinary.com/cioghqt5/image/upload/v1788093014/Waterfalls-in-Kenya.jpg?auto=format&fit=crop&q=80&w=2000",
   "https://res.cloudinary.com/cioghqt5/image/upload/v1788095632/Olokorienito-dam.jpg?auto=format&fit=crop&q=80&w=2000",
   "https://res.cloudinary.com/cioghqt5/image/upload/v1788096204/swamp.png?auto=format&fit=crop&q=80&w=2000",
+  "https://images.unsplash.com/photo-1546182990-dffeafbe841d?auto=format&fit=crop&q=80&w=2000",
+  "https://cccevikzhxeyxsjvomzg.supabase.co/storage/v1/object/public/CBSI/Media/elephant_1787353876793.webp?auto=format&fit=crop&q=80&w=2000",
+  "https://cccevikzhxeyxsjvomzg.supabase.co/storage/v1/object/public/CBSI/Media/IMG-20260817-WA0032_1788011397586.jpg?auto=format&fit=crop&q=80&w=2000",
+  "https://cccevikzhxeyxsjvomzg.supabase.co/storage/v1/object/public/CBSI/Media/IMG_20260830_093052_1788071547437.jpg?auto=format&fit=crop&q=80&w=2000",
 ];
 
 const Hero = () => {

@@ -1,0 +1,195 @@
+/* Container Card */
+.tableCard {
+  background: #ffffff;
+  border: 1px solid #e6e6e6;
+  border-top: 4px solid #cc0000; /* Signature CNN Red accent border */
+  border-radius: 4px;
+  padding: 1.5rem;
+  margin-bottom: 2.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color: #121212;
+}
+
+/* Toolbar & Filter Header */
+.tableToolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid #f0f0f0;
+  margin-bottom: 1rem;
+}
+
+.tableToolbar h2 {
+  font-size: 1.125rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #121212;
+  margin: 0;
+}
+
+.tableFilters {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+/* Inputs & Filter Dropdowns */
+.tableSearchInput {
+  height: 40px;
+  padding: 0 0.875rem;
+  font-size: 0.875rem;
+  font-family: inherit;
+  color: #121212;
+  background-color: #f9f9f9;
+  border: 1px solid #dcdcdc;
+  border-radius: 2px;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.tableSearchInput::placeholder {
+  color: #8c8c8c;
+}
+
+.tableSearchInput:hover {
+  background-color: #ffffff;
+  border-color: #b0b0b0;
+}
+
+.tableSearchInput:focus {
+  outline: none;
+  background-color: #ffffff;
+  border-color: #000000;
+  box-shadow: 0 0 0 1px #000000;
+}
+
+/* Responsive Table Wrapper */
+.tableResponsive {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Main Data Table */
+.mediaTable {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.875rem;
+}
+
+.mediaTable th {
+  padding: 0.875rem 1rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #555555;
+  background-color: #f4f4f4;
+  border-bottom: 2px solid #dcdcdc;
+  white-space: nowrap;
+}
+
+.mediaTable td {
+  padding: 0.875rem 1rem;
+  color: #262626;
+  border-bottom: 1px solid #e6e6e6;
+  vertical-align: middle;
+}
+
+.mediaTable tbody tr {
+  transition: background-color 0.15s ease;
+}
+
+.mediaTable tbody tr:hover {
+  background-color: #fcfcfc;
+}
+
+/* Preview Image & Fallback Placeholder */
+.tableThumb {
+  width: 56px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 2px;
+  border: 1px solid #e0e0e0;
+  display: block;
+}
+
+.tableThumbPlaceholder {
+  width: 56px;
+  height: 40px;
+  background-color: #eeeeee;
+  border-radius: 2px;
+  border: 1px solid #e0e0e0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #666666;
+}
+
+/* Table Actions Row & Buttons */
+.actionBtnsRow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.iconActionBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  color: #262626;
+  background-color: #f4f4f4;
+  border: 1px solid #dcdcdc;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.iconActionBtn:hover {
+  color: #ffffff;
+  background-color: #000000;
+  border-color: #000000;
+}
+
+/* Delete Button Specific Hover */
+.deleteBtn:hover {
+  color: #ffffff;
+  background-color: #cc0000; /* CNN Red accent */
+  border-color: #cc0000;
+}
+
+/* Responsive Media Queries */
+@media (max-width: 768px) {
+  .tableCard {
+    padding: 1rem;
+  }
+
+  .tableToolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .tableFilters {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .tableSearchInput {
+    width: 100%;
+  }
+
+  .mediaTable th,
+  .mediaTable td {
+    padding: 0.75rem 0.5rem;
+  }
+}
